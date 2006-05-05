@@ -1,0 +1,32 @@
+<?python
+layout_params['page_title'] = "Index of Shakespeare plays"
+worksIndex = [('abc', 'efg')]
+?>
+<html py:layout="'layout.html'"
+      xmlns:py="http://purl.org/kid/ns#">
+
+	<div py:match="item.tag == 'content'">
+		<table border="1">
+		<thead>
+			<tr>
+				<th>
+					Title
+				</th>
+				<th>Link</th>
+				<th>Comments</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr py:for="item in works_index">
+				<td py:content="item[0]">title</td>
+				<td>
+					<a href="/view?text_url=${item[1]}&amp;version=">Local Copy</a><br />
+					<a href="/view?text_url=${item[1]}&amp;version=cleaned">Cleaned Copy</a><br />
+					<a href="${item[1]}" py:content="item[1]">Original Gutenberg</a>
+				</td>
+				<td py:content="item[2]"></td>
+			</tr>
+		</tbody>
+		</table>
+	</div>
+</html>

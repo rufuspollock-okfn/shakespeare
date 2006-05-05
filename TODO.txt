@@ -1,0 +1,20 @@
+See also: http://www.okfn.org/wiki/ShakespeareKnowledgePackage
+
+0. Make clean shakespeare
+1. Default sort by title (DONE)
+2. Javascript type table to allow sorting by name
+  * p: low
+3. show shakespeare text side by side
+4. shakespeare search
+5. About page listing sources (?) 
+  * this should be part of the source distribution and should just be autoconverted
+6. Normalize titles in case of King plays (either should have King or should not). Folio does not have King.
+
+Questions
+=========
+
+1. Do we store data in subversion so the package is 'all in one'?
+  * i.e. what is the real source?
+  * i think the source should be local but a mechanism should be provided to periodically check for updates (e.g. to gutenberg stuff)
+
+2. If do this (ie. store source in svn) do we still store the build scripts?

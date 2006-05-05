@@ -1,0 +1,20 @@
+<?python
+page_title = "Default title"
+def page_specific_css():
+    return ""
+?>
+<html xmlns:py="http://purl.org/kid/ns#">
+  <head>
+    <title>App Name - ${page_title}</title>
+
+		<link href="http://www.thefactz.org/styles/text_basic.css" type="text/css" rel="stylesheet" />
+    ${page_specific_css()}
+  </head>
+
+  <body>
+    <h1>Now viewing: ${page_title} of App Name</h1>
+
+    <content>Default content - this will be replaced</content>
+
+  </body>
+</html>

@@ -1,0 +1,18 @@
+Project Authors
+***************
+
+Rufus Pollock
+
+
+Sources for Material
+********************
+
+Shakespeare Texts
+=================
+
+Obviously the primary author of these texts is William Shakespeare himself.
+
+The original electronic versions were sourced from Project Gutenberg:
+  http://www.gutenberg.org/
+
+You can find the urls of texts used in the index.

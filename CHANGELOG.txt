@@ -1,0 +1,5 @@
+2006-05-04: First version of concordancer finished.
+2006-04-10: Refactor code into src/ and add in basic webserver interface.
+2006-03-24: Completed scripts for downloading shakespeare texts from
+            gutenberg and removing Gutenberg headers and footers.
+2005-12-26: started project. Commenced research on what texts were avaialable.

@@ -1,0 +1,98 @@
+#!/usr/bin/env python
+
+import cmd
+import StringIO
+
+from shakespeare.format import GutenbergShakespeare
+from shakespeare.download import download_all_shakespeare
+from shakespeare.download import make_index
+from shakespeare.concordancer import make_concordancer
+import shakespeare.utils as utils
+
+class ShakespeareAdmin(cmd.Cmd):
+
+    def __init__(self):
+        cmd.Cmd.__init__(self) # cmd.Cmd is not a new style class
+        self._index = make_index()
+
+    def do_format(self, line=None):
+        path = sys.argv[1]
+        x = GutenbergShakespeare(file(path))
+        print x.extract_text()
+    
+    def help_format(self, line=None):
+        usage = \
+'''Format a raw gutenberg text.
+
+Take a raw gutenberg text in and return (on stdout) the core text (i.e. strip
+out all the gutenberg bumpf)'''
+        print usage
+
+    def do_format_all(self, line):
+        index = self._index 
+        for item in index:
+            url = item[1]
+            src = utils.get_local_path(url)
+            dest = utils.get_local_path(url, 'cleaned')
+            infile = file(src)
+            if src.endswith('wssnt10.txt'): # if it is the sonnets need a hack
+                # delete last 140 characters
+                tmp1 = infile.read()
+                infile = StringIO.StringIO(tmp1[:-120])
+            formatter = GutenbergShakespeare(infile)
+            ff = file(dest, 'w')
+            out = formatter.extract_text()
+            ff.write(out)
+            ff.close()
+    
+    def do_download_texts(self, line):
+        download_all_shakespeare()
+
+    def help_download_texts(self, line=None):
+        print download_all_shakespeare.__doc__
+    
+    def do_print_index(self, line):
+        for row in self._index:
+            print row
+
+    def help_print_index(self, line=None):
+        usage = \
+'''Print index of Shakespeare texts to stdout'''
+        print usage
+
+    def do_make_concordancer(self, line=None):
+        make_concordancer()
+
+    def help_make_concordancer(self, line=None):
+        print make_concordance.__doc__
+
+    def do_help(self, line=None):
+        cmd.Cmd.do_help(self, line)
+
+    def do_quit(self):
+        sys.exit()
+
+    def do_EOF(self, *args):
+        print ''
+        sys.exit()
+
+if __name__ == '__main__':
+    import sys
+    usage = """
+%prog cmd
+
+    format-all: format all gutenberg etexts automatically
+    download: download the gutenberg etexts and store them in the cache
+    """
+    adminCmd = ShakespeareAdmin()
+    if len(sys.argv) < 2:
+        while 1:
+            try:
+                adminCmd.cmdloop()
+                break
+            except KeyboardInterrupt:
+                raise
+    else:
+        args = ' '.join(sys.argv[1:])
+        args = args.replace('-','_')
+        adminCmd.onecmd(args)
