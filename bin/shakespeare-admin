@@ -4,16 +4,15 @@ import cmd
 import StringIO
 
 from shakespeare.format import GutenbergShakespeare
-from shakespeare.download import download_all_shakespeare
-from shakespeare.download import make_index
 from shakespeare.concordancer import make_concordancer
 import shakespeare.utils as utils
+import shakespeare.work
 
 class ShakespeareAdmin(cmd.Cmd):
 
     def __init__(self):
         cmd.Cmd.__init__(self) # cmd.Cmd is not a new style class
-        self._index = make_index()
+        self._index = shakespeare.work.index.all
 
     def do_format(self, line=None):
         path = sys.argv[1]
@@ -46,10 +45,14 @@ out all the gutenberg bumpf)'''
             ff.close()
     
     def do_download_texts(self, line):
-        download_all_shakespeare()
+        for item in self._index:
+            utils.download_url(item[1])
 
     def help_download_texts(self, line=None):
-        print download_all_shakespeare.__doc__
+        usage = \
+"""
+Download from Project Gutenberg all the shakespeare texts listed in the index."""
+        print usage 
     
     def do_print_index(self, line):
         for row in self._index:
@@ -61,7 +64,15 @@ out all the gutenberg bumpf)'''
         print usage
 
     def do_make_concordancer(self, line=None):
-        make_concordancer()
+        if line is not None:
+            textsToAdd = []
+            textsUrls = line.split()
+            for item in self._index:
+              if item[1] in textsUrls:
+                  textsToAdd.append(item)
+            make_concordancer(textsToAdd)
+        else:
+            make_concordancer()
 
     def help_make_concordancer(self, line=None):
         print make_concordance.__doc__

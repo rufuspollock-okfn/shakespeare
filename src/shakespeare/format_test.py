@@ -1,6 +1,6 @@
 import unittest
 
-import download
+import utils
 from format import make_re_from_phrase, GutenbergShakespeare 
 
 def test_suite():
@@ -35,8 +35,8 @@ class FormatTest(unittest.TestCase):
         self.assertEquals(out.group(), outStr)
 
 class GutenbergShakespeareTest(unittest.TestCase):
-    etext1 = file(download.get_cache_path('0ws2510.txt'))
-    etext2 = file(download.get_cache_path('2ws2510.txt'))
+    etext1 = file(utils.get_cache_path('0ws2510.txt'))
+    etext2 = file(utils.get_cache_path('2ws2510.txt'))
     gut1 = GutenbergShakespeare(etext1)
     gut2 = GutenbergShakespeare(etext2)
     

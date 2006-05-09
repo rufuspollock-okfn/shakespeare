@@ -1,0 +1,28 @@
+<?python
+layout_params['page_title'] = "Concordance and statistics"
+?>
+<html py:layout="'layout.html'"
+      xmlns:py="http://purl.org/kid/ns#">
+
+	<div py:match="item.tag == 'content'">
+		<table border="1">
+		<thead>
+			<tr>
+				<th>
+					Word	
+				</th>
+				<th>Occurrences</th>
+				<th>Comments</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr py:for="word in words">
+				<td py:content="word">word</td>
+				<td py:content="stats[word]">-1</td>
+				<td>-</td>
+			</tr>
+		</tbody>
+		</table>
+	</div>
+</html>
+

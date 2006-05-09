@@ -3,7 +3,6 @@ Clean up Gutenberg texts by removing all the header and footer bumpf
 """
 
 import re
-import download
 
 headerEndPhrases = ["Project Gutenberg's Etext of", 'This etext was prepared by']
 notesStartPhrases = ["Executive Director's Notes:"]

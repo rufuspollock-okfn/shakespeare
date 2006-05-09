@@ -18,12 +18,13 @@ As by your high imperial Majesty
 I had in charge at my depart for France,
 As procurator to your excellence,
 """
+    textId = 1
     
     # ['work_id', 'line-no', 'character-index'] }
     expConcordance = {
-        'fake' : [ (0, 2), (0, 7) ],
-        'suffolk' : [ (1, 17), ],
-        'high' : [ (2, 37), ],
+        'fake' : [ (textId, 0, 2), (textId, 0, 7) ],
+        'suffolk' : [ (textId, 1, 17), ],
+        'high' : [ (textId, 2, 37), ],
         }
 
     expStats = {
@@ -34,12 +35,12 @@ As procurator to your excellence,
 
     def setUp(self):
         self.cc = concordancer.Concordancer()
-        self.cc.add_text(StringIO.StringIO(self.inText), 'King Henry VI')
+        self.cc.add_text(StringIO.StringIO(self.inText), self.textId)
 
     def test__process_line(self):
         line = 'the - quick, brown. fox-jumped over$ the_lazy do8g.'
         exp = ['the', 'quick', 'brown', 'fox', 'jumped', 'over', 'the_lazy', 'do8g' ]
-        out = self.cc.wordRegex.findall(line)
+        out = self.cc.word_regex.findall(line)
         self.assertEqual(exp, out)
 
     def test_concordance(self):
@@ -51,3 +52,10 @@ As procurator to your excellence,
         for key, value in self.expStats.items():
             out = self.cc.stats[key]
             self.assertEqual(out, value)
+
+    def test_make_concordancer(self):
+        import tempfile
+        filePath = tempfile.mkstemp()[1]
+        import shakespeare.work
+        index = shakespeare.work.index.all
+        concordancer.make_concordancer(index[2:3], filePath)

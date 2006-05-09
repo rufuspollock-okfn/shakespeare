@@ -2,29 +2,24 @@ import re
 import cPickle
 
 import utils
-from download import make_index
+import shakespeare.work
 
-def make_concordancer(showProgress=True):
+def make_concordancer(
+        texts_to_add=shakespeare.work.index.all,
+        out_path=utils.get_local_path('concordance.p'),
+        ):
     """Create Concordancer object and use it to produce concordance and stats
     for all non-folio works.
-    Save resulting object in pickled form to 'concordance.p'.
+    @out_path: where to save the concordance
+    @texts_to_add: index items that should be added to the concordance
     """
-    def _print(msg):
-        if showProgress:
-            print(msg)
-    index = make_index()
     cc = Concordancer()
-    for item in index:
+    for item in texts_to_add:
         url = item[1]
         isfolio = item[2] == 'folio'
         src = utils.get_local_path(url, 'cleaned')
-        if isfolio:
-            _print('Is folio so skipping [%s]' % src)
-        else:
-            _print('Adding text [%s]' % src)
-            cc.add_text(file(src))
-    filePath = utils.get_local_path('concordance.p')
-    ccFile = file(filePath, 'w')
+        cc.add_text(file(src))
+    ccFile = file(out_path, 'w')
     cPickle.dump(cc, ccFile)
 
 def get_concordancer():
@@ -43,7 +38,12 @@ class Concordancer(object):
     """
 
     # multiline, unicode and ignorecase
-    wordRegex = re.compile(r'\b(\w+)\b', re.U | re.M | re.I)
+    word_regex = re.compile(r'\b(\w+)\b', re.U | re.M | re.I)
+
+    words_to_ignore = [ 'a', 'the', 'and',
+                        'as', 'are', 'be',
+                        'but', 'd', 'in'
+                        ]
 
     def __init__(self):
         self.concordance = {}
@@ -56,14 +56,16 @@ class Concordancer(object):
         lineCount = 0
         charIndex = 0
         for line in text.readlines():
-            for match in self.wordRegex.finditer(line):
+            for match in self.word_regex.finditer(line):
                 word = match.group().lower() # case insensitive
+                if word in self.words_to_ignore:
+                    continue
                 oldValue = self.concordance.get(word, [])
                 oldStat = self.stats.get(word, 0)
-                oldValue.append( (lineCount, charIndex + match.start()) )
+                tloc = (textId, lineCount, charIndex + match.start()) 
+                oldValue.append(tloc)
                 self.concordance[word] = oldValue
                 self.stats[word] = oldStat + 1
             lineCount += 1
             charIndex += len(line)
-
 

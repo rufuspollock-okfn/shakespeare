@@ -1,18 +1,16 @@
 """
-Tutorial - Passing variables
-
-This tutorial shows you how to pass GET/POST variables to methods.
+Web interface to view and analyze shakespeare texts.
 """
 import cherrypy
 import os
 
-from shakespeare.download import make_index
-index = make_index() 
+import shakespeare.work
+index = shakespeare.work.index.all 
 from shakespeare.utils import get_local_path
 import shakespeare.format
 
 import shakespeare.concordancer
-concordancer = shakespeare.concordancer.get_concordancer()
+cc = shakespeare.concordancer.get_concordancer()
 
 class WelcomePage:
 
@@ -46,14 +44,18 @@ class WelcomePage:
         return result
     view.exposed = True
 
-#    def concordance(self):
-#        import kid
-#        kid.enable_import(suffixes=[".html"])
-#        import shakespeare.template.concordance
-#        template = shakespeare.template.concordance.Template(concordancer=concordancer)
-#        result = template.serialize()
-#        return result
-#    concordance.exposed = True
+    def concordance(self):
+        import kid
+        kid.enable_import(suffixes=[".html"])
+        import shakespeare.template.concordance
+        concordance = cc.concordance
+        words = concordance.keys()
+        words.sort()
+        template = shakespeare.template.concordance.Template(words=words, stats=cc.stats)
+        result = template.serialize()
+        # result = str(cc)
+        return result
+    concordance.exposed = True
   
 
 cherrypy.root = WelcomePage()

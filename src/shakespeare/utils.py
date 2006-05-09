@@ -20,3 +20,8 @@ def download_url(url):
 def get_cache_path(offset):
     "Get full path of file in cache given by offset."
     return os.path.join(conf.CACHEDIR, offset)
+
+def download_gutenberg_index():
+    "Download the Gutenberg Index file GUTINDEX.ALL."
+    utils.download_url(conf.GUTINDEX)
+
