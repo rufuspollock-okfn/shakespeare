@@ -10,8 +10,11 @@ import shakespeare.work
 
 class ShakespeareAdmin(cmd.Cmd):
 
+    prompt = 'The Bard > '
+
     def __init__(self):
         cmd.Cmd.__init__(self) # cmd.Cmd is not a new style class
+        utils.download_gutenberg_index()
         self._index = shakespeare.work.index.all
 
     def do_format(self, line=None):
@@ -77,10 +80,32 @@ Download from Project Gutenberg all the shakespeare texts listed in the index.""
     def help_make_concordancer(self, line=None):
         print make_concordance.__doc__
 
+    def run_interactive(self, line=None):
+        """Run an interactive session.
+        """
+        print 'Welcome to shakespeare-admin interactive mode\n'
+        self.do_about()
+        print 'Type:  "?" or "help" for help on commands.\n'
+        while 1:
+            try:
+                self.cmdloop()
+                break
+            except KeyboardInterrupt:
+                raise
+
     def do_help(self, line=None):
         cmd.Cmd.do_help(self, line)
 
-    def do_quit(self):
+    def do_about(self, line=None):
+        import shakespeare
+        version = shakespeare.__version__
+        about = \
+'''Open Shakespeare version %s. Copyright the Open Knowledge Foundation.
+Open Shakespeare is open-knowledge and open-source. See COPYING for details.
+''' % version
+        print about
+
+    def do_quit(self, line=None):
         sys.exit()
 
     def do_EOF(self, *args):
@@ -89,20 +114,9 @@ Download from Project Gutenberg all the shakespeare texts listed in the index.""
 
 if __name__ == '__main__':
     import sys
-    usage = """
-%prog cmd
-
-    format-all: format all gutenberg etexts automatically
-    download: download the gutenberg etexts and store them in the cache
-    """
     adminCmd = ShakespeareAdmin()
     if len(sys.argv) < 2:
-        while 1:
-            try:
-                adminCmd.cmdloop()
-                break
-            except KeyboardInterrupt:
-                raise
+        adminCmd.run_interactive()
     else:
         args = ' '.join(sys.argv[1:])
         args = args.replace('-','_')

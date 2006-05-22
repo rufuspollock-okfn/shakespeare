@@ -13,9 +13,13 @@ def get_local_path(remoteUrl, version=''):
     localPath = get_cache_path(name)
     return localPath
 
-def download_url(url):
+def download_url(url, overwrite=False):
+    """Download a url to the local cache
+    @overwrite: if True overwrite an existing local copy otherwise don't
+    """
     localPath = get_local_path(url)
-    urllib.urlretrieve(url, localPath)
+    if overwrite and not(os.path.exists(localPath)):
+        urllib.urlretrieve(url, localPath)
 
 def get_cache_path(offset):
     "Get full path of file in cache given by offset."
@@ -23,5 +27,5 @@ def get_cache_path(offset):
 
 def download_gutenberg_index():
     "Download the Gutenberg Index file GUTINDEX.ALL."
-    utils.download_url(conf.GUTINDEX)
+    download_url(conf.GUTINDEX)
 
