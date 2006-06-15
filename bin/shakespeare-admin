@@ -3,9 +3,11 @@
 import cmd
 import StringIO
 
+import shakespeare.utils as utils
+# must do this before importing anything else as they use GUTINDEX
+utils.download_gutenberg_index()
 from shakespeare.format import GutenbergShakespeare
 from shakespeare.concordancer import make_concordancer
-import shakespeare.utils as utils
 import shakespeare.work
 
 class ShakespeareAdmin(cmd.Cmd):
@@ -14,7 +16,6 @@ class ShakespeareAdmin(cmd.Cmd):
 
     def __init__(self):
         cmd.Cmd.__init__(self) # cmd.Cmd is not a new style class
-        utils.download_gutenberg_index()
         self._index = shakespeare.work.index.all
 
     def do_format(self, line=None):
