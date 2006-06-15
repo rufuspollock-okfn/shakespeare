@@ -18,7 +18,7 @@ def download_url(url, overwrite=False):
     @overwrite: if True overwrite an existing local copy otherwise don't
     """
     localPath = get_local_path(url)
-    if overwrite and not(os.path.exists(localPath)):
+    if overwrite or not(os.path.exists(localPath)):
         urllib.urlretrieve(url, localPath)
 
 def get_cache_path(offset):
