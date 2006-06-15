@@ -68,18 +68,28 @@ Download from Project Gutenberg all the shakespeare texts listed in the index.""
         print usage
 
     def do_make_concordancer(self, line=None):
-        if line is not None:
+        if line:
             textsToAdd = []
             textsUrls = line.split()
             for item in self._index:
               if item[1] in textsUrls:
                   textsToAdd.append(item)
+            print 'Adding: %s' % textsToAdd
             make_concordancer(textsToAdd)
         else:
             make_concordancer()
 
     def help_make_concordancer(self, line=None):
-        print make_concordance.__doc__
+        usage = \
+'''Create a concordance
+
+Arguments: if no arguments supplied used all non-folio shakespeare texts
+Argument lists should be a spaced seperated list of work ids (the work id is the
+second entry for each item when you run print_index).
+
+Output: concordance is written to concordance.p in cache
+'''
+        print usage
 
     def run_interactive(self, line=None):
         """Run an interactive session.
