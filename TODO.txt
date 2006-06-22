@@ -1,14 +1,35 @@
 See also: http://www.okfn.org/wiki/ShakespeareKnowledgePackage
 
-0. Make clean shakespeare
-1. Default sort by title (DONE)
-2. Javascript type table to allow sorting by name
+0. 2006-04-23: Make clean shakespeare
+  * DONE 2006-04-04
+
+1. 2006-04-23: Default sort by title
+  * DONE 2006-04-25
+
+2. Javascript type table to allow sorting of table by different columns
+  * for example can sort concordance by word or by occurrence
   * p: low
+
 3. show shakespeare text side by side
+
 4. shakespeare search
+  * crude regex would be sufficient 
+
 5. About page listing sources (?) 
   * this should be part of the source distribution and should just be autoconverted
+
 6. Normalize titles in case of King plays (either should have King or should not). Folio does not have King.
+
+7. concordance
+  1. digrams and trigrams
+
+8. check out moby (xml-marked-up) shakespeare and see if we can use it
+
+9. Write webunit tests
+
+10. Move to database storage?
+
+11. concordance should show word sources in text and link through to text source
 
 Questions
 =========
