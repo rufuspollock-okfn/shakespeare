@@ -157,6 +157,33 @@ Output: concordance is written to concordance.p in cache
     3. make_concordance'''
         print usage
 
+    def do_runserver(self, line=None):
+        import shakespeare.cherrypy_handler
+        import cherrypy
+        cherrypy.root = shakespeare.cherrypy_handler.ShakespeareWebInterface()
+        configDict = {
+                'server.socketPort' : 8080,
+                'server.threadPool' : 10,
+                'server.showTracebacks' : True,
+                '/scripts' : { 'staticFilter.on' : True,
+                              'staticFilter.dir': '/scripts'
+                              },
+                '/styles' : { 'staticFilter.on' : True,
+                             'staticFilter.dir': '/styles'
+                              },
+                }
+        cherrypy.config.update(configDict)
+        cherrypy.server.start()
+
+    def help_runserver(self, line=None):
+        usage = \
+'''Start a cherrypy webserver to provide the user interface to the shakespeare
+package.
+
+The resulting website should be availabe at http://localhost:8080
+'''
+        print usage
+
 
 if __name__ == '__main__':
     import sys

@@ -5,6 +5,10 @@ layout_params['page_title'] = "Concordance and statistics"
       xmlns:py="http://purl.org/kid/ns#">
 
 	<div py:match="item.tag == 'content'">
+		<p>
+			<strong>Click on a word to be taken to a detailed listing of its
+				occurrences</strong>
+		</p>
 		<table border="1">
 		<thead>
 			<tr>
@@ -12,14 +16,14 @@ layout_params['page_title'] = "Concordance and statistics"
 					Word	
 				</th>
 				<th>Occurrences</th>
-				<th>Comments</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr py:for="word in words">
-				<td py:content="word">word</td>
+				<td>
+					<a href="word/?word=${word}">${word}</a>
+				</td>
 				<td py:content="stats[word]">-1</td>
-				<td>-</td>
 			</tr>
 		</tbody>
 		</table>

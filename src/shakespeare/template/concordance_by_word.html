@@ -1,0 +1,35 @@
+<?python
+layout_params['page_title'] = "Concordance and statistics by Word"
+?>
+<html py:layout="'layout.html'"
+      xmlns:py="http://purl.org/kid/ns#">
+
+	<div py:match="item.tag == 'content'">
+		<h2>Word: ${word}</h2>
+		<table border="1">
+		<thead>
+			<tr>
+				<th>
+					Location	
+				</th>
+				<th>Snippet</th>
+				<th>Link</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr py:for="ref in refs">
+				<td>work: ${ref[0]}, line: ${ref[1]}, character: ${ref[2]}</td>
+				<td>
+					<pre>${ref[3]}</pre>
+				</td>
+				<td>
+					<a href="/view?text_url=${ref[0]}&amp;version=cleaned&amp;format=lineno#${ref[1]}">
+						source in text
+					</a>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+	</div>
+</html>
+
