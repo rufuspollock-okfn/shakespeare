@@ -18,7 +18,7 @@ def make_concordancer(
         url = item[1]
         isfolio = item[2] == 'folio'
         src = utils.get_local_path(url, 'cleaned')
-        cc.add_text(file(src))
+        cc.add_text(file(src), url)
     ccFile = file(out_path, 'w')
     cPickle.dump(cc, ccFile)
 
