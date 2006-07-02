@@ -1,8 +1,6 @@
 import os
 
-import utils
-import conf
-
+import shakespeare.utils as utils
 
 class GutenbergIndex(object):
     """Parse the index of Gutenberg works so as to find Shakespeare works.

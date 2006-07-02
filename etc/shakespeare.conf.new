@@ -1,0 +1,10 @@
+# Standard .ini type file suitable for python ConfigParser
+# Defaults must occur in section called DEFAULT
+[misc]
+# directory where we can store all local copies of texts
+cachedir = ./cache
+# url for the Gutenberg index file
+gutindex = http://www.gutenberg.org/dirs/GUTINDEX.ALL
+
+[db]
+

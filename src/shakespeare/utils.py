@@ -1,7 +1,8 @@
 import os
 import urllib
 
-import conf
+import shakespeare
+conf = shakespeare.conf()
 
 def get_local_path(remoteUrl, version=''):
     """Get local path to text of remote url.
@@ -23,9 +24,10 @@ def download_url(url, overwrite=False):
 
 def get_cache_path(offset):
     "Get full path of file in cache given by offset."
-    return os.path.join(conf.CACHEDIR, offset)
+    cachedir = conf.get('misc', 'cachedir')
+    return os.path.join(cachedir, offset)
 
 def download_gutenberg_index():
     "Download the Gutenberg Index file GUTINDEX.ALL."
-    download_url(conf.GUTINDEX)
+    download_url(conf.get('misc','gutindex'))
 
