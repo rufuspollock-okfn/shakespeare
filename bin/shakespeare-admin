@@ -3,12 +3,11 @@
 import cmd
 import StringIO
 
+import shakespeare
 import shakespeare.utils as utils
 # must do this before importing anything else as they use GUTINDEX
 utils.download_gutenberg_index()
-from shakespeare.format import GutenbergShakespeare
 from shakespeare.concordancer import make_concordancer
-import shakespeare.work
 
 class ShakespeareAdmin(cmd.Cmd):
     """
@@ -19,7 +18,7 @@ class ShakespeareAdmin(cmd.Cmd):
 
     def __init__(self):
         cmd.Cmd.__init__(self) # cmd.Cmd is not a new style class
-        self._index = shakespeare.work.index.all
+        self._index = shakespeare.index().all
 
     def run_interactive(self, line=None):
         """Run an interactive session.
@@ -94,6 +93,7 @@ Download from Project Gutenberg all the shakespeare texts listed in the index.""
 
     def do_format(self, line=None):
         """TODO: hack should move into main function"""
+        from shakespeare.gutenberg import GutenbergShakespeare
         textsToProcess = self._filter_index(line) 
         for item in textsToProcess:
             url = item[1]

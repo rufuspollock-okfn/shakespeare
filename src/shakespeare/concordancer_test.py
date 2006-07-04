@@ -1,7 +1,10 @@
 import unittest
 import StringIO
+import tempfile
 
-import concordancer
+
+import shakespeare
+import shakespeare.concordancer
 
 def test_suite():
     suites = [
@@ -34,7 +37,7 @@ As procurator to your excellence,
         }
 
     def setUp(self):
-        self.cc = concordancer.Concordancer()
+        self.cc = shakespeare.concordancer.Concordancer()
         self.cc.add_text(StringIO.StringIO(self.inText), self.textId)
 
     def test__process_line(self):
@@ -54,8 +57,6 @@ As procurator to your excellence,
             self.assertEqual(out, value)
 
     def test_make_concordancer(self):
-        import tempfile
         filePath = tempfile.mkstemp()[1]
-        import shakespeare.work
-        index = shakespeare.work.index.all
-        concordancer.make_concordancer(index[2:3], filePath)
+        index = shakespeare.index().all
+        shakespeare.concordancer.make_concordancer(index[2:3], filePath)
