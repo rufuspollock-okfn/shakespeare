@@ -1,11 +1,29 @@
+"""Various useful functionality related to Project Gutenberg
+"""
 import os
 
 import shakespeare.utils as utils
 
 class GutenbergIndex(object):
     """Parse the index of Gutenberg works so as to find Shakespeare works.
+    TODO: Gutenberg now make available the index in RDF/XML form:
+      http://www.gutenberg.org/feeds/catalog.rdf.bz2
+    and we should try to use that instead of plain text file
     """
     
+    # url for the Gutenberg index file
+    gutindex = 'http://www.gutenberg.org/dirs/GUTINDEX.ALL'
+
+    def __init__(self):
+        self.download_gutenberg_index()
+        self._gutindex_local_path = utils.get_local_path(self.gutindex)
+
+    def download_gutenberg_index(self):
+        """Download the Gutenberg Index file GUTINDEX.ALL to cache if we don't
+        have it already.
+        """
+        utils.download_url(self.gutindex)
+
     def make_url(self, year, idStr):
         return 'http://www.gutenberg.org/dirs/etext%s/%s10.txt' % (year[2:], idStr)
 
@@ -31,7 +49,7 @@ class GutenbergIndex(object):
         Results consist of folio and one other 'standard' version.
         @return: list consisting of tuples in form [title, year, id, comment]
         """
-        ff = file(utils.get_cache_path('GUTINDEX.ALL'))
+        ff = file(self._gutindex_local_path)
         results = []
         for line in ff.readlines():
             result = self.parse_line_for_folio(line)

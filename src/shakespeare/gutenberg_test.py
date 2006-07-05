@@ -72,8 +72,13 @@ class FormatTest(unittest.TestCase):
         self.assertEquals(out.group(), outStr)
 
 class GutenbergShakespeareTest(unittest.TestCase):
-    etext1 = file(utils.get_cache_path('0ws2510.txt'))
-    etext2 = file(utils.get_cache_path('2ws2510.txt'))
+    # As you like it in Folio and normal
+    url1 = 'http://www.gutenberg.org/dirs/etext00/0ws2510.txt'
+    url2 = 'http://www.gutenberg.org/dirs/etext98/2ws2510.txt'
+    utils.download_url(url1)
+    utils.download_url(url2)
+    etext1 = file(utils.get_local_path(url1))
+    etext2 = file(utils.get_local_path(url2))
     gut1 = GutenbergShakespeare(etext1)
     gut2 = GutenbergShakespeare(etext2)
     

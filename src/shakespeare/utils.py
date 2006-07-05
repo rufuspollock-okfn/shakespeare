@@ -8,10 +8,12 @@ def get_local_path(remoteUrl, version=''):
     """Get local path to text of remote url.
     @type: string giving version of text (''|'cleaned')
     """
-    host,path = urllib.splithost(remoteUrl)
-    name = os.path.basename(path)
+    protocolEnd = remoteUrl.index(':') + 3  # add 3 for ://
+    path = remoteUrl[protocolEnd:]
+    base, name = os.path.split(path)
     name = version + name
-    localPath = get_cache_path(name)
+    offset = os.path.join(base, name)
+    localPath = get_cache_path(offset)
     return localPath
 
 def download_url(url, overwrite=False):
@@ -19,15 +21,14 @@ def download_url(url, overwrite=False):
     @overwrite: if True overwrite an existing local copy otherwise don't
     """
     localPath = get_local_path(url)
+    dirpath = os.path.dirname(localPath)
     if overwrite or not(os.path.exists(localPath)):
+        if not os.path.exists(dirpath):
+            os.makedirs(dirpath)
         urllib.urlretrieve(url, localPath)
 
 def get_cache_path(offset):
     "Get full path of file in cache given by offset."
     cachedir = conf.get('misc', 'cachedir')
     return os.path.join(cachedir, offset)
-
-def download_gutenberg_index():
-    "Download the Gutenberg Index file GUTINDEX.ALL."
-    download_url(conf.get('misc','gutindex'))
 

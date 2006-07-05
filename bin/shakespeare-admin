@@ -4,10 +4,6 @@ import cmd
 import StringIO
 
 import shakespeare
-import shakespeare.utils as utils
-# must do this before importing anything else as they use GUTINDEX
-utils.download_gutenberg_index()
-from shakespeare.concordancer import make_concordancer
 
 class ShakespeareAdmin(cmd.Cmd):
     """
@@ -70,11 +66,12 @@ Open Shakespeare is open-knowledge and open-source. See COPYING for details.
     # Commands
     
     def do_download_texts(self, line):
+        import shakespeare.utils
         for item in self._index:
             title = item[0]
             url = item[1]
             print 'Downloading %s (%s)' % (url, title)
-            utils.download_url(item[1])
+            shakespeare.utils.download_url(item[1])
 
     def help_download_texts(self, line=None):
         usage = \
@@ -94,6 +91,7 @@ Download from Project Gutenberg all the shakespeare texts listed in the index.""
     def do_format(self, line=None):
         """TODO: hack should move into main function"""
         from shakespeare.gutenberg import GutenbergShakespeare
+        import shakespeare.utils as utils
         textsToProcess = self._filter_index(line) 
         for item in textsToProcess:
             url = item[1]
@@ -125,6 +123,7 @@ all texts in index).
 
     def do_make_concordance(self, line=None):
         print 'Making concordance (this may take some time ...):'
+        from shakespeare.concordancer import make_concordancer
         if line:
             textsToAdd = self._filter_index(line)
             print 'Adding: %s' % textsToAdd
