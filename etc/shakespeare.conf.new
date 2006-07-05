@@ -7,4 +7,6 @@ cachedir = ./cache
 gutindex = http://www.gutenberg.org/dirs/GUTINDEX.ALL
 
 [db]
-
+# sqlobject database uri. see sqlobject documentation for details
+# uri = postgres://user:pass@host/dbname
+uri = sqlite:/:memory:

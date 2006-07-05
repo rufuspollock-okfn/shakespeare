@@ -30,8 +30,9 @@ Installation
 1. Check out the subversion trunk
 2. Add the path/to/src to your PYTHONPATH
 3. Make sure you have all required dependencies:
-
-  For the web interface:
+  1. For the domain model:
+    * sqlobject >= 0.6
+  2. For the web interface:
     * cherrypy >= 2.2
     * kid templating language >= 0.9 (layout templates)
 
