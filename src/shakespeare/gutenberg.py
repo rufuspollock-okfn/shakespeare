@@ -178,16 +178,6 @@ class GutenbergShakespeare(object):
         return min(indices)
 
 
-class ShakespeareIndex(object):
-
-    def __init__(self):
-        gutindex = GutenbergIndex()
-        self.all = gutindex.get_shakespeare_list()
-        # todo: parse it up
-        self.folios = None
-        self.nonfolios = None
-        self.sonnets = None
-
 #def get_etext_url(number):
 #    """
 #    [[TODO: DOES NOT WORK]]

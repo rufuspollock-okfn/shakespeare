@@ -4,8 +4,8 @@ Web interface to view and analyze shakespeare texts.
 import cherrypy
 import os
 
-import shakespeare
-index = shakespeare.index().all
+import shakespeare.index
+index = shakespeare.index.all
 from shakespeare.utils import get_local_path
 import shakespeare.format
 

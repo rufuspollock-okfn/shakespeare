@@ -13,8 +13,3 @@ def conf():
     conf.read(confPath)
     return conf
 
-def index():
-    """Shortcut to get an index of texts (ShakespeareIndex class).
-    """
-    import shakespeare.gutenberg
-    return shakespeare.gutenberg.ShakespeareIndex()

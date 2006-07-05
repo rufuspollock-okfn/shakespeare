@@ -6,7 +6,6 @@ from shakespeare.gutenberg import make_re_from_phrase, GutenbergShakespeare
 def test_suite():
     suites = [
         unittest.makeSuite(GutenbergIndexTest),
-        unittest.makeSuite(ShakespeareIndexTest),
         unittest.makeSuite(FormatTest),
         unittest.makeSuite(GutenbergShakespeareTest),
     ]
@@ -115,11 +114,3 @@ class GutenbergShakespeareTest(unittest.TestCase):
 #        out = get_etext_url(number)
 #        self.assertEqual(out, exp)
 
-class ShakespeareIndexTest(unittest.TestCase):
-    def setUp(self):
-        self.index = shakespeare.gutenberg.ShakespeareIndex()
-
-    def test_get_all(self):
-        all = self.index.all
-        self.assertEqual(len(all), 74)
- 

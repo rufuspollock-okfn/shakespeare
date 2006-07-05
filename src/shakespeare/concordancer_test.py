@@ -3,7 +3,7 @@ import StringIO
 import tempfile
 
 
-import shakespeare
+import shakespeare.index
 import shakespeare.concordancer
 
 def test_suite():
@@ -58,5 +58,5 @@ As procurator to your excellence,
 
     def test_make_concordancer(self):
         filePath = tempfile.mkstemp()[1]
-        index = shakespeare.index().all
+        index = shakespeare.index.all
         shakespeare.concordancer.make_concordancer(index[2:3], filePath)

@@ -3,7 +3,7 @@
 import cmd
 import StringIO
 
-import shakespeare
+import shakespeare.index
 
 class ShakespeareAdmin(cmd.Cmd):
     """
@@ -14,7 +14,7 @@ class ShakespeareAdmin(cmd.Cmd):
 
     def __init__(self):
         cmd.Cmd.__init__(self) # cmd.Cmd is not a new style class
-        self._index = shakespeare.index().all
+        self._index = shakespeare.index.all
 
     def run_interactive(self, line=None):
         """Run an interactive session.

@@ -2,10 +2,10 @@ import re
 import cPickle
 
 import utils
-import shakespeare
+import shakespeare.index
 
 def make_concordancer(
-        texts_to_add=shakespeare.index().all,
+        texts_to_add=shakespeare.index.all,
         out_path=utils.get_cache_path('concordance.p'),
         ):
     """Create Concordancer object and use it to produce concordance and stats
