@@ -26,7 +26,7 @@ def get_concordancer():
     """Get a concordancer containing concordance and stats by unpickling cached
     copy.
     """
-    filePath = utils.get_local_path('concordance.p')
+    filePath = utils.get_cache_path('concordance.p')
     cc = cPickle.load(file(filePath))
     return cc
 
