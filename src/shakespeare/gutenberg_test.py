@@ -8,6 +8,7 @@ def test_suite():
         unittest.makeSuite(GutenbergIndexTest),
         unittest.makeSuite(FormatTest),
         unittest.makeSuite(GutenbergShakespeareTest),
+        unittest.makeSuite(HelperTest),
     ]
     return unittest.TestSuite(suites)
 
@@ -113,4 +114,42 @@ class GutenbergShakespeareTest(unittest.TestCase):
 #        exp = 'http://www.gutenberg.org/dirs/1/1/1/2/11125/11125.txt'
 #        out = get_etext_url(number)
 #        self.assertEqual(out, exp)
+
+import shakespeare.dm
+class HelperTest(unittest.TestCase):
+    url1 = 'http://www.gutenberg.org/dirs/etext00/0ws2510.txt'
+    url2 = 'http://www.gutenberg.org/dirs/etext98/2ws2510.txt'
+    helper = shakespeare.gutenberg.Helper()
+
+    def test_clean(self):
+        line = '%s %s' % (self.url1, self.url2)
+        self.helper.clean(line)
+
+    def test_get_index(self):
+        out = self.helper.get_index()
+        self.assertEqual(74, len(out))
+
+    def test_title_to_name(self):
+        inlist = [ 'King Henry VIII', 
+                   'The Merchant of Venice',
+                   'Twelfth Night',
+                   "All's Well That Ends Well",
+                   ]
+        explist = [ 'henry_viii',
+                    'merchant_of_venice',
+                    'twelfth_night',
+                    'alls_well_that_ends_well',
+                    ]
+        for ii in range(len(inlist)):
+            self.assertEqual(explist[ii], self.helper.title_to_name(inlist[ii]))
+
+    def test_add_to_db(self):
+        self.helper.add_to_db()
+        text1 = shakespeare.dm.Material.byName('hamlet_gut')
+        shakespeare.dm.Material.byName('hamlet_gut_f')
+        self.assertEqual('Shakespeare, William', text1.creator)
+        alltexts = shakespeare.dm.Material.select()
+        for text in alltexts:
+            if '_gut' in text.name:
+                shakespeare.dm.Material.delete(text.id)
 

@@ -1,40 +1,51 @@
+"""
+Concordance (and statistics) for texts in database.
+
+To build concordance use ConcordanceBuilder.  To access concordance/statistics
+use Concordance/Statistics class.  Concordance and statistics are provided as
+dictionaries keyed by words.
+
+NB: all word keys have been lower-cased in order to render them
+case-insensitive
+"""
 import re
-import cPickle
 
 import utils
 import shakespeare.index
 
-def make_concordancer(
-        texts_to_add=shakespeare.index.all,
-        out_path=utils.get_cache_path('concordance.p'),
-        ):
-    """Create Concordancer object and use it to produce concordance and stats
-    for all non-folio works.
-    @out_path: where to save the concordance
-    @texts_to_add: index items that should be added to the concordance
+class ConcordanceBase(object):
     """
-    cc = Concordancer()
-    for item in texts_to_add:
-        url = item[1]
-        isfolio = item[2] == 'folio'
-        src = utils.get_local_path(url, 'cleaned')
-        cc.add_text(file(src), url)
-    ccFile = file(out_path, 'w')
-    cPickle.dump(cc, ccFile)
-
-def get_concordancer():
-    """Get a concordancer containing concordance and stats by unpickling cached
-    copy.
+    TODO: caching??
     """
-    filePath = utils.get_cache_path('concordance.p')
-    cc = cPickle.load(file(filePath))
-    return cc
+    sqlcc = shakespeare.dm.Concordance
 
-class Concordancer(object):
-    """Generate a concordance and associated statistics for a set of texts.
+    def __init__(self, filter_names=None):
+        """
+        @param filter_names: a list of id names with which to filter results
+            (i.e. only return results relating to those texts)
+        TODO: this is not yet implemented
+        """
+        pass
+
+class Concordance(ConcordanceBase):
+    """Concordance by word for a set of texts
+    """
+
+    def get(self, word):
+        """Get list of occurrences for word
+        @return: sqlobject query list 
+        """
+        return self.sqlcc.select(self.sqlcc.q.word==word)
+
+
+class Statistics(ConcordanceBase):
+
+    def get(self, word):
+        return self.sqlcc.select(self.sqlcc.q.word==word).count()
+
+class ConcordanceBuilder(object):
+    """Build a concordance and associated statistics for a set of texts.
     
-    Concordance and statistics are provided as dictionaries keyed by words.
-    NB: all word keys have been lower-cased in order to render them case-insensitive
     """
 
     # multiline, unicode and ignorecase
@@ -45,14 +56,28 @@ class Concordancer(object):
                         'but', 'd', 'in'
                         ]
 
-    def __init__(self):
-        self.concordance = {}
-        self.stats = {}
+    def _text_already_done(self, text):
+        numrecs = shakespeare.dm.Concordance.select(
+                shakespeare.dm.Concordance.q.textID==text.id
+                ).count()
+        return numrecs > 0
 
-    def add_text(self, text, textId=None):
+    def add_text(self, name, text=None):
         """Add a text to the concordance.
-        @text: file like object containing text to add
+        @param name: name of text to add
+        @param text: [optional] a file-like object containing text data. If not
+            provided will default to using file in cache associated with named
+            text
         """
+        dmText = shakespeare.dm.Material.byName(name)
+        if self._text_already_done(dmText):
+            msg = 'Have already added to index text: %s' % dmText
+            # raise ValueError(msg)
+            print msg
+            print 'Skipping'
+            return
+        if text is None:
+            text = file(dmText.cache_path)
         lineCount = 0
         charIndex = 0
         for line in text.readlines():
@@ -60,12 +85,10 @@ class Concordancer(object):
                 word = match.group().lower() # case insensitive
                 if word in self.words_to_ignore:
                     continue
-                oldValue = self.concordance.get(word, [])
-                oldStat = self.stats.get(word, 0)
-                tloc = (textId, lineCount, charIndex + match.start()) 
-                oldValue.append(tloc)
-                self.concordance[word] = oldValue
-                self.stats[word] = oldStat + 1
+                shakespeare.dm.Concordance(text=dmText,
+                                           word=word,
+                                           line=lineCount,
+                                           char_index=charIndex+match.start())
             lineCount += 1
             charIndex += len(line)
 

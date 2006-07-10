@@ -1,8 +1,9 @@
 """Various useful functionality related to Project Gutenberg
 """
 import os
+import StringIO
+import shakespeare.utils
 
-import shakespeare.utils as utils
 
 class GutenbergIndex(object):
     """Parse the index of Gutenberg works so as to find Shakespeare works.
@@ -16,13 +17,13 @@ class GutenbergIndex(object):
 
     def __init__(self):
         self.download_gutenberg_index()
-        self._gutindex_local_path = utils.get_local_path(self.gutindex)
+        self._gutindex_local_path = shakespeare.utils.get_local_path(self.gutindex)
 
     def download_gutenberg_index(self):
         """Download the Gutenberg Index file GUTINDEX.ALL to cache if we don't
         have it already.
         """
-        utils.download_url(self.gutindex)
+        shakespeare.utils.download_url(self.gutindex)
 
     def make_url(self, year, idStr):
         return 'http://www.gutenberg.org/dirs/etext%s/%s10.txt' % (year[2:], idStr)
@@ -193,3 +194,115 @@ class GutenbergShakespeare(object):
 #    if number <= 10000:
 #        raise 'Cannot deal with etext numbers less than 10000'
 #    return ss
+
+
+class Helper(object):
+
+    def __init__(self, verbose=False):
+        self.verbose = verbose
+        gutindex = GutenbergIndex()
+        self._index = gutindex.get_shakespeare_list()
+     
+    def _filter_index(self, line):
+        """Filter items in index return only those whose id (url) is in line.
+        If line is empty or None return all items
+        """
+        if line:
+            textsToAdd = []
+            textsUrls = line.split()
+            for item in self._index:
+                if item[1] in textsUrls:
+                    textsToAdd.append(item)
+            return textsToAdd
+        else:
+            return self._index
+    
+    def get_index(self, line=None):
+        """Get list of texts
+        """
+        return self._index
+
+    def download(self, line=None):
+        """Download from Project Gutenberg all the shakespeare texts listed in the
+        index.
+        """
+        for item in self._index:
+            title = item[0]
+            url = item[1]
+            if self.verbose:
+                print 'Downloading %s (%s)' % (url, title)
+            shakespeare.utils.download_url(item[1])
+    
+    def clean(self, line=None):
+        """Clean up raw gutenberg texts to extract underlying work (so remove
+        all extra bumpf such as Gutenberg licence, contributor info etc).
+        
+        Texts are written to same directory as original file with 'cleaned'
+        prepended to their name.
+        
+        @param line: space separated list of text urls: text-url text-url
+        """
+        textsToProcess = self._filter_index(line) 
+        for item in textsToProcess:
+            url = item[1]
+            src = shakespeare.utils.get_local_path(url)
+            dest = shakespeare.utils.get_local_path(url, 'cleaned')
+            infile = file(src)
+            if src.endswith('wssnt10.txt'): # if it is the sonnets need a hack
+                # delete last 140 characters
+                tmp1 = infile.read()
+                infile = StringIO.StringIO(tmp1[:-120])
+            formatter = GutenbergShakespeare(infile)
+            if self.verbose:
+                print 'Formatting %s to %s' % (src, dest)
+            ff = file(dest, 'w')
+            out = formatter.extract_text()
+            ff.write(out)
+            ff.close()
+
+    def title_to_name(self, title):
+        """Convert a title to a unique name
+        """
+        tmp1 = title.replace(',', '')
+        tmp1 = tmp1.replace("'", '')
+        tmp1 = tmp1.lower()
+        stripwords = [ 'king ', 'a ', 'the ' ]
+        for ww in stripwords:
+            if tmp1.startswith(ww):
+                tmp1 = tmp1[len(ww):]
+        tmp1 = tmp1.strip()
+        tmp1 = tmp1.replace(' ', '_')
+        return tmp1
+
+    
+    def add_to_db(self, ignore_exists=True):
+        """Add all gutenberg texts to the db list of texts.
+
+        @param ignore_exists: if False raise exception if text already exists
+        in db (if True skip if already exists)
+        """
+        import shakespeare.dm
+        for text in self._index:
+            title = text[0]
+            name = self.title_to_name(title) + '_gut'
+            cachePath = shakespeare.utils.get_local_path(text[1], 'cleaned')
+            notes = 'Sourced from Project Gutenberg (url=%s). %s' % (text[1],
+                    text[2])
+            if text[2] == 'folio':
+                name += '_f'
+            
+            numExistingTexts = shakespeare.dm.Material.select(
+                        shakespeare.dm.Material.q.name==name).count()
+            if numExistingTexts > 0:
+                if ignore_exists:
+                    pass
+                else:
+                    msg = 'A Gutenberg text already exists with name: %s' % name
+                    raise Exception(msg)
+            else:
+                shakespeare.dm.Material(name=name,
+                                        title=title,
+                                        creator='Shakespeare, William',
+                                        cache_path=cachePath,
+                                        notes=notes)
+

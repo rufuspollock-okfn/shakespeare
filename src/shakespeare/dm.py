@@ -1,8 +1,8 @@
 """
 Domain model
 
-WorkText refers to a specific version of a work. e.g. the 1623 folio of King
-Richard III.
+Material contains all data we have including shakespeare texts. A text is taken
+to be a specific version of a work. e.g. the 1623 folio of King Richard III.
 
 We may in future add a Work object to refer to 'abstract' work of which a given
 text is a version.
@@ -14,29 +14,45 @@ import shakespeare
 uri = shakespeare.conf().get('db', 'uri')
 __connection__ = sqlobject.connectionForURI(uri)
 
+# note we run this at bottom of module to auto create db tables on import
 def createdb():
-    WorkText.createTable(ifNotExists=True)
+    Material.createTable(ifNotExists=True)
     Concordance.createTable(ifNotExists=True)
 
 def dropdb():
-    WorkText.dropTable(ifExists=True)
+    Material.dropTable(ifExists=True)
     Concordance.dropTable(ifExists=True)
 
 def rebuilddb():
     dropdb()
     createdb()
 
-# text is a reserved word
-class WorkText(sqlobject.SQLObject):
+class Material(sqlobject.SQLObject):
+    """Material related to Shakespeare (usually text of works and ancillary
+    matter such as introductions).
+
+    NB: can not use 'text' as class name as it is an sql reserved word
+
+    @attribute name: a unique name identifying the material
+    
+    TODO: mutiple creators ??
+    """
     
     name = sqlobject.StringCol(alternateID=True)
-    'idname is unique identifying string e.g. hamlet_1623'
-    title = sqlobject.StringCol()
-    author = sqlobject.StringCol(default=None)
+    title = sqlobject.StringCol(default=None, length=255)
+    # creator rather than author to fit with dc
+    creator = sqlobject.StringCol(default=None, length=255)
+    cache_path = sqlobject.StringCol(default=None, length=255)
     notes = sqlobject.StringCol(default=None)
 
 class Concordance(sqlobject.SQLObject):
 
-    text = sqlobject.ForeignKey('WorkText')
+    text = sqlobject.ForeignKey('Material')
+    word = sqlobject.StringCol(length=50)
     line = sqlobject.IntCol()
     char_index = sqlobject.IntCol()
+
+
+# auto create db tables on import
+createdb()
+

@@ -10,10 +10,11 @@ def test_suite():
 
 
 class ShakespeareIndexTest(unittest.TestCase):
+
     def setUp(self):
         self.index = shakespeare.index.ShakespeareIndex()
 
     def test_get_all(self):
-        all = self.index.all
-        self.assertEqual(len(all), 74)
+        all = list(self.index.all)
+        self.assertEqual(len(all), 0)
  

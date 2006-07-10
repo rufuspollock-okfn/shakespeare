@@ -54,9 +54,9 @@ Open Shakespeare is open-knowledge and open-source. See COPYING for details.
         """
         if line:
             textsToAdd = []
-            textsUrls = line.split()
+            textNames = line.split()
             for item in self._index:
-                if item[1] in textsUrls:
+                if item.name in textNames:
                     textsToAdd.append(item)
             return textsToAdd
         else:
@@ -65,21 +65,35 @@ Open Shakespeare is open-knowledge and open-source. See COPYING for details.
     # =================
     # Commands
     
-    def do_download_texts(self, line):
-        import shakespeare.utils
-        for item in self._index:
-            title = item[0]
-            url = item[1]
-            print 'Downloading %s (%s)' % (url, title)
-            shakespeare.utils.download_url(item[1])
+    def do_gutenberg(self, line=None):
+        import shakespeare.gutenberg
+        helper = shakespeare.gutenberg.Helper(verbose=True)
+        if not line:
+            helper.download()
+            helper.clean()
+            print 'Adding Gutenberg shakespeares to db'
+            helper.add_to_db()
+        elif line == 'print_index':
+            import pprint
+            pprint.pprint(helper.get_index())
+        else:
+            msg = 'Unknown argument %s' % line
+            raise Exception(msg)
 
-    def help_download_texts(self, line=None):
+    def help_(self, line=None):
         usage = \
 """
-Download from Project Gutenberg all the shakespeare texts listed in the index."""
+Download and process all Project Gutenberg shakespeare texts"""
         print usage 
     
     def do_print_index(self, line):
+        header = \
+'''      +-------------------+
+      | Index of Material |
+      +-------------------+
+
+'''
+        print header
         for row in self._index:
             print row
 
@@ -88,71 +102,35 @@ Download from Project Gutenberg all the shakespeare texts listed in the index.""
 '''Print index of Shakespeare texts to stdout'''
         print usage
 
-    def do_format(self, line=None):
-        """TODO: hack should move into main function"""
-        from shakespeare.gutenberg import GutenbergShakespeare
-        import shakespeare.utils as utils
-        textsToProcess = self._filter_index(line) 
-        for item in textsToProcess:
-            url = item[1]
-            src = utils.get_local_path(url)
-            dest = utils.get_local_path(url, 'cleaned')
-            infile = file(src)
-            if src.endswith('wssnt10.txt'): # if it is the sonnets need a hack
-                # delete last 140 characters
-                tmp1 = infile.read()
-                infile = StringIO.StringIO(tmp1[:-120])
-            formatter = GutenbergShakespeare(infile)
-            print 'Formatting %s to %s' % (src, dest)
-            ff = file(dest, 'w')
-            out = formatter.extract_text()
-            ff.write(out)
-            ff.close()
-    
-    def help_format(self, line=None):
-        usage = \
-'''format [text-id text-id ...]
-
-Format raw gutenberg texts. Texts are written to cache with cleaned appended
-to their name.
-
-Argument should be a space separated list of ids (if no argument given format
-all texts in index).
-'''
-        print usage
-
     def do_make_concordance(self, line=None):
         print 'Making concordance (this may take some time ...):'
-        from shakespeare.concordancer import make_concordancer
-        if line:
-            textsToAdd = self._filter_index(line)
-            print 'Adding: %s' % textsToAdd
-            make_concordancer(textsToAdd)
-        else:
-            make_concordancer()
+        from shakespeare.concordancer import ConcordanceBuilder
+        cc = ConcordanceBuilder()
+        textsToAdd = self._filter_index(line)
+        for item in textsToAdd:
+            print 'Adding: %s (%s)' % (item.name, item.title)
+            cc.add_text(item.name)
 
     def help_make_concordance(self, line=None):
         usage = \
 '''Create a concordance
 
 Arguments: if no arguments supplied used all non-folio shakespeare texts
-Argument lists should be a spaced seperated list of work ids (the work id is the
-second entry for each item when you run print_index).
+Argument lists should be a spaced seperated list of work name ids (the name id
+names is the second entry for each item when you run print_index).
 
 Output: concordance is written to concordance.p in cache
 '''
         print usage
 
     def do_init(self, line=None):
-        self.do_download_texts(line)
-        self.do_format(line)
+        self.do_gutenberg(line)
         self.do_make_concordance(line)
 
     def help_init(self, line=None):
         usage = \
-'''Convenience function that performs (in order):
-    1. download_texts
-    2. format_all
+'''Convenience function that sets everything up:
+    1. gutenberg
     3. make_concordance'''
         print usage
 
