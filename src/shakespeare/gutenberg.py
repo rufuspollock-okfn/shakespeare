@@ -247,14 +247,18 @@ class Helper(object):
             url = item[1]
             src = shakespeare.utils.get_local_path(url)
             dest = shakespeare.utils.get_local_path(url, 'cleaned')
+            if os.path.exists(dest):
+                if self.verbose:
+                    print 'Skip clean of %s as clean version already exists' % src
+                continue
+            if self.verbose:
+                print 'Formatting %s to %s' % (src, dest)
             infile = file(src)
             if src.endswith('wssnt10.txt'): # if it is the sonnets need a hack
                 # delete last 140 characters
                 tmp1 = infile.read()
                 infile = StringIO.StringIO(tmp1[:-120])
             formatter = GutenbergShakespeare(infile)
-            if self.verbose:
-                print 'Formatting %s to %s' % (src, dest)
             ff = file(dest, 'w')
             out = formatter.extract_text()
             ff.write(out)
@@ -275,11 +279,10 @@ class Helper(object):
         return tmp1
 
     
-    def add_to_db(self, ignore_exists=True):
+    def add_to_db(self):
         """Add all gutenberg texts to the db list of texts.
-
-        @param ignore_exists: if False raise exception if text already exists
-        in db (if True skip if already exists)
+        
+        If a text already exists in the db it will be skipped.
         """
         import shakespeare.dm
         for text in self._index:
@@ -294,12 +297,11 @@ class Helper(object):
             numExistingTexts = shakespeare.dm.Material.select(
                         shakespeare.dm.Material.q.name==name).count()
             if numExistingTexts > 0:
-                if ignore_exists:
-                    pass
-                else:
-                    msg = 'A Gutenberg text already exists with name: %s' % name
-                    raise Exception(msg)
+                if self.verbose:
+                    print('Skip: Add to db. Gutenberg text already exists with name: %s' % name)
             else:
+                if self.verbose:
+                    print('Add to db. Gutenberg text named [%s]' % name)
                 shakespeare.dm.Material(name=name,
                                         title=title,
                                         creator='Shakespeare, William',
