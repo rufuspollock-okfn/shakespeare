@@ -66,6 +66,10 @@ Run: $ bin/shakespeare-admin init
 
 This may take some time to run so be patient
 
+TIP: using sqlite building the concordance really **does** seem to run forever
+so recommend using postgresql or mysql if you are going to build the
+concordance. 
+
 
 Getting Started
 ***************

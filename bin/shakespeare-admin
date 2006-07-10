@@ -129,9 +129,9 @@ Output: concordance is written to concordance.p in cache
 
     def help_init(self, line=None):
         usage = \
-'''Convenience function that sets everything up:
+'''Convenience function that sets everything up by running:
     1. gutenberg
-    3. make_concordance'''
+    2. make_concordance'''
         print usage
 
     def do_runserver(self, line=None):
