@@ -27,6 +27,19 @@ class ConcordanceBase(object):
         """
         pass
 
+    def keys(self):
+        """Return list of words in concordance
+        """
+        # distinct does not help us because we need to DISTINCT word
+        # but can't do this with sqlobject
+        all = self.sqlcc.select(orderBy=self.sqlcc.q.word,
+                                distinct=True)
+        words = [ xx.word for xx in list(all) ]
+        distinct = list(set(words))
+        distinct.sort()
+        return distinct
+
+
 class Concordance(ConcordanceBase):
     """Concordance by word for a set of texts
     """
@@ -51,9 +64,8 @@ class ConcordanceBuilder(object):
     # multiline, unicode and ignorecase
     word_regex = re.compile(r'\b(\w+)\b', re.U | re.M | re.I)
 
-    words_to_ignore = [ 'a', 'the', 'and',
-                        'as', 'are', 'be',
-                        'but', 'd', 'in'
+    words_to_ignore = [ 
+        # 'a', 'the', 'and', 'as', 'are', 'be', 'but', 'd', 'in'
                         ]
 
     def _text_already_done(self, text):
@@ -91,4 +103,16 @@ class ConcordanceBuilder(object):
                                            char_index=charIndex+match.start())
             lineCount += 1
             charIndex += len(line)
+
+    def remove_text(self, name):
+        """Remove a text from the concordance.
+
+        @param name: as for add_text
+        """
+        dmText = shakespeare.dm.Material.byName(name)
+        recs = shakespeare.dm.Concordance.select(
+                shakespeare.dm.Concordance.q.textID==dmText.id
+                )
+        for rec in recs:
+            shakespeare.dm.Concordance.delete(rec.id)
 

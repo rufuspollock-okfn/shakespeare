@@ -20,8 +20,8 @@ def createdb():
     Concordance.createTable(ifNotExists=True)
 
 def dropdb():
-    Material.dropTable(ifExists=True)
     Concordance.dropTable(ifExists=True)
+    Material.dropTable(ifExists=True)
 
 def rebuilddb():
     dropdb()

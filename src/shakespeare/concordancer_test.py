@@ -47,6 +47,7 @@ As procurator to your excellence,
         self.statistics = shakespeare.concordancer.Statistics()
 
     def tearDown(self):
+        self.builder.remove_text(self.name)
         shakespeare.dm.Material.delete(self.text.id)
 
     def test__process_line(self):
@@ -66,3 +67,8 @@ As procurator to your excellence,
             out = self.statistics.get(key)
             self.assertEqual(out, value)
 
+    def test_keys(self):
+        words = self.concordance.keys()
+        self.assertEqual('a', words[0])
+        self.assertEqual('your', words[-1])
+        self.assertEqual(22, len(words))
