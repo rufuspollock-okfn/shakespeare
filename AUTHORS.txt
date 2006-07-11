@@ -12,7 +12,10 @@ Shakespeare Texts
 
 Obviously the primary author of these texts is William Shakespeare himself.
 
-The original electronic versions were sourced from Project Gutenberg:
+The exact source url for a given text is usually provided in the accompanying
+notes. Below is a full list of all of the different locations from which texts
+were sourced.
+
+1. Project Gutenberg:
   http://www.gutenberg.org/
 
-You can find the urls of texts used in the index.
