@@ -9,8 +9,6 @@ def test_suite():
         ]
     return unittest.TestSuite(suites)
 
-shakespeare.dm.rebuilddb()
-
 
 class MaterialTest(unittest.TestCase):
 
