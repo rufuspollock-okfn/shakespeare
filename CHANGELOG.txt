@@ -1,5 +1,21 @@
-2006-05-04: First version of concordancer finished.
-2006-04-10: Refactor code into src/ and add in basic webserver interface.
-2006-03-24: Completed scripts for downloading shakespeare texts from
-            gutenberg and removing Gutenberg headers and footers.
-2005-12-26: started project. Commenced research on what texts were avaialable.
+2006-07-10 rgrp:
+  * change everything to use domain model (and db) rather than file backend
+
+2006-07-03 rgrp:
+  * add domain model
+
+2006-06-25 rgrp:
+  * deployed on dev.okfn.org (minor fixes in the process)
+
+2006-05-04 rgrp:
+  * First version of concordancer finished.
+
+2006-04-10 rgrp:
+  * Refactor code into src/ and add in basic webserver interface.
+
+2006-03-24 rgrp:
+  * Completed scripts for downloading shakespeare texts from gutenberg and
+    removing Gutenberg headers and footers.
+
+2005-12-26:
+  * started project. Commenced research on what texts were avaialable.
