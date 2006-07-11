@@ -149,7 +149,10 @@ class HelperTest(unittest.TestCase):
         shakespeare.dm.Material.byName('hamlet_gut_f')
         self.assertEqual('Shakespeare, William', text1.creator)
         alltexts = shakespeare.dm.Material.select()
-        for text in alltexts:
-            if '_gut' in text.name:
-                shakespeare.dm.Material.delete(text.id)
+        # do not delete because we may remove stuff that was there
+        # though this may undermine tests
+        # TODO: sort this out satisfactorily 
+        # for text in alltexts:
+        #    if '_gut' in text.name:
+        #        shakespeare.dm.Material.delete(text.id)
 
