@@ -4,7 +4,7 @@ import tempfile
 
 
 import shakespeare.index
-import shakespeare.concordancer
+import shakespeare.concordance
 
 def test_suite():
     suites = [
@@ -41,10 +41,10 @@ As procurator to your excellence,
 
     def setUp(self):
         self.text = shakespeare.dm.Material(name=self.name, title=self.title)
-        self.builder = shakespeare.concordancer.ConcordanceBuilder()
+        self.builder = shakespeare.concordance.ConcordanceBuilder()
         self.builder.add_text(self.name, StringIO.StringIO(self.inText))
-        self.concordance = shakespeare.concordancer.Concordance()
-        self.statistics = shakespeare.concordancer.Statistics()
+        self.concordance = shakespeare.concordance.Concordance()
+        self.statistics = shakespeare.concordance.Statistics()
 
     def tearDown(self):
         self.builder.remove_text(self.name)

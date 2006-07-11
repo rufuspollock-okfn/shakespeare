@@ -104,7 +104,7 @@ Download and process all Project Gutenberg shakespeare texts"""
 
     def do_make_concordance(self, line=None):
         print 'Making concordance (this may take some time ...):'
-        from shakespeare.concordancer import ConcordanceBuilder
+        from shakespeare.concordance import ConcordanceBuilder
         cc = ConcordanceBuilder()
         textsToAdd = self._filter_index(line)
         for item in textsToAdd:
