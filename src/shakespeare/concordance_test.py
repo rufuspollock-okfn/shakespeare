@@ -40,15 +40,22 @@ As procurator to your excellence,
         }
 
     def setUp(self):
-        self.text = shakespeare.dm.Material(name=self.name, title=self.title)
         self.builder = shakespeare.concordance.ConcordanceBuilder()
+        # try deleting it first so as to be more robust to errors
+        self.tearDown()
+        self.text = shakespeare.dm.Material(name=self.name, title=self.title)
         self.builder.add_text(self.name, StringIO.StringIO(self.inText))
-        self.concordance = shakespeare.concordance.Concordance()
-        self.statistics = shakespeare.concordance.Statistics()
+        self.concordance = shakespeare.concordance.Concordance([self.name])
+        self.statistics = shakespeare.concordance.Statistics([self.name])
 
     def tearDown(self):
-        self.builder.remove_text(self.name)
-        shakespeare.dm.Material.delete(self.text.id)
+        # allow us to deal with left over stuff from previous errors
+        try:
+            self.builder.remove_text(self.name)
+            tmp = shakespeare.dm.Material.byName(self.name)
+            shakespeare.dm.Material.delete(tmp.id)
+        except:
+            pass
 
     def test__process_line(self):
         line = 'the - quick, brown. fox-jumped over$ the_lazy do8g.'
@@ -59,6 +66,7 @@ As procurator to your excellence,
     def test_concordance(self):
         for key, value in self.expConcordance.items():
             listing = list(self.concordance.get(key))
+            listing.reverse()
             out = [ (xx.text.name, xx.line, xx.char_index) for xx in listing ]
             self.assertEqual(out, value)
 

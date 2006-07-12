@@ -13,6 +13,8 @@ import re
 import utils
 import shakespeare.index
 
+import sqlobject
+
 class ConcordanceBase(object):
     """
     TODO: caching??
@@ -23,17 +25,28 @@ class ConcordanceBase(object):
         """
         @param filter_names: a list of id names with which to filter results
             (i.e. only return results relating to those texts)
-        TODO: this is not yet implemented
         """
-        pass
+        self._filter_names = filter_names
+        # piece of sql to use in select to filter texts
+        self._sql_filter = True
+        if self._filter_names is not None:
+            arglist = []
+            for name in self._filter_names:
+                newarg = self.sqlcc.q.textID == self._name2id(name)
+                arglist.append(newarg)
+            self._sql_filter = sqlobject.OR(*arglist)
+    
+    def _name2id(self, name):
+        return shakespeare.dm.Material.byName(name).id
 
     def keys(self):
         """Return list of words in concordance
         """
         # distinct does not help us because we need to DISTINCT word
         # but can't do this with sqlobject
-        all = self.sqlcc.select(orderBy=self.sqlcc.q.word,
-                                distinct=True)
+        all = self.sqlcc.select(self._sql_filter,
+                           orderBy=self.sqlcc.q.word,
+                           distinct=True)
         words = [ xx.word for xx in list(all) ]
         distinct = list(set(words))
         distinct.sort()
@@ -48,13 +61,16 @@ class Concordance(ConcordanceBase):
         """Get list of occurrences for word
         @return: sqlobject query list 
         """
-        return self.sqlcc.select(self.sqlcc.q.word==word)
-
+        select = self.sqlcc.select(sqlobject.AND(self._sql_filter, self.sqlcc.q.word==word))
+        return select
 
 class Statistics(ConcordanceBase):
 
     def get(self, word):
-        return self.sqlcc.select(self.sqlcc.q.word==word).count()
+        select = self.sqlcc.select(
+            sqlobject.AND(self._sql_filter, self.sqlcc.q.word==word)
+            )
+        return select.count()
 
 class ConcordanceBuilder(object):
     """Build a concordance and associated statistics for a set of texts.
@@ -83,7 +99,7 @@ class ConcordanceBuilder(object):
         """
         dmText = shakespeare.dm.Material.byName(name)
         if self._text_already_done(dmText):
-            msg = 'Have already added to index text: %s' % dmText
+            msg = 'Have already added to concordance text: %s' % dmText
             # raise ValueError(msg)
             print msg
             print 'Skipping'
