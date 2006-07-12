@@ -105,11 +105,17 @@ Download and process all Project Gutenberg shakespeare texts"""
     def do_make_concordance(self, line=None):
         print 'Making concordance (this may take some time ...):'
         from shakespeare.concordance import ConcordanceBuilder
+        import time
+        start = end = 0
+        start = time.time()
         cc = ConcordanceBuilder()
         textsToAdd = self._filter_index(line)
         for item in textsToAdd:
             print 'Adding: %s (%s)' % (item.name, item.title)
             cc.add_text(item.name)
+        end = time.time()
+        timetaken = end - start
+        print 'Finished. Time taken was %ss' % timetaken
 
     def help_make_concordance(self, line=None):
         usage = \
@@ -120,6 +126,29 @@ Argument lists should be a spaced seperated list of work name ids (the name id
 names is the second entry for each item when you run print_index).
 
 Output: concordance is written to concordance.p in cache
+'''
+        print usage
+
+    def do_db(self, line=None):
+        if line is None:
+            print 'You need to supply a command'
+            return 1
+        cmd = line.strip()
+        import shakespeare.dm
+        if cmd == 'rebuild':
+            shakespeare.dm.rebuilddb()
+        elif cmd == 'create':
+            shakespeare.dm.createdb()
+        elif cmd == 'drop':
+            shakespeare.dm.dropdb()
+        else:
+            print 'Command %s not recognized' % cmd
+
+    def help_db(self, line=None):
+        usage = \
+'''db create | drop | rebuild
+
+Create/drop/rebuild tables in the db.
 '''
         print usage
 
