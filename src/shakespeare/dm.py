@@ -52,6 +52,9 @@ class Concordance(sqlobject.SQLObject):
     line = sqlobject.IntCol()
     char_index = sqlobject.IntCol()
 
+    word_index = sqlobject.DatabaseIndex('word')
+    text_index = sqlobject.DatabaseIndex('text')
+
 
 # auto create db tables on import
 createdb()

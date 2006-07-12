@@ -108,17 +108,20 @@ class ConcordanceBuilder(object):
             text = file(dmText.cache_path)
         lineCount = 0
         charIndex = 0
+        trans = shakespeare.dm.Concordance._connection.transaction()
         for line in text.readlines():
             for match in self.word_regex.finditer(line):
                 word = match.group().lower() # case insensitive
                 if word in self.words_to_ignore:
                     continue
-                shakespeare.dm.Concordance(text=dmText,
+                shakespeare.dm.Concordance(connection=trans,
+                                           text=dmText,
                                            word=word,
                                            line=lineCount,
                                            char_index=charIndex+match.start())
             lineCount += 1
             charIndex += len(line)
+        trans.commit()
 
     def remove_text(self, name):
         """Remove a text from the concordance.
