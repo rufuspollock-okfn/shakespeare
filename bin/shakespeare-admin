@@ -88,14 +88,14 @@ Download and process all Project Gutenberg shakespeare texts"""
     
     def do_print_index(self, line):
         header = \
-'''      +-------------------+
-      | Index of Material |
-      +-------------------+
+'''          +-------------------+
+          | Index of Material |
+          +-------------------+
 
 '''
         print header
         for row in self._index:
-            print row
+            print row.name.ljust(35), row.title
 
     def help_print_index(self, line=None):
         usage = \
