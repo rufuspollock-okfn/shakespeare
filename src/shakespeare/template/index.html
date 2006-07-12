@@ -1,30 +1,33 @@
 <?python
 layout_params['page_title'] = "Index of Shakespeare plays"
-worksIndex = [('abc', 'efg')]
 ?>
 <html py:layout="'layout.html'"
       xmlns:py="http://purl.org/kid/ns#">
 
 	<div py:match="item.tag == 'content'">
+		<p>
+			Below is a list of the material currently available. You might also want to look at the <a href="/concordance/">concordance</a>.
+		</p>
 		<table border="1">
 		<thead>
 			<tr>
 				<th>
 					Title
 				</th>
-				<th>Link</th>
+				<th>Author</th>
 				<th>Comments</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr py:for="item in works_index">
-				<td py:content="item[0]">title</td>
 				<td>
-					<a href="/view?text_url=${item[1]}&amp;version=">Local Copy</a><br />
-					<a href="/view?text_url=${item[1]}&amp;version=cleaned">Cleaned Copy</a><br />
-					<a href="${item[1]}" py:content="item[1]">Original Gutenberg</a>
+					<a href="/view?name=${item.name}&amp;format=plain">
+						${item.title}</a>
 				</td>
-				<td py:content="item[2]"></td>
+				<td>
+					${item.creator}
+				</td>
+				<td py:content="item.notes"></td>
 			</tr>
 		</tbody>
 		</table>

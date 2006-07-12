@@ -23,7 +23,7 @@ layout_params['page_title'] = "Concordance and statistics"
 				<td>
 					<a href="word/?word=${word}">${word}</a>
 				</td>
-				<td py:content="stats[word]">-1</td>
+				<td py:content="stats.get(word)">-1</td>
 			</tr>
 		</tbody>
 		</table>

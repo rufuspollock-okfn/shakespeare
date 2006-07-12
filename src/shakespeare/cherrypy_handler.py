@@ -6,11 +6,10 @@ import os
 
 import shakespeare.index
 index = shakespeare.index.all
-from shakespeare.utils import get_local_path
+import shakespeare.utils
 import shakespeare.format
 
-import shakespeare.concordancer
-cc = shakespeare.concordancer.get_concordancer()
+import shakespeare.concordance
 
 class ShakespeareWebInterface(object):
 
@@ -30,9 +29,9 @@ class ShakespeareWebInterface(object):
             return '<p><strong>There was an error: ' +  str(inst) + '</strong></p>'
     index.exposed = True
 
-    def view(self, text_url=None, version='cleaned', format='plain'):
-        localPath = get_local_path(text_url, version)
-        ff = file(localPath)
+    def view(self, name, format='plain'):
+        text = shakespeare.dm.Material.byName(name)
+        ff = file(text.cache_path)
         if format == 'plain':
             result = '<pre>' + ff.read() + '</pre>'
         else:
@@ -53,11 +52,13 @@ class ConcordancePage(object):
         import kid
         kid.enable_import(suffixes=[".html"])
         import shakespeare.template.concordance
-        concordance = cc.concordance
-        words = concordance.keys()
-        words.sort()
+        cc = shakespeare.concordance.Concordance()
+        stats = shakespeare.concordance.Statistics()
+        words = cc.keys()
+        # already sorted
+        # words.sort()
         template = shakespeare.template.concordance.Template(words=words,
-                concordance=concordance, stats=cc.stats)
+               stats=stats)
         result = template.serialize()
         # result = str(cc)
         return result
@@ -67,19 +68,19 @@ class ConcordancePage(object):
         # TODO: sort by work etc
         import shakespeare.textutils
         refs = []
+        cc = shakespeare.concordance.Concordance()
         if word is not None:
-            refs = cc.concordance[word]
+            refs = list(cc.get(word))
         newrefs = []
         for ref in refs:
-            snippet = shakespeare.textutils.get_snippet(ref[0], ref[2])
-            newref = list(ref)
-            newref.append(snippet)
-            newrefs.append(newref)
+            ff = file(ref.text.cache_path)
+            snippet = shakespeare.textutils.get_snippet(ff, ref.char_index)
+            ref.snippet = snippet
         import kid
         kid.enable_import(suffixes=[".html"])
         import shakespeare.template.concordance_by_word
         template = shakespeare.template.concordance_by_word.Template(word=word,
-               refs=newrefs) 
+               refs=refs) 
         result = template.serialize()
         return result
     word.exposed = True

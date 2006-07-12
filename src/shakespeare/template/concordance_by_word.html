@@ -18,12 +18,12 @@ layout_params['page_title'] = "Concordance and statistics by Word"
 		</thead>
 		<tbody>
 			<tr py:for="ref in refs">
-				<td>work: ${ref[0]}, line: ${ref[1]}, character: ${ref[2]}</td>
+				<td>work: ${ref.text.title}, line: ${ref.line}</td>
 				<td>
-					<pre>${ref[3]}</pre>
+					<pre>${ref.snippet}</pre>
 				</td>
 				<td>
-					<a href="/view?text_url=${ref[0]}&amp;version=cleaned&amp;format=lineno#${ref[1]}">
+					<a href="/view?name=${ref.text.name}&amp;format=lineno#${ref.line}">
 						source in text
 					</a>
 				</td>
