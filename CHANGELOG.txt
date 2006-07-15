@@ -1,8 +1,13 @@
-2006-07-10 rgrp:
-  * change everything to use domain model (and db) rather than file backend
+## v0.2 2006-07 ##
 
-2006-07-03 rgrp:
-  * add domain model
+  * move away from gutenberg-centric setup present in v0.1
+    * will now be simple to add new material
+  * using domain model and database backend
+    * much more flexible concordance with faster creation
+  * web interface improved
+    * concordance now provides snippets and link through to sources
+
+## v0.1 2006-06 ##
 
 2006-06-25 rgrp:
   * deployed on dev.okfn.org (minor fixes in the process)
