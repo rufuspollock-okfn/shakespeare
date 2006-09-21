@@ -17,5 +17,146 @@ notes. Below is a full list of all of the different locations from which texts
 were sourced.
 
 1. Project Gutenberg:
-  http://www.gutenberg.org/
 
+     http://www.gutenberg.org/
+   
+   Project Gutenberg provides multiple versions of each Shakespeare text. Some
+   of these are copyrighted and some are not. For this project we have **only
+   used texts that were stated to be in the public domain.** We have also
+   removed any mention of Project Gutenberg from the texts so as to avoid any
+   obligations that would result thereof under the Project Gutenberg license.
+   
+   The Gutenberg 'standard' edition appears to be based on the Globe Edition
+   (1866) of Clark and Wright. The folio versions contain the following source
+   information:
+
+   > Executive Director's Notes:
+   > 
+   > In addition to the notes below, and so you will *NOT* think all
+   > the spelling errors introduced by the printers of the time have
+   > been corrected, here are the first few lines of Hamlet, as they
+   > are presented herein:
+   > 
+   >   Barnardo. Who's there?
+   >   Fran. Nay answer me: Stand & vnfold
+   > your selfe
+   > 
+   >    Bar. Long liue the King
+   > 
+   > ***
+   > 
+   > As I understand it, the printers often ran out of certain words
+   > or letters they had often packed into a "cliche". . .this is the
+   > original meaning of the term cliche. . .and thus, being unwilling
+   > to unpack the cliches, and thus you will see some substitutions
+   > that look very odd. . .such as the exchanges of u for v, v for u,
+   > above. . .and you may wonder why they did it this way, presuming
+   > Shakespeare did not actually write the play in this manner. . . .
+   > 
+   > The answer is that they MAY have packed "liue" into a cliche at a
+   > time when they were out of "v"'s. . .possibly having used "vv" in
+   > place of some "w"'s, etc.  This was a common practice of the day,
+   > as print was still quite expensive, and they didn't want to spend
+   > more on a wider selection of characters than they had to.
+   > 
+   > You will find a lot of these kinds of "errors" in this text, as I
+   > have mentioned in other times and places, many "scholars" have an
+   > extreme attachment to these errors, and many have accorded them a
+   > very high place in the "canon" of Shakespeare.  My father read an
+   > assortment of these made available to him by Cambridge University
+   > in England for several months in a glass room constructed for the
+   > purpose.  To the best of my knowledge he read ALL those available
+   > . . .in great detail. . .and determined from the various changes,
+   > that Shakespeare most likely did not write in nearly as many of a
+   > variety of errors we credit him for, even though he was in/famous
+   > for signing his name with several different spellings.
+   > 
+   > So, please take this into account when reading the comments below
+   > made by our volunteer who prepared this file:  you may see errors
+   > that are "not" errors. . . .
+   > 
+   > So. . .with this caveat. . .we have NOT changed the canon errors,
+   > here is the Project Gutenberg Etext of Shakespeare's The first 
+   > Part of Henry the Sixt.
+   > 
+   > Michael S. Hart
+   > Project Gutenberg
+   > Executive Director
+   > 
+   > 
+   > ***
+   > 
+   > 
+   > Scanner's Notes: What this is and isn't.  This was taken from
+   > a copy of Shakespeare's first folio and it is as close as I can
+   > come in ASCII to the printed text.
+   > 
+   > The elongated S's have been changed to small s's and the
+   > conjoined ae have been changed to ae.  I have left the spelling,
+   > punctuation, capitalization as close as possible to the
+   > printed text.  I have corrected some spelling mistakes (I have put
+   > together a spelling dictionary devised from the spellings of the
+   > Geneva Bible and Shakespeare's First Folio and have unified
+   > spellings according to this template), typo's and expanded
+   > abbreviations as I have come across them.  Everything within
+   > brackets [] is what I have added.  So if you don't like that
+   > you can delete everything within the brackets if you want a
+   > purer Shakespeare.
+   > 
+   > Another thing that you should be aware of is that there are textual
+   > differences between various copies of the first folio.  So there may
+   > be differences (other than what I have mentioned above) between
+   > this and other first folio editions.  This is due to the printer's
+   > habit of setting the type and running off a number of copies and
+   > then proofing the printed copy and correcting the type and then
+   > continuing the printing run.  The proof run wasn't thrown away but
+   > incorporated into the printed copies.  This is just the way it is.
+   > The text I have used was a composite of more than 30 different
+   > First Folio editions' best pages.
+   > 
+   > If you find any scanning errors, out and out typos, punctuation
+   > errors, or if you disagree with my spelling choices please feel
+   > free to email me those errors.  I wish to make this the best
+   > etext possible.  My email address for right now are haradda@aol.com
+   > and davidr@inconnect.com.  I hope that you enjoy this.
+   > 
+   > David Reed
+
+2. Bosak/Moby Shakespeare
+
+     http://www.ibiblio.org/xml/examples/shakespeare/
+
+   These marked up versions of Shakespeare were produced by Jon Bosak from
+   texts provided by Moby Lexical tools. Each text contains the following
+   copyright notice:
+
+   > <P>
+   > Text placed in the public domain by Moby Lexical Tools, 1992.
+   > </P>
+   > <P>SGML markup by Jon Bosak, 1992-1994.</P>
+   > <P>XML version by Jon Bosak, 1996-1998.</P>
+   > <P>
+   > This work may be freely copied and distributed worldwide.
+   > </P>
+
+   According to various reports on the web (e.g. [palomar], [oss_moby_source])
+   the Moby Edition is based on the Globe Edition (1866) of Clark and Wright.
+
+   Note that while the text itself is in the public domain the markup is not.
+   According to the [bosak release notes]:
+
+   > While the text has been in the public domain since 1992, the status of the
+   > markup hasn't been clear. For purposes of legal simplicity (I think), I'm
+   > now asserting copyright over the markup to discourage the circulation of
+   > variant versions while still allowing free distribution. Each play now
+   > includes the following notice:
+
+   > ASCII text placed in the public domain by Moby Lexical Tools, 1992.  SGML
+   > markup by Jon Bosak, 1992-1994.  XML version by Jon Bosak, 1996-1999.  The
+   > XML markup in this version is Copyright © 1999 Jon Bosak. This work may
+   > freely be distributed on condition that it not be modified or altered in
+   > any way. 
+
+[palomar]: http://shakespeare.palomar.edu/works.htm
+[oss_moby_source]: http://opensourceshakespeare.com/info/aboutsite.php
+[bosak release notes]: http://www.cs.wisc.edu/niagara/data/shakes/shaksper.htm

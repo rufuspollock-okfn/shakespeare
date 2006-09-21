@@ -80,11 +80,32 @@ Open Shakespeare is open-knowledge and open-source. See COPYING for details.
             msg = 'Unknown argument %s' % line
             raise Exception(msg)
 
-    def help_(self, line=None):
+    def help_gutenberg(self, line=None):
         usage = \
 """
 Download and process all Project Gutenberg shakespeare texts"""
         print usage 
+
+    def do_moby(self, line=None):
+        import shakespeare.moby
+        helper = shakespeare.moby.Helper(verbose=True)
+        if not line:
+            helper.download()
+            print 'Adding Bosak shakespeares to db'
+            helper.add_to_db()
+        elif line == 'print_index':
+            import pprint
+            pprint.pprint(helper.get_index())
+        else:
+            msg = 'Unknown argument %s' % line
+            raise Exception(msg)
+
+    def help_moby(self, line=None):
+        usage = \
+'''
+Download and process all Moby/Bosak shakespeare texts'''
+        print usage 
+
     
     def do_print_index(self, line):
         header = \
@@ -121,11 +142,8 @@ Download and process all Project Gutenberg shakespeare texts"""
         usage = \
 '''Create a concordance
 
-Arguments: if no arguments supplied used all non-folio shakespeare texts
-Argument lists should be a spaced seperated list of work name ids (the name id
-names is the second entry for each item when you run print_index).
-
-Output: concordance is written to concordance.p in cache
+If no arguments supplied then use all non-folio shakespeare texts. Otherwise
+arguments should be a space seperated list of work name ids
 '''
         print usage
 
