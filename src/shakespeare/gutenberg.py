@@ -7,9 +7,10 @@ import shakespeare.utils
 
 class GutenbergIndex(object):
     """Parse the index of Gutenberg works so as to find Shakespeare works.
+
     TODO: Gutenberg now make available the index in RDF/XML form:
-      http://www.gutenberg.org/feeds/catalog.rdf.bz2
-    and we should try to use that instead of plain text file
+    http://www.gutenberg.org/feeds/catalog.rdf.bz2 and we should try to use
+    that instead of plain text file
     """
     
     # url for the Gutenberg index file
@@ -30,7 +31,13 @@ class GutenbergIndex(object):
 
     def get_shakespeare_list(self):
         """Get list of shakespeare works and urls.
+
         Results are sorted by work title.
+
+        Notes regarding list of plays:
+
+          * no Folio edition of Troilus and Cressida
+          * no Folio edition of Pericles
         """
         # results have format [ title, url, comments ]
         # folio in comments indicates it is a first folio
@@ -39,6 +46,10 @@ class GutenbergIndex(object):
         for play in plays:
             url = self.make_url(play[1], play[2])
             results.append([play[0], url, play[3]])
+        # add in by hand some exceptions
+        results.append(["The Winter's Tale",
+                'http://www.gutenberg.org/files/1539/1539.txt', '']
+                )
         def compare_list(item1, item2):
             if item1[0] > item2[0]: return 1
             else: return -1
@@ -62,8 +73,15 @@ class GutenbergIndex(object):
         return results
     
     def parse_line_for_normal(self, line):
-        "Parse GUTINDEX line for the 'normal' gutenberg shakespeare versions (i.e. not folio and out of copyright)."
-        if 'by William Shakespeare' in line and '[2' in line:
+        """Parse GUTINDEX for 'normal' gutenberg shakespeare versions (i.e. not
+        folio and out of copyright).
+        """
+        # normal shakespeare are those with id starting [2
+        # most have 'by William Shakespeare' but also have 'by Shakespeare'
+        # (Othello) and 'by Wm Shakespeare' (Titus Andronicus)
+        # everything is by William Shakespeare except for Othello
+        if ('Shakespeare' in line and '[2' in line
+                and 'mp3' not in line and 'Apocrypha' not in line):
             year = line[4:8]
             tmp = line[9:]
             endOfTitle = tmp.find(', by')

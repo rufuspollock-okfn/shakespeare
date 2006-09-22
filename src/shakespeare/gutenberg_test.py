@@ -19,6 +19,16 @@ class TestGutenbergIndex:
         exp = ['Cymbeline', '1998', '2ws39']
         for ii in range(len(exp)):
             assert out[ii] == exp[ii]
+
+    def test_parse_line_for_normal_2(self):
+        "Added after discovering that Othello was not getting picked up."
+        inStr = 'Nov 1998 Othello, by Shakespeare [2ws32xxx.xxx] 1531'
+        out = self.gutindex.parse_line_for_normal(inStr)
+        print out
+        exp = ['Othello', '1998', '2ws32']
+        for ii in range(len(exp)):
+            assert out[ii] == exp[ii]
+
     
     def test_make_url(self):
         exp = 'http://www.gutenberg.org/dirs/etext00/0ws3910.txt'
@@ -30,9 +40,10 @@ class TestGutenbergIndex:
         out = self.gutindex.make_url('1998', '2ws39')
         assert exp == out
     
-    def test__extract_shakespeare_works(self):
-        plays = self.gutindex._extract_shakespeare_works()
-        assert len(plays) == 73
+    def test_get_shakespeare_list(self):
+        works = self.gutindex.get_shakespeare_list()
+        # figure derives from hand count in GUTINDEX.all
+        assert len(works) == 77
 
 
 class TestFormat:
@@ -97,12 +108,6 @@ class TestGutenbergShakespeare:
             notFound = (out.find('Gutenberg') == -1)
             assert notFound
 
-#    def test_get_etext_url(self):
-#        number = 11125
-#        exp = 'http://www.gutenberg.org/dirs/1/1/1/2/11125/11125.txt'
-#        out = get_etext_url(number)
-#        self.assertEqual(out, exp)
-
 import shakespeare.dm
 class TestHelper:
     url1 = 'http://www.gutenberg.org/dirs/etext00/0ws2510.txt'
@@ -115,7 +120,7 @@ class TestHelper:
 
     def test_get_index(self):
         out = self.helper.get_index()
-        assert 74 == len(out)
+        assert 77 == len(out)
 
     def test_title_to_name(self):
         inlist = [ 'King Henry VIII', 
