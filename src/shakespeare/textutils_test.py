@@ -1,16 +1,9 @@
-import unittest
-
 import StringIO
 
 import shakespeare.textutils
 
-def test_suite():
-    suites = [
-        unittest.makeSuite(TextUtilsTest),
-        ]
-    return unittest.TestSuite(suites)
 
-class TextUtilsTest(unittest.TestCase):
+class TestTextUtils:
     # ['The Phoenix and the Turtle',
     # 'http://www.gutenberg.org/dirs/etext98/cleaned2ws2710.txt', '']
     inStr = \
@@ -39,4 +32,4 @@ Herald sad and trumpet be,
 To whose sound chaste wing...'''
         # 125 is start of trumpet
         out = shakespeare.textutils.get_snippet(self.inFileObj, 125)
-        self.assertEqual(exp, out)
+        assert exp == out

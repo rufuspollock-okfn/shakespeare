@@ -6,13 +6,7 @@ import tempfile
 import shakespeare.index
 import shakespeare.concordance
 
-def test_suite():
-    suites = [
-        unittest.makeSuite(ConcordancerTest),
-        ]
-    return unittest.TestSuite(suites)
-
-class ConcordancerTest(unittest.TestCase):
+class TestConcordancer:
 
     inText = \
 """A fake fake line
@@ -39,20 +33,21 @@ As procurator to your excellence,
         'word_that_is_not_there' : 0,
         }
 
-    def setUp(self):
-        self.builder = shakespeare.concordance.ConcordanceBuilder()
+    def setup_class(cls):
+        cls.builder = shakespeare.concordance.ConcordanceBuilder()
         # try deleting it first so as to be more robust to errors
-        self.tearDown()
-        self.text = shakespeare.dm.Material(name=self.name, title=self.title)
-        self.builder.add_text(self.name, StringIO.StringIO(self.inText))
-        self.concordance = shakespeare.concordance.Concordance([self.name])
-        self.statistics = shakespeare.concordance.Statistics([self.name])
+        # does not seem to work with the class methods
+        # cls.teardown_class(cls)
+        cls.text = shakespeare.dm.Material(name=cls.name, title=cls.title)
+        cls.builder.add_text(cls.name, StringIO.StringIO(cls.inText))
+        cls.concordance = shakespeare.concordance.Concordance([cls.name])
+        cls.statistics = shakespeare.concordance.Statistics([cls.name])
 
-    def tearDown(self):
+    def teardown_class(cls):
         # allow us to deal with left over stuff from previous errors
         try:
-            self.builder.remove_text(self.name)
-            tmp = shakespeare.dm.Material.byName(self.name)
+            cls.builder.remove_text(cls.name)
+            tmp = shakespeare.dm.Material.byName(cls.name)
             shakespeare.dm.Material.delete(tmp.id)
         except:
             pass
@@ -61,22 +56,22 @@ As procurator to your excellence,
         line = 'the - quick, brown. fox-jumped over$ the_lazy do8g.'
         exp = ['the', 'quick', 'brown', 'fox', 'jumped', 'over', 'the_lazy', 'do8g' ]
         out = self.builder.word_regex.findall(line)
-        self.assertEqual(exp, out)
+        assert exp == out
 
     def test_concordance(self):
         for key, value in self.expConcordance.items():
             listing = list(self.concordance.get(key))
             listing.reverse()
             out = [ (xx.text.name, xx.line, xx.char_index) for xx in listing ]
-            self.assertEqual(out, value)
+            assert out == value
 
     def test_stats(self):
         for key, value in self.expStats.items():
             out = self.statistics.get(key)
-            self.assertEqual(out, value)
+            assert out == value
 
     def test_keys(self):
         words = self.concordance.keys()
-        self.assertEqual('a', words[0])
-        self.assertEqual('your', words[-1])
-        self.assertEqual(22, len(words))
+        assert 'a' == words[0]
+        assert 'your' == words[-1]
+        assert 22 == len(words)

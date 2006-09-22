@@ -1,18 +1,8 @@
-import unittest
-
 import shakespeare.index
 
-def test_suite():
-    suites = [
-        unittest.makeSuite(ShakespeareIndexTest),
-    ]
-    return unittest.TestSuite(suites)
+class TestShakespeareIndex:
 
-
-class ShakespeareIndexTest(unittest.TestCase):
-
-    def setUp(self):
-        self.index = shakespeare.index.ShakespeareIndex()
+    index = shakespeare.index.ShakespeareIndex()
 
     def test_get_all(self):
         all = list(self.index.all)
