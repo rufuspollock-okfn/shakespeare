@@ -172,13 +172,15 @@ Create/drop/rebuild tables in the db.
 
     def do_init(self, line=None):
         self.do_gutenberg(line)
+        self.do_moby(line)
         self.do_make_concordance(line)
 
     def help_init(self, line=None):
         usage = \
 '''Convenience function that sets everything up by running:
     1. gutenberg
-    2. make_concordance'''
+    2. moby
+    3. make_concordance'''
         print usage
 
     def do_runserver(self, line=None):
