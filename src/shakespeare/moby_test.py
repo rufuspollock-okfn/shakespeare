@@ -19,7 +19,7 @@ class TestHelper(object):
 
     def test_add_to_db(self):
         self.helper.add_to_db()
-        text1 = shakespeare.dm.Material.byName('hamlet_bosak')
+        text1 = shakespeare.dm.Material.byName('hamlet_moby')
         assert text1.creator == 'Shakespeare, William'
         assert text1.title == 'Hamlet'
 
