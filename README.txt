@@ -97,6 +97,16 @@ As a developer:
 ===============
 
 1. Check out the administrative commands: $ bin/shakespeare-admin help.
-2. Run the tests: python test.py
 
+2. Run the tests: $ py.test
+   
+Note that:
+   
+  * The tests use [py.test] so you will need to have installed this
+
+  * To run the website tests (site_test etc) you will need to install [twill]
+    and have the webserver running
+
+[py.test]: http://codespeak.net/py/current/doc/getting-started.html
+[twill]: http://twill.idyll.org/
 
