@@ -32,16 +32,7 @@ class ShakespeareWebInterface(object):
     def view(self, name, format='plain'):
         text = shakespeare.dm.Material.byName(name)
         ff = file(text.cache_path)
-        if format == 'plain':
-            result = '<pre>' + ff.read() + '</pre>'
-        else:
-            formatter = shakespeare.format.TextFormatter(ff)
-            result = formatter.format(format)
-            # import kid
-            # kid.enable_import(suffixes=['.html'])
-            # module = __import__('shakespeare.template.format_' + format, '', '', '*')
-            # template = module.Template(fileobj=ff)
-            # result = template.serialize()
+        result = shakespeare.format.format_text(ff, format)
         ff.close()
         return result
     view.exposed = True

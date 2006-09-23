@@ -1,6 +1,24 @@
-class TextFormatter(object):
+"""
+Format texts in a variety of ways
+"""
+
+def format_text(fileobj, format):
     """Format a provided text in a variety of ways.
-    For example: add line numbers, convert to html with line ids etc
+
+    @format: the name specifying the format to use
+    """
+    formatter = None
+    if format == 'plain':
+        formatter = TextFormatterPlain(fileobj)
+    elif format == 'lineno':
+        formatter = TextFormatterLineno(fileobj)
+    else:
+        raise ValueError('Unknown format: %s' % format)
+    return formatter.format()
+
+
+class TextFormatter(object):
+    """Abstract base class for formatters.
     """
 
     def __init__(self, file):
@@ -9,16 +27,28 @@ class TextFormatter(object):
         """
         self.file = file
 
-    def format(self, format):
+    def format(self):
+        """Format the supplied text.
         """
-        @format: the name specifying the format to use
-        """
-        if format == 'lineno':
-            return self.add_line_numbers()
-        else:
-            raise ValueError('Unknown format: %s' % format)
-    
-    def add_line_numbers(self):
+        raise NotImplementedError()
+
+class TextFormatterPlain(TextFormatter):
+    """Format the text as plain text (in an html <pre> tag).
+    """
+
+    def format(self):
+        out = \
+'''
+<pre>
+    %s
+</pre>''' % self.file.read()
+        return out
+
+class TextFormatterLineno(TextFormatter):
+    """Format the text to have line numbers.
+    """
+
+    def format(self):
         result = ''
         count = 0
         for line in self.file.readlines():
