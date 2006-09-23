@@ -1,5 +1,5 @@
 """
-Obtain and import the Bosak xml-i-fied versions of shakespeare's plays
+Obtain and import the Moby/Bosak xml-i-fied versions of shakespeare's plays
 available from:
 
     <http://www.ibiblio.org/xml/examples/shakespeare/>
@@ -105,17 +105,17 @@ class Helper(shakespeare.gutenberg.Helper):
         import shakespeare.dm
         for text in self._index:
             title = text[0]
-            name = self.title_to_name(title) + '_bosak'
+            name = self.title_to_name(title) + '_moby'
             cachePath = shakespeare.utils.get_local_path(text[1])
             notes = 'Moby/Bosak Shakespeare, sourced from %s' % text[1]
             numExistingTexts = shakespeare.dm.Material.select(
                         shakespeare.dm.Material.q.name==name).count()
             if numExistingTexts > 0:
                 if self.verbose:
-                    print('Skip: Add to db. Gutenberg text already exists with name: %s' % name)
+                    print('Skip: Add to db. Moby/Bosak text already exists with name: %s' % name)
             else:
                 if self.verbose:
-                    print('Add to db. Gutenberg text named [%s]' % name)
+                    print('Add to db. Moby/Bosak text named [%s]' % name)
                 shakespeare.dm.Material(name=name,
                                         title=title,
                                         creator='Shakespeare, William',
