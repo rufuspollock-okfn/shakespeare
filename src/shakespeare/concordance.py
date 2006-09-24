@@ -106,7 +106,7 @@ class ConcordanceBuilder(object):
             print 'Skipping'
             return
         if text is None:
-            tpath = shakespeare.cache.default.path(dmText.url)
+            tpath = dmText.get_cache_path('plain')
             text = file(tpath)
         lineCount = 0
         charIndex = 0

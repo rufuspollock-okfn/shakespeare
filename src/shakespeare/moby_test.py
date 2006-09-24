@@ -1,4 +1,7 @@
+import os
+
 import shakespeare.moby
+import shakespeare.cache
 
 class TestIndex(object):
     index = shakespeare.moby.index
@@ -16,6 +19,12 @@ class TestHelper(object):
     def test_download(self):
         self.helper.download(self.url1)
         self.helper.download()
+
+    def test_clean(self):
+        self.helper.clean(self.url1)
+        self.helper.clean()
+        destpath = shakespeare.cache.default.path(self.url1, 'plain')
+        assert os.path.exists(destpath)
 
     def test_add_to_db(self):
         self.helper.add_to_db()

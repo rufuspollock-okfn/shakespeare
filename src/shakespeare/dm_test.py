@@ -5,7 +5,9 @@ class TestMaterial:
     def setup_class(self):
         self.name = 'test-123'
         self.title = 'Hamlet'
-        self.text = shakespeare.dm.Material(name=self.name, title=self.title)
+        self.url = 'http://www.openshakespeare.org/blah.txt'
+        self.text = shakespeare.dm.Material(name=self.name,
+                title=self.title, url=self.url)
 
     def teardown_class(self):
         shakespeare.dm.Material.delete(self.text.id)
@@ -16,6 +18,11 @@ class TestMaterial:
         txt3 = shakespeare.dm.Material.byName(self.name)
         assert self.text.id == txt2.id
         assert self.text.id == txt3.id
+    
+    def test_get_cache_path(self):
+        out = self.text.get_cache_path('plain')
+        # do not want anything too specific or we end up duplicating cache_test
+        assert len(out) > 0
 
 class TestConcordance:
 

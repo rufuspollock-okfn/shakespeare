@@ -84,10 +84,7 @@ Where action is one of create, clean, rebuild.'''
         import shakespeare.gutenberg
         helper = shakespeare.gutenberg.Helper(verbose=True)
         if not line:
-            helper.download()
-            helper.clean()
-            print 'Adding Gutenberg shakespeares to db'
-            helper.add_to_db()
+            helper.execute()
         elif line == 'print_index':
             import pprint
             pprint.pprint(helper.get_index())
@@ -105,9 +102,7 @@ Download and process all Project Gutenberg shakespeare texts"""
         import shakespeare.moby
         helper = shakespeare.moby.Helper(verbose=True)
         if not line:
-            helper.download()
-            print 'Adding Bosak shakespeares to db'
-            helper.add_to_db()
+            helper.execute()
         elif line == 'print_index':
             import pprint
             pprint.pprint(helper.get_index())

@@ -10,6 +10,7 @@ text is a version.
 import sqlobject
 
 import shakespeare
+import shakespeare.cache
 
 uri = shakespeare.conf().get('db', 'uri')
 __connection__ = sqlobject.connectionForURI(uri)
@@ -44,6 +45,12 @@ class Material(sqlobject.SQLObject):
     creator = sqlobject.StringCol(default=None, length=255)
     url = sqlobject.StringCol(default=None, length=255)
     notes = sqlobject.StringCol(default=None)
+
+    def get_cache_path(self, format):
+        """Get path within cache to data file associated with this material.
+        @format: the version ('plain', original='' etc)
+        """
+        return shakespeare.cache.default.path(self.url, format)
 
 class Concordance(sqlobject.SQLObject):
 

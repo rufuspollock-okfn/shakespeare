@@ -35,11 +35,11 @@ class ShakespeareWebInterface(object):
         # special case (only return the first text)
         if format == 'raw':
             cherrypy.response.headers["Content-Type"] = "text/plain"
-            tpath = shakespeare.cache.default.path(textlist[0].url)
+            tpath = textlist[0].get_cache_path('plain')
             return file(tpath).read()
         texts = []
         for item in textlist:
-            tpath = shakespeare.cache.default.path(item.url)
+            tpath = item.get_cache_path('plain')
             tfileobj = file(tpath)
             ttext = shakespeare.format.format_text(tfileobj, format)
             texts.append(ttext)
@@ -84,7 +84,8 @@ class ConcordancePage(object):
             refs = list(cc.get(word))
         newrefs = []
         for ref in refs:
-            tpath = shakespeare.cache.default.path(ref.text.url)
+            # we use the 'plain' format when building the concordance
+            tpath = ref.text.get_cache_path('plain')
             ff = file(tpath)
             snippet = shakespeare.textutils.get_snippet(ff, ref.char_index)
             ref.snippet = snippet

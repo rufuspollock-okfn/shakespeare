@@ -234,7 +234,12 @@ class Helper(object):
             return textsToAdd
         else:
             return self._index
-    
+
+    def execute(self, line=None):
+        self.download(line)
+        self.clean(line)
+        self.add_to_db()
+
     def get_index(self, line=None):
         """Get list of texts
         """
@@ -264,7 +269,7 @@ class Helper(object):
         for item in textsToProcess:
             url = item[1]
             src = shakespeare.cache.default.path(url)
-            dest = shakespeare.cache.default.path(url, 'cleaned')
+            dest = shakespeare.cache.default.path(url, 'plain')
             if os.path.exists(dest):
                 if self.verbose:
                     print 'Skip clean of %s as clean version already exists' % src

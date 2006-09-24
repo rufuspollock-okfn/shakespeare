@@ -149,3 +149,6 @@ class TestHelper:
         #    if '_gut' in text.name:
         #        shakespeare.dm.Material.delete(text.id)
 
+    def test_execute(self):
+        self.helper.execute()
+

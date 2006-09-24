@@ -4,6 +4,7 @@ available from:
 
     <http://www.ibiblio.org/xml/examples/shakespeare/>
 """
+import os
 
 # just extract by hand from the above webpage
 # vim regex used to do this
@@ -95,7 +96,21 @@ class Helper(shakespeare.gutenberg.Helper):
         self._index = index
 
     def clean(self, line=None):
-        raise Exception('Method not implemented')
+        textsToProcess = self._filter_index(line) 
+        for item in textsToProcess:
+            url = item[1]
+            src = shakespeare.cache.default.path(url)
+            dest = shakespeare.cache.default.path(url, 'plain')
+            if os.path.exists(dest):
+                if self.verbose:
+                    print 'Skip clean of %s as plain version already exists' % src
+                continue
+            if self.verbose:
+                print 'Formatting %s to %s' % (src, dest)
+            infile = file(src)
+            ff = file(dest, 'w')
+            ff.write(infile.read())
+            ff.close()
 
     def add_to_db(self):
         """Add all texts to the db list of texts.
