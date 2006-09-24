@@ -19,12 +19,12 @@ def createdb():
     Material.createTable(ifNotExists=True)
     Concordance.createTable(ifNotExists=True)
 
-def dropdb():
+def cleandb():
     Concordance.dropTable(ifExists=True)
     Material.dropTable(ifExists=True)
 
 def rebuilddb():
-    dropdb()
+    cleandb()
     createdb()
 
 class Material(sqlobject.SQLObject):

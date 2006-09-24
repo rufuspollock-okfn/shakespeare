@@ -64,6 +64,21 @@ Open Shakespeare is open-knowledge and open-source. See COPYING for details.
     
     # =================
     # Commands
+
+    def do_db(self, line=None):
+        actions = [ 'create', 'clean', 'rebuild' ]
+        if line is None or line not in actions:
+            self.help_db()
+            return 1
+        import shakespeare.dm
+        shakespeare.dm.__dict__[line+'db']()
+
+    def help_db(self, line=None):
+        usage = \
+'''db <action>
+
+Where action is one of create, clean, rebuild.'''
+        print usage
     
     def do_gutenberg(self, line=None):
         import shakespeare.gutenberg
@@ -144,29 +159,6 @@ Download and process all Moby/Bosak shakespeare texts'''
 
 If no arguments supplied then use all non-folio shakespeare texts. Otherwise
 arguments should be a space seperated list of work name ids
-'''
-        print usage
-
-    def do_db(self, line=None):
-        if line is None:
-            print 'You need to supply a command'
-            return 1
-        cmd = line.strip()
-        import shakespeare.dm
-        if cmd == 'rebuild':
-            shakespeare.dm.rebuilddb()
-        elif cmd == 'create':
-            shakespeare.dm.createdb()
-        elif cmd == 'drop':
-            shakespeare.dm.dropdb()
-        else:
-            print 'Command %s not recognized' % cmd
-
-    def help_db(self, line=None):
-        usage = \
-'''db create | drop | rebuild
-
-Create/drop/rebuild tables in the db.
 '''
         print usage
 
