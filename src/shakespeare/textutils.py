@@ -1,5 +1,3 @@
-import shakespeare.utils
-
 def get_snippet(fileobj, charIndex, neighbourhood=30):
     # always get the cleaned version (since that is what concordancer uses
     ss = fileobj.read()

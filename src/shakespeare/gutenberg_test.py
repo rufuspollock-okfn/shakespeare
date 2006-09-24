@@ -1,5 +1,5 @@
 import shakespeare.gutenberg
-import shakespeare.utils as utils
+import shakespeare.cache
 from shakespeare.gutenberg import make_re_from_phrase, GutenbergShakespeare 
 
 class TestGutenbergIndex:
@@ -74,10 +74,10 @@ class TestGutenbergShakespeare:
     # As you like it in Folio and normal
     url1 = 'http://www.gutenberg.org/dirs/etext00/0ws2510.txt'
     url2 = 'http://www.gutenberg.org/dirs/etext98/2ws2510.txt'
-    utils.download_url(url1)
-    utils.download_url(url2)
-    etext1 = file(utils.get_local_path(url1))
-    etext2 = file(utils.get_local_path(url2))
+    shakespeare.cache.default.download_url(url1)
+    shakespeare.cache.default.download_url(url2)
+    etext1 = file(shakespeare.cache.default.path(url1))
+    etext2 = file(shakespeare.cache.default.path(url2))
     gut1 = GutenbergShakespeare(etext1)
     gut2 = GutenbergShakespeare(etext2)
     

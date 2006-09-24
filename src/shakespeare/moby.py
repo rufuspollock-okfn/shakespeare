@@ -106,7 +106,7 @@ class Helper(shakespeare.gutenberg.Helper):
         for text in self._index:
             title = text[0]
             name = self.title_to_name(title) + '_moby'
-            cachePath = shakespeare.utils.get_local_path(text[1])
+            url = text[1]
             notes = 'Moby/Bosak Shakespeare, sourced from %s' % text[1]
             numExistingTexts = shakespeare.dm.Material.select(
                         shakespeare.dm.Material.q.name==name).count()
@@ -119,5 +119,5 @@ class Helper(shakespeare.gutenberg.Helper):
                 shakespeare.dm.Material(name=name,
                                         title=title,
                                         creator='Shakespeare, William',
-                                        cache_path=cachePath,
+                                        url=url,
                                         notes=notes)

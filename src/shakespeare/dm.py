@@ -40,9 +40,9 @@ class Material(sqlobject.SQLObject):
     
     name = sqlobject.StringCol(alternateID=True)
     title = sqlobject.StringCol(default=None, length=255)
-    # creator rather than author to fit with dc
+    # creator rather than author to fit with dublin core
     creator = sqlobject.StringCol(default=None, length=255)
-    cache_path = sqlobject.StringCol(default=None, length=255)
+    url = sqlobject.StringCol(default=None, length=255)
     notes = sqlobject.StringCol(default=None)
 
 class Concordance(sqlobject.SQLObject):

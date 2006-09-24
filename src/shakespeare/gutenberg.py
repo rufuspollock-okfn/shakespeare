@@ -2,7 +2,7 @@
 """
 import os
 import StringIO
-import shakespeare.utils
+import shakespeare.cache
 
 
 class GutenbergIndex(object):
@@ -18,13 +18,13 @@ class GutenbergIndex(object):
 
     def __init__(self):
         self.download_gutenberg_index()
-        self._gutindex_local_path = shakespeare.utils.get_local_path(self.gutindex)
+        self._gutindex_local_path = shakespeare.cache.default.path(self.gutindex)
 
     def download_gutenberg_index(self):
         """Download the Gutenberg Index file GUTINDEX.ALL to cache if we don't
         have it already.
         """
-        shakespeare.utils.download_url(self.gutindex)
+        shakespeare.cache.default.download_url(self.gutindex)
 
     def make_url(self, year, idStr):
         return 'http://www.gutenberg.org/dirs/etext%s/%s10.txt' % (year[2:], idStr)
@@ -249,7 +249,7 @@ class Helper(object):
             url = item[1]
             if self.verbose:
                 print 'Downloading %s (%s)' % (url, title)
-            shakespeare.utils.download_url(item[1])
+            shakespeare.cache.default.download_url(item[1])
     
     def clean(self, line=None):
         """Clean up raw gutenberg texts to extract underlying work (so remove
@@ -263,8 +263,8 @@ class Helper(object):
         textsToProcess = self._filter_index(line) 
         for item in textsToProcess:
             url = item[1]
-            src = shakespeare.utils.get_local_path(url)
-            dest = shakespeare.utils.get_local_path(url, 'cleaned')
+            src = shakespeare.cache.default.path(url)
+            dest = shakespeare.cache.default.path(url, 'cleaned')
             if os.path.exists(dest):
                 if self.verbose:
                     print 'Skip clean of %s as clean version already exists' % src
@@ -306,7 +306,7 @@ class Helper(object):
         for text in self._index:
             title = text[0]
             name = self.title_to_name(title) + '_gut'
-            cachePath = shakespeare.utils.get_local_path(text[1], 'cleaned')
+            url = text[1]
             notes = 'Sourced from Project Gutenberg (url=%s). %s' % (text[1],
                     text[2])
             if text[2] == 'folio':
@@ -323,6 +323,6 @@ class Helper(object):
                 shakespeare.dm.Material(name=name,
                                         title=title,
                                         creator='Shakespeare, William',
-                                        cache_path=cachePath,
+                                        url=url,
                                         notes=notes)
 

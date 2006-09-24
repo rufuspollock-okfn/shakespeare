@@ -5,7 +5,6 @@ import cherrypy
 import os
 
 import shakespeare.index
-import shakespeare.utils
 import shakespeare.format
 import shakespeare.concordance
 import shakespeare.dm
@@ -36,9 +35,14 @@ class ShakespeareWebInterface(object):
         # special case (only return the first text)
         if format == 'raw':
             cherrypy.response.headers["Content-Type"] = "text/plain"
-            return file(textlist[0].cache_path).read()
-        texts = [ shakespeare.format.format_text(file(text.cache_path), format)
-            for text in textlist ]
+            tpath = shakespeare.cache.default.path(textlist[0].url)
+            return file(tpath).read()
+        texts = []
+        for item in textlist:
+            tpath = shakespeare.cache.default.path(item.url)
+            tfileobj = file(tpath)
+            ttext = shakespeare.format.format_text(tfileobj, format)
+            texts.append(ttext)
         # would have assumed this would be 100.0/numtexts but for some reason
         # you need to allow more room (maybe because of the scrollbars?)
         # result is not consistent across browsers ...
@@ -80,7 +84,8 @@ class ConcordancePage(object):
             refs = list(cc.get(word))
         newrefs = []
         for ref in refs:
-            ff = file(ref.text.cache_path)
+            tpath = shakespeare.cache.default.path(ref.text.url)
+            ff = file(tpath)
             snippet = shakespeare.textutils.get_snippet(ff, ref.char_index)
             ref.snippet = snippet
         import kid

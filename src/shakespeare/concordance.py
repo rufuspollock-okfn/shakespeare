@@ -10,10 +10,11 @@ case-insensitive
 """
 import re
 
-import utils
-import shakespeare.index
-
 import sqlobject
+
+import shakespeare.index
+import shakespeare.cache
+
 
 class ConcordanceBase(object):
     """
@@ -105,7 +106,8 @@ class ConcordanceBuilder(object):
             print 'Skipping'
             return
         if text is None:
-            text = file(dmText.cache_path)
+            tpath = shakespeare.cache.default.path(dmText.url)
+            text = file(tpath)
         lineCount = 0
         charIndex = 0
         trans = shakespeare.dm.Concordance._connection.transaction()
