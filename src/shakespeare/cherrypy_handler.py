@@ -5,11 +5,10 @@ import cherrypy
 import os
 
 import shakespeare.index
-index = shakespeare.index.all
 import shakespeare.utils
 import shakespeare.format
-
 import shakespeare.concordance
+import shakespeare.dm
 
 class ShakespeareWebInterface(object):
 
@@ -21,20 +20,37 @@ class ShakespeareWebInterface(object):
             import kid
             kid.enable_import(suffixes=[".html"])
             import shakespeare.template.index
+            index = shakespeare.index.all
             template = shakespeare.template.index.Template(works_index=index)
             result = str(template)
-            # result = 'test'
             return result
         except Exception, inst:
             return '<p><strong>There was an error: ' +  str(inst) + '</strong></p>'
     index.exposed = True
 
     def view(self, name, format='plain'):
-        text = shakespeare.dm.Material.byName(name)
-        ff = file(text.cache_path)
-        result = shakespeare.format.format_text(ff, format)
-        ff.close()
+        import shakespeare.dm
+        namelist = name.split()
+        numtexts = len(namelist)
+        textlist = [shakespeare.dm.Material.byName(tname) for tname in namelist]
+        # special case (only return the first text)
+        if format == 'raw':
+            cherrypy.response.headers["Content-Type"] = "text/plain"
+            return file(textlist[0].cache_path).read()
+        texts = [ shakespeare.format.format_text(file(text.cache_path), format)
+            for text in textlist ]
+        # would have assumed this would be 100.0/numtexts but for some reason
+        # you need to allow more room (maybe because of the scrollbars?)
+        # result is not consistent across browsers ...
+        frame_width = 100.0/numtexts - 4.0
+        import kid
+        kid.enable_import(suffixes=['.html'])
+        import shakespeare.template.view
+        template = shakespeare.template.view.Template(frame_width=frame_width,
+                texts=texts)
+        result = template.serialize()
         return result
+
     view.exposed = True
 
 class ConcordancePage(object):

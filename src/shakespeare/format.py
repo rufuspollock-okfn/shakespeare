@@ -21,7 +21,7 @@ class TextFormatter(object):
     """Abstract base class for formatters.
     """
 
-    def __init__(self, file):
+    def __init__(self, file=None):
         """
         @file: file-like object containing a text in plain txt
         """
@@ -32,16 +32,21 @@ class TextFormatter(object):
         """
         raise NotImplementedError()
 
+    def escape_chars(self, text):
+        return text.replace('&', '&amp;').replace('<', '&lt;')
+
 class TextFormatterPlain(TextFormatter):
     """Format the text as plain text (in an html <pre> tag).
     """
 
     def format(self):
+        out = self.file.read()
+        out = self.escape_chars(out)
         out = \
 '''
 <pre>
     %s
-</pre>''' % self.file.read()
+</pre>''' % out
         return out
 
 class TextFormatterLineno(TextFormatter):
@@ -53,6 +58,8 @@ class TextFormatterLineno(TextFormatter):
         count = 0
         for line in self.file.readlines():
             tlineno = str(count).ljust(4) # assume line no < 10000
-            result += '<pre id="%s">%s %s</pre>\n' % (count, tlineno, line.rstrip())
+            tline = line.rstrip() 
+            tline = self.escape_chars(tline)
+            result += '<pre id="%s">%s %s</pre>\n' % (count, tlineno, tline)
             count += 1
         return result

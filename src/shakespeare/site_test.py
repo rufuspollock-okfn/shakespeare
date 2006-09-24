@@ -22,3 +22,15 @@ class TestSite:
         web.code(200)
         web.find('CALIBAN, a savage and deformed Slave')
 
+    def test_view_2(self):
+        url = siteurl + 'view?name=tempest_gut+tempest_gut_f&format=plain'
+        web.go(url)
+        web.code(200)
+        web.find('CALIBAN, a savage and deformed Slave')
+
+    def test_view_3(self):
+        url = siteurl + 'view?name=tempest_gut+tempest_gut_f&format=raw'
+        web.go(url)
+        web.code(200)
+        web.find('CALIBAN, a savage and deformed Slave')
+ 
