@@ -1,26 +1,4 @@
-## v0.2 2006-07 ##
+Use of this file is deprecated. Please see the relevant page of the trac
+installation:
 
-  * move away from gutenberg-centric setup present in v0.1
-    * will now be simple to add new material
-  * using domain model and database backend
-    * much more flexible concordance with faster creation
-  * web interface improved
-    * concordance now provides snippets and link through to sources
-
-## v0.1 2006-06 ##
-
-2006-06-25 rgrp:
-  * deployed on dev.okfn.org (minor fixes in the process)
-
-2006-05-04 rgrp:
-  * First version of concordancer finished.
-
-2006-04-10 rgrp:
-  * Refactor code into src/ and add in basic webserver interface.
-
-2006-03-24 rgrp:
-  * Completed scripts for downloading shakespeare texts from gutenberg and
-    removing Gutenberg headers and footers.
-
-2005-12-26:
-  * started project. Commenced research on what texts were avaialable.
+  <http://project.knowledgeforge.net/shakespeare/trac/roadmap?show=all>
