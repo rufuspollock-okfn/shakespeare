@@ -140,7 +140,13 @@ Download and process all Moby/Bosak shakespeare texts'''
         start = end = 0
         start = time.time()
         cc = ConcordanceBuilder()
-        textsToAdd = self._filter_index(line)
+        textsToAdd = []
+        if line is not None:
+            textsToAdd = self._filter_index(line)
+        else:
+            def gut_non_folio(material):
+                return '_gut' in material.name and 'gut_f' not in material.name
+            textsToAdd = filter(gut_non_folio, self._index) 
         for item in textsToAdd:
             print 'Adding: %s (%s)' % (item.name, item.title)
             cc.add_text(item.name)
@@ -152,8 +158,8 @@ Download and process all Moby/Bosak shakespeare texts'''
         usage = \
 '''Create a concordance
 
-If no arguments supplied then use all non-folio shakespeare texts. Otherwise
-arguments should be a space seperated list of work name ids
+If no arguments supplied then use all non-folio gutenberg shakespeare texts.
+Otherwise arguments should be a space seperated list of work name ids
 '''
         print usage
 
