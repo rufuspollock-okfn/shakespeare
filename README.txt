@@ -1,9 +1,13 @@
 Introduction
 ************
 
-The Open Shakespeare package provides a complete set of shakespeare's works
-(often in multiple versions) along with ancillary material and functionality
-such as an introduction, chronology, explanatory notes and search facilities.
+The Open Shakespeare package provides a full open set of shakespeare's works
+(often in multiple versions) along with ancillary material, a variety of tools
+and a python API.
+
+Specifically in addition to the works themselves (often in multiple versions)
+there is an introduction, a chronology, explanatory notes, a concordance and
+search facilities.
 
 All material is open source/open knowledge so that anyone can use, redistribute
 and reuse these materials freely. For exact details of the license under which
@@ -11,7 +15,6 @@ this package is made available please see COPYING.txt.
 
 Open Shakespeare has been developed under the aegis of the Open Knowledge
 Foundation (http://www.okfn.org/).
-
 
 Contact the Project
 *******************
@@ -30,7 +33,8 @@ Installation
 1.1: (EITHER) Install using setup.py (preferred)
 ------------------------------------------------
 
-1. Install setuptools: http://peak.telecommunity.com/DevCenter/EasyInstall#installation-instructions (in essence get download http://peak.telecommunity.com/dist/ez_setup.py and run it).
+1. Install setuptools: http://peak.telecommunity.com/DevCenter/EasyInstall#installation-instructions
+(download http://peak.telecommunity.com/dist/ez_setup.py and run it).
 
 2. $ python setup.py install
 

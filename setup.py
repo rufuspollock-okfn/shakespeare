@@ -23,12 +23,16 @@ setup(
     author = "Rufus Pollock (Open Knowledge Foundation)",
     author_email = "rufus.pollock@okfn.org",
     description = \
-"A complete open set of Shakespeare's works along with an extensive python api",
+"A full open set of Shakespeare's works along with anciallary material, a variety of tools and a python api",
     long_description = \
 """
-The Open Shakespeare package provides a complete set of shakespeare's works
-(often in multiple versions) along with ancillary material and functionality
-such as an introduction, chronology, explanatory notes and search facilities.
+The Open Shakespeare package provides a full open set of shakespeare's works
+(often in multiple versions) along with ancillary material, a variety of tools
+and a python API.
+
+Specifically in addition to the works themselves (often in multiple versions)
+there is an introduction, a chronology, explanatory notes, a concordance and
+search facilities.
 
 All material is open source/open knowledge so that anyone can use, redistribute
 and reuse these materials freely. For exact details of the license under which
