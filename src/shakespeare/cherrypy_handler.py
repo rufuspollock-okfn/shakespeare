@@ -27,6 +27,15 @@ class ShakespeareWebInterface(object):
             return '<p><strong>There was an error: ' +  str(inst) + '</strong></p>'
     index.exposed = True
 
+    def guide(self):
+        import kid
+        kid.enable_import(suffixes=[".html"])
+        import shakespeare.template.guide
+        template = shakespeare.template.guide.Template()
+        result = str(template)
+        return result
+    guide.exposed = True
+
     def view(self, name, format='plain'):
         import shakespeare.dm
         namelist = name.split()

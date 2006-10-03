@@ -1,0 +1,67 @@
+<?python
+layout_params['page_title'] = "Guide to the Web Interface"
+?>
+<html py:layout="'layout.html'"
+      xmlns:py="http://purl.org/kid/ns#">
+
+	<div py:match="item.tag == 'content'">
+		<p>
+			This page provides a guide to the features of the Open Shakespeare web
+			interface.
+		</p>
+		<h2>
+			The Index
+		</h2>
+		<p>
+			The <a href="/index/">index page</a> contains a list of all of the
+			material on the system.
+		</p>
+		<h2>
+			Viewing Works
+		</h2>
+		<p>
+			You can view works by clicking on the link available from the index page.
+			If you know the 'id' of a text you can view it directly by visiting the
+			url: /view?name={id} (you can work id names by looking at the link urls
+			on the index page).
+		</p>
+		
+		<h3>Viewing in different formats</h3>
+		<p>
+			You can view a given text in a different format by setting the format
+			argument in the url query string like so:
+			/view?name={id}&amp;format={format_name} So to view hamlet with line
+			numbers visit: <a
+				href="/view?name=hamlet_gut&amp;format=lineno">/view?name=hamlet_gut&amp;format=lineno</a> Available formats are:
+		</p>
+		<ul>
+			<li>format=plain - plain version of the file (default)</li>
+			<li>format=raw - raw file returned as text/plain</li>
+			<li>format=lineno - text with line numbers added</li>
+		</ul> 
+
+		<h3>Multiviews</h3>
+		<p>
+			You can view mutiple texts at once by concatenating the name-ids
+			separated by '+'. For example to see the Gutenberg folio and non-folio
+			Othello side-by-side you would visit: <a
+				href="/view?othello_gut_f+othello_gut">/view?othello_gut_f+othello_gut</a>
+		</p>
+
+		<h2>
+			Concordance
+		</h2>
+		<p>
+			The <a href="/concordance/">concordance page</a> provides a concordance of
+			Shakespeare's work along with some associated statistics on word
+			occurences.
+		</p>
+
+		<h2>Comments</h2>
+		<p>
+			If you wish to comment on this guide (or help improve it!) please visit
+			<a href="http://www.openshakespeare.org/">http://www.openshakespeare.org</a>
+		</p>
+
+	</div>
+</html>
