@@ -1,4 +1,4 @@
-__version__ = '0.3dev'
+__version__ = '0.3'
 __application_name__ = 'shakespeare'
 
 def conf():
