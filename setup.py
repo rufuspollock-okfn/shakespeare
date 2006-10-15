@@ -44,7 +44,7 @@ Foundation (http://www.okfn.org/).
     license = "MIT",
     keywords = "open shakespeare search view",
     url = "http://www.openshakespeare.org/", 
-    download_url = "http://www.openshakespeare.org/download/",
+    download_url = "http://www.openshakespeare.org/code/",
     classifiers = [
         'Development Status :: 3 - Alpha',
         'Environment :: Console',
