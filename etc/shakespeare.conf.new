@@ -8,3 +8,7 @@ cachedir = ./cache
 # sqlobject database uri. see sqlobject documentation for details
 # uri = postgres://user:pass@host/dbname
 uri = sqlite:/:memory:
+
+[web]
+# directory where the templates used by web front end are kept
+template_dir = ./src/shakespeare/template

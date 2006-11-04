@@ -1,52 +1,47 @@
-<?python
-page_title = "Default title"
-def page_specific_css():
-    return ""
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns:py="http://purl.org/kid/ns#">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:py="http://genshi.edgewall.org/" 
+  xmlns:xi="http://www.w3.org/2001/XInclude">
   <head>
-		<title>Open Shakespeare - ${page_title}</title>
+    <title>Open Shakespeare - ${page_title}</title>
 
-		<link
-			href="http://project.knowledgeforge.net/okftext/css/okftext/text_basic.css"
-			type="text/css" rel="stylesheet" />
-		<style type="text/css">
-			#footer
-			{
-				font-size: 0.8em;
-				text-align: center;
-				margin-top: 1em;
-			}
-		</style>
+    <link
+      href="http://project.knowledgeforge.net/okftext/css/okftext/text_basic.css"
+      type="text/css" rel="stylesheet" />
+    <style type="text/css">
+      #footer
+      {
+        font-size: 0.8em;
+        text-align: center;
+        margin-top: 1em;
+      }
+    </style>
 
-    ${page_specific_css()}
+		${page_specific_css}
   </head>
 
   <body>
-		<h1>${page_title}</h1>
+    <h1>${page_title}</h1>
 
-		<div id="content">
-    	<content>Default content - this will be replaced</content>
-		</div>
+    <div id="content">
+      <content>Default content - this will be replaced</content>
+    </div>
 
-		<div id="footer">
-			<p>
-				This web interface is part of the <a
-				href="http://www.openshakespeare.org/">Open Shakespeare</a> project
-				developed by the <a href="http://www.okfn.org/">Open Knowledge
-				Foundation</a>
-			</p>
-			<p>
-				All material &copy; 2005-2006 Open Knowledge Foundation and available under
-				an <a href="http://okd.okfn.org/">open</a> license
-				<br />
-				See the COPYING file in the <a
-					href="http://www.openshakespeare.org/download/"> source
-					distribution</a> for details.
-			</p>
-		</div>
+    <div id="footer">
+      <p>
+        This web interface is part of the <a
+        href="http://www.openshakespeare.org/">Open Shakespeare</a> project
+        developed by the <a href="http://www.okfn.org/">Open Knowledge
+        Foundation</a>
+      </p>
+      <p>
+        All material &copy; 2005-2006 Open Knowledge Foundation and available under
+        an <a href="http://okd.okfn.org/">open</a> license
+        <br />
+        See the COPYING file in the <a
+          href="http://www.openshakespeare.org/download/"> source
+          distribution</a> for details.
+      </p>
+    </div>
 
   </body>
 </html>

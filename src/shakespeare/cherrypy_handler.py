@@ -1,13 +1,22 @@
 """
 Web interface to view and analyze shakespeare texts.
 """
-import cherrypy
 import os
+
+import cherrypy
+import genshi.template
 
 import shakespeare.index
 import shakespeare.format
 import shakespeare.concordance
 import shakespeare.dm
+
+import shakespeare
+
+cfg = shakespeare.conf()
+template_path = cfg.get('web', 'template_dir')
+template_loader = genshi.template.TemplateLoader([template_path],
+        auto_reload=True)
 
 class ShakespeareWebInterface(object):
 
@@ -16,23 +25,17 @@ class ShakespeareWebInterface(object):
 
     def index(self):
         try:
-            import kid
-            kid.enable_import(suffixes=[".html"])
-            import shakespeare.template.index
             index = shakespeare.index.all
-            template = shakespeare.template.index.Template(works_index=index)
-            result = str(template)
+            tmpl = template_loader.load('index.html')
+            result = tmpl.generate(works_index=index).render()
             return result
         except Exception, inst:
             return '<p><strong>There was an error: ' +  str(inst) + '</strong></p>'
     index.exposed = True
 
     def guide(self):
-        import kid
-        kid.enable_import(suffixes=[".html"])
-        import shakespeare.template.guide
-        template = shakespeare.template.guide.Template()
-        result = str(template)
+        template = template_loader.load('guide.html')
+        result = template.generate().render()
         return result
     guide.exposed = True
 
@@ -51,37 +54,31 @@ class ShakespeareWebInterface(object):
             tpath = item.get_cache_path('plain')
             tfileobj = file(tpath)
             ttext = shakespeare.format.format_text(tfileobj, format)
-            texts.append(ttext)
+            import genshi.input
+            import StringIO
+            thtml = genshi.input.HTMLParser(StringIO.StringIO(ttext))
+            texts.append(thtml)
         # would have assumed this would be 100.0/numtexts but for some reason
         # you need to allow more room (maybe because of the scrollbars?)
         # result is not consistent across browsers ...
         frame_width = 100.0/numtexts - 4.0
-        import kid
-        kid.enable_import(suffixes=['.html'])
-        import shakespeare.template.view
-        template = shakespeare.template.view.Template(frame_width=frame_width,
-                texts=texts)
-        result = template.serialize()
-        return result
+        template = template_loader.load('view.html')
+        result = template.generate(frame_width=frame_width, texts=texts)
+        return result.render()
 
     view.exposed = True
 
 class ConcordancePage(object):
 
     def index(self):
-        import kid
-        kid.enable_import(suffixes=[".html"])
-        import shakespeare.template.concordance
         cc = shakespeare.concordance.Concordance()
         stats = shakespeare.concordance.Statistics()
         words = cc.keys()
         # already sorted
         # words.sort()
-        template = shakespeare.template.concordance.Template(words=words,
-               stats=stats)
-        result = template.serialize()
-        # result = str(cc)
-        return result
+        template = template_loader.load('concordance.html')
+        result = template.generate(words=words, stats=stats)
+        return result.render()
     index.exposed = True
 
     def word(self, word=None):
@@ -98,12 +95,8 @@ class ConcordancePage(object):
             ff = file(tpath)
             snippet = shakespeare.textutils.get_snippet(ff, ref.char_index)
             ref.snippet = snippet
-        import kid
-        kid.enable_import(suffixes=[".html"])
-        import shakespeare.template.concordance_by_word
-        template = shakespeare.template.concordance_by_word.Template(word=word,
-               refs=refs) 
-        result = template.serialize()
-        return result
+        template = template_loader.load('concordance_by_word.html')
+        result = template.generate(word=word, refs=refs) 
+        return result.render()
     word.exposed = True
 

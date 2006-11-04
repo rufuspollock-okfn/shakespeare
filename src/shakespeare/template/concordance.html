@@ -1,32 +1,33 @@
-<?python
-layout_params['page_title'] = "Concordance and statistics"
-?>
-<html py:layout="'layout.html'"
-      xmlns:py="http://purl.org/kid/ns#">
+<html xmlns:py="http://genshi.edgewall.org/"
+  xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+  <py:def function="page_title">Concordance and statistics</py:def>
 
-	<div py:match="item.tag == 'content'">
-		<p>
-			<strong>Click on a word to be taken to a detailed listing of its
-				occurrences</strong>
-		</p>
-		<table border="1">
-		<thead>
-			<tr>
-				<th>
-					Word	
-				</th>
-				<th>Occurrences</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr py:for="word in words">
-				<td>
-					<a href="word/?word=${word}">${word}</a>
-				</td>
-				<td py:content="stats.get(word)">-1</td>
-			</tr>
-		</tbody>
-		</table>
-	</div>
+  <div py:match="content">
+    <p>
+      <strong>Click on a word to be taken to a detailed listing of its
+        occurrences</strong>
+    </p>
+    <table border="1">
+    <thead>
+      <tr>
+        <th>
+          Word  
+        </th>
+        <th>Occurrences</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr py:for="word in words">
+        <td>
+          <a href="word/?word=${word}">${word}</a>
+        </td>
+        <td py:content="stats.get(word)">-1</td>
+      </tr>
+    </tbody>
+    </table>
+  </div>
+
+  <xi:include href="layout.html" />
 </html>
 

@@ -33,4 +33,15 @@ class TestSite:
         web.go(url)
         web.code(200)
         web.find('CALIBAN, a savage and deformed Slave')
+
+    def test_guide(self):
+        url = siteurl + 'guide/'
+        web.go(url)
+        web.code(200)
+        web.find('guide to the features of the Open Shakespeare web')
+
+    def test_concordance(self):
+        url = siteurl + 'concordance/'
+        web.go(url)
+        web.code(200)
  
