@@ -2,8 +2,8 @@ import StringIO
 import shakespeare.format
 
 
-starttext = '''Blah
-blah & blah'''
+starttext = unicode('''Blah \xc3\xa6
+blah & blah''', 'utf-8')
 
 sometext = starttext.replace('&', '&amp;')
 
@@ -16,9 +16,9 @@ class TestTextFormatter:
 
 
 class TestTextFormatterPlain:
-    fileobj = StringIO.StringIO(starttext)
+    fileobj = StringIO.StringIO(starttext.encode('utf-8'))
     formatter = shakespeare.format.TextFormatterPlain(fileobj)
-    exp = '''
+    exp = u'''
 <pre>
     %s
 </pre>''' % sometext
@@ -29,9 +29,9 @@ class TestTextFormatterPlain:
 
 
 class TestTextFormatterLineno:
-    fileobj = StringIO.StringIO(starttext)
+    fileobj = StringIO.StringIO(starttext.encode('utf-8'))
     formatter = shakespeare.format.TextFormatterLineno(fileobj)
-    exp = '''<pre id="0">0    Blah</pre>
+    exp = u'''<pre id="0">0    Blah \xe6</pre>
 <pre id="1">1    blah &amp; blah</pre>
 '''
 
@@ -44,6 +44,6 @@ def test_text_format():
         ('lineno', TestTextFormatterLineno)
         ]
     for item in formatlist:
-        fileobj = StringIO.StringIO(starttext)
+        fileobj = StringIO.StringIO(starttext.encode('utf-8'))
         tout = shakespeare.format.format_text(fileobj, item[0])
         assert tout == item[1].exp

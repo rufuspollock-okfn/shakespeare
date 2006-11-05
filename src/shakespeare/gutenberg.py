@@ -150,7 +150,8 @@ class GutenbergShakespeare(object):
             2. are there notes? If so strip them out
         """
         self.etext = etext
-        self.etextStr = self.etext.read()
+        # most shakespeare texts are either ascii or latin-1
+        self.etextStr = unicode(self.etext.read(), 'latin-1').encode('utf-8')
         # normalize the line endings to save us grief later
         self.etextStr = self.etextStr.replace('\r\n', '\n')
         self.hasNotes = False

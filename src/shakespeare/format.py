@@ -23,12 +23,15 @@ class TextFormatter(object):
 
     def __init__(self, file=None):
         """
-        @file: file-like object containing a text in plain txt
+        @file: file-like object containing a text in plain txt with utf-8
+        encoding
         """
         self.file = file
 
     def format(self):
         """Format the supplied text.
+
+        The returned string will be in unicode format with utf-8 encoding
         """
         raise NotImplementedError()
 
@@ -40,10 +43,10 @@ class TextFormatterPlain(TextFormatter):
     """
 
     def format(self):
-        out = self.file.read()
+        out = unicode(self.file.read(), 'utf-8')
         out = self.escape_chars(out)
         out = \
-'''
+u'''
 <pre>
     %s
 </pre>''' % out
@@ -57,9 +60,9 @@ class TextFormatterLineno(TextFormatter):
         result = ''
         count = 0
         for line in self.file.readlines():
-            tlineno = str(count).ljust(4) # assume line no < 10000
-            tline = line.rstrip() 
+            tlineno = unicode(count).ljust(4) # assume line no < 10000
+            tline = unicode(line, 'utf-8').rstrip() 
             tline = self.escape_chars(tline)
-            result += '<pre id="%s">%s %s</pre>\n' % (count, tlineno, tline)
+            result += u'<pre id="%s">%s %s</pre>\n' % (count, tlineno, tline)
             count += 1
         return result
