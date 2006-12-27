@@ -62,6 +62,16 @@ A fake imperial line.
         out = self.builder.word_regex.findall(line)
         assert exp == out
 
+    def test_is_roman_numeral(self):
+        testvals = [ 'ii', 'v', 'vi', 'xi', 'xx', 'xxi', 'xlvi', 'c', 'cvi' ]
+        for val in testvals:
+            assert self.builder.is_roman_numeral(val)
+
+    def test_ignore_word(self):
+        testvals = [ 'd', 't' ]
+        for val in testvals:
+            assert self.builder.ignore_word(val)
+
     def test_concordance(self):
         for key, value in self.expConcordance.items():
             listing = list(self.concordance.get(key))

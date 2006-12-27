@@ -88,8 +88,31 @@ class ConcordanceBuilder(object):
     word_regex = re.compile(r'\b(\w+)\b', re.U | re.M | re.I)
 
     words_to_ignore = [ 
-        # 'a', 'the', 'and', 'as', 'are', 'be', 'but', 'd', 'in'
+        # 'a', 'the', 'and', 'as', 'are', 'be', 'but', 'in'
                         ]
+    non_words = [ 
+            'd', # accus'd
+            't',
+            ]
+
+    def is_roman_numeral(self, word):
+        digits = [ 'i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix' ]
+        others = [ 'l', 'x', 'c' ]
+        if word == 'i': return False # exception because this conflicts with I
+        while word[0] in others:
+            if len(word) == 1:
+                return True
+            else:
+                word = word[1:]
+        return word in digits
+
+    def ignore_word(self, word):
+        "Return True if this word should not be added to the concordance."
+        bool1 = word in self.words_to_ignore
+        bool2 = word in self.non_words
+        # do roman numerals
+        bool3 = self.is_roman_numeral(word)
+        return bool1 or bool2 or bool3
 
     def _text_already_done(self, text):
         numrecs = shakespeare.dm.Concordance.select(
@@ -121,7 +144,7 @@ class ConcordanceBuilder(object):
         for line in text.readlines():
             for match in self.word_regex.finditer(line):
                 word = match.group().lower() # case insensitive
-                if word in self.words_to_ignore:
+                if self.ignore_word(word):
                     continue
                 shakespeare.dm.Concordance(connection=trans,
                                            text=dmText,
@@ -163,4 +186,9 @@ class ConcordanceBuilder(object):
                 )
         for rec in recs:
             shakespeare.dm.Concordance.delete(rec.id)
+        stats = shakespeare.dm.Statistic.select(
+                shakespeare.dm.Statistic.q.textID==dmText.id
+                )
+        for stat in stats:
+            shakespeare.dm.Statistic.delete(stat.id)
 
