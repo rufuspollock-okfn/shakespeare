@@ -21,6 +21,7 @@ class ConcordanceBase(object):
     TODO: caching??
     """
     sqlcc = shakespeare.dm.Concordance
+    sqlstat = shakespeare.dm.Statistic
 
     def __init__(self, filter_names=None):
         """
@@ -28,26 +29,28 @@ class ConcordanceBase(object):
             (i.e. only return results relating to those texts)
         """
         self._filter_names = filter_names
-        # piece of sql to use in select to filter texts
-        self._sql_filter = True
+        self.sqlcc_filter = self._make_filter(self.sqlcc)
+        self.sqlstat_filter = self._make_filter(self.sqlstat)
+
+    def _make_filter(self, sqlobj):
+        sql_filter = True
         if self._filter_names is not None:
             arglist = []
             for name in self._filter_names:
-                newarg = self.sqlcc.q.textID == self._name2id(name)
+                newarg = sqlobj.q.textID == self._name2id(name)
                 arglist.append(newarg)
-            self._sql_filter = sqlobject.OR(*arglist)
+            sql_filter = sqlobject.OR(*arglist)
+        return sql_filter
     
     def _name2id(self, name):
         return shakespeare.dm.Material.byName(name).id
 
     def keys(self):
-        """Return list of words in concordance
+        """Return list of *distinct* words in concordance/statistics
         """
-        # distinct does not help us because we need to DISTINCT word
-        # but can't do this with sqlobject
-        all = self.sqlcc.select(self._sql_filter,
-                           orderBy=self.sqlcc.q.word,
-                           distinct=True)
+        all = self.sqlstat.select(self.sqlstat_filter,
+                           orderBy=self.sqlstat.q.word,
+                           )
         words = [ xx.word for xx in list(all) ]
         distinct = list(set(words))
         distinct.sort()
@@ -62,16 +65,19 @@ class Concordance(ConcordanceBase):
         """Get list of occurrences for word
         @return: sqlobject query list 
         """
-        select = self.sqlcc.select(sqlobject.AND(self._sql_filter, self.sqlcc.q.word==word))
+        select = self.sqlcc.select(sqlobject.AND(self.sqlcc_filter, self.sqlcc.q.word==word))
         return select
 
 class Statistics(ConcordanceBase):
 
     def get(self, word):
-        select = self.sqlcc.select(
-            sqlobject.AND(self._sql_filter, self.sqlcc.q.word==word)
+        select = self.sqlstat.select(
+            sqlobject.AND(self.sqlstat_filter, self.sqlstat.q.word==word)
             )
-        return select.count()
+        total = 0
+        for stat in select:
+            total += stat.occurrences
+        return total
 
 class ConcordanceBuilder(object):
     """Build a concordance and associated statistics for a set of texts.
@@ -110,6 +116,7 @@ class ConcordanceBuilder(object):
             text = file(tpath)
         lineCount = 0
         charIndex = 0
+        stats = {}
         trans = shakespeare.dm.Concordance._connection.transaction()
         for line in text.readlines():
             for match in self.word_regex.finditer(line):
@@ -121,9 +128,29 @@ class ConcordanceBuilder(object):
                                            word=word,
                                            line=lineCount,
                                            char_index=charIndex+match.start())
+                stats[word] = stats.get(word, 0) + 1
             lineCount += 1
             charIndex += len(line)
         trans.commit()
+        trans = shakespeare.dm.Concordance._connection.transaction()
+        for word, value in stats.items():
+            tresults  = shakespeare.dm.Statistic.select(
+                sqlobject.AND(
+                    shakespeare.dm.Statistic.q.textID == dmText.id,
+                    shakespeare.dm.Statistic.q.word == word
+                    ))
+            try:
+                dbstat = list(tresults)[0]
+                dbstat.occurrences += value
+            except:
+                shakespeare.dm.Statistic(
+                        connection=trans,
+                        text=dmText,
+                        word=word,
+                        occurrences=value
+                        )
+        trans.commit()
+
 
     def remove_text(self, name):
         """Remove a text from the concordance.

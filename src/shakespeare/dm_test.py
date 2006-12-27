@@ -1,3 +1,5 @@
+import sqlobject
+
 import shakespeare.dm
 
 class TestMaterial:
@@ -45,4 +47,36 @@ class TestConcordance:
     def test1(self):
         out1 = shakespeare.dm.Concordance.get(self.cc1.id)
         assert self.text == out1.text
+
+class TestStatistic:
+
+    def setup_class(self):
+        self.name = 'test-123'
+        self.title = 'Hamlet'
+        self.text = shakespeare.dm.Material(name=self.name, title=self.title)
+        self.word = 'jones'
+        self.occurrences = 5
+        self.cc1 = shakespeare.dm.Statistic(
+                text=self.text,
+                word=self.word,
+                occurrences=self.occurrences
+                )
+
+    def teardown_class(self):
+        shakespeare.dm.Statistic.delete(self.cc1.id)
+        shakespeare.dm.Material.delete(self.text.id)
+
+    def test1(self):
+        out1 = shakespeare.dm.Statistic.get(self.cc1.id)
+        assert self.text == out1.text
+        assert out1.occurrences == self.occurrences
+
+    def test_select(self):
+        tresults  = shakespeare.dm.Statistic.select(
+            sqlobject.AND(
+                shakespeare.dm.Statistic.q.textID == self.text.id,
+                shakespeare.dm.Statistic.q.word == self.word,
+                ))
+        num = tresults.count()
+        assert num == 1
 

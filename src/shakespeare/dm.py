@@ -19,8 +19,10 @@ __connection__ = sqlobject.connectionForURI(uri)
 def createdb():
     Material.createTable(ifNotExists=True)
     Concordance.createTable(ifNotExists=True)
+    Statistic.createTable(ifNotExists=True)
 
 def cleandb():
+    Statistic.dropTable(ifExists=True)
     Concordance.dropTable(ifExists=True)
     Material.dropTable(ifExists=True)
 
@@ -58,6 +60,15 @@ class Concordance(sqlobject.SQLObject):
     word = sqlobject.StringCol(length=50)
     line = sqlobject.IntCol()
     char_index = sqlobject.IntCol()
+
+    word_index = sqlobject.DatabaseIndex('word')
+    text_index = sqlobject.DatabaseIndex('text')
+
+class Statistic(sqlobject.SQLObject):
+
+    text = sqlobject.ForeignKey('Material')
+    word = sqlobject.StringCol(length=50)
+    occurrences = sqlobject.IntCol(default=1)
 
     word_index = sqlobject.DatabaseIndex('word')
     text_index = sqlobject.DatabaseIndex('text')

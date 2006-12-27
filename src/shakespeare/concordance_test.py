@@ -14,20 +14,24 @@ SUFFOLK.
 As by your high imperial Majesty
 I had in charge at my depart for France,
 As procurator to your excellence,
+A fake imperial line.
 """
     name = 'test-concordance'
     title = 'Hamlet'
     
     # ['work_id', 'line-no', 'character-index'] }
+    # incomplete
     expConcordance = {
-        'fake' : [ (name, 0, 2), (name, 0, 7) ],
+        'fake' : [ (name, 0, 2), (name, 0, 7), (name, 5, 136) ],
         'suffolk' : [ (name, 1, 17), ],
         'high' : [ (name, 2, 37), ],
         'word_that_is_not_there' : [],
         }
 
+    # incomplete
     expStats = {
-        'fake' : 2,
+        'fake' : 3,
+        'imperial' : 2,
         'suffolk' : 1,
         'high' : 1,
         'word_that_is_not_there' : 0,
@@ -61,13 +65,14 @@ As procurator to your excellence,
     def test_concordance(self):
         for key, value in self.expConcordance.items():
             listing = list(self.concordance.get(key))
-            listing.reverse()
-            out = [ (xx.text.name, xx.line, xx.char_index) for xx in listing ]
-            assert out == value
+            assert len(listing) == len(value)
+            for xx in listing:
+                assert (xx.text.name, xx.line, xx.char_index) in value
 
     def test_stats(self):
         for key, value in self.expStats.items():
             out = self.statistics.get(key)
+            print key
             assert out == value
 
     def test_keys(self):
