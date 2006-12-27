@@ -3,20 +3,22 @@ ez_setup.use_setuptools()
 from setuptools import setup, find_packages
 
 import sys
-sys.path.append('./src')
+sys.path.insert(0, './src')
 from shakespeare import __version__, __application_name__
 
 setup(
     name = __application_name__,
     version = __version__,
-    packages = find_packages(),
+    package_dir = { '' : 'src' },
+    packages = find_packages('src'),
     scripts = ['bin/shakespeare-admin'],
+    include_package_data = True,
 
     install_requires = ['SQLObject>=0.6,<=0.7.99'],
     # don't require cherrypy and kid as they are not needed for the core
     # library -- only for the web interface
     extras_require = {
-        'web_gui' : ['CherryPy>=0.3', 'kid>=0.9'],
+        'web_gui' : ['CherryPy>=0.3', 'Genshi>=0.3'],
         },
 
     # metadata for upload to PyPI
@@ -48,6 +50,7 @@ Foundation (http://www.okfn.org/).
     classifiers = [
         'Development Status :: 3 - Alpha',
         'Environment :: Console',
+        'Environment :: Web',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
