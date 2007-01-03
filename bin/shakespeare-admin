@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import cmd
+import os
 import StringIO
 
 import shakespeare.index
@@ -176,23 +177,42 @@ Otherwise arguments should be a space seperated list of work name ids
     3. make_concordance'''
         print usage
 
-    def do_runserver(self, line=None):
+    def _runserver_cherrypy(self):
         import shakespeare.cherrypy_handler
         import cherrypy
-        cherrypy.root = shakespeare.cherrypy_handler.ShakespeareWebInterface()
         configDict = {
                 'server.socketPort' : 8080,
                 'server.threadPool' : 10,
                 'server.showTracebacks' : True,
-                '/scripts' : { 'staticFilter.on' : True,
-                              'staticFilter.dir': '/scripts'
-                              },
-                '/styles' : { 'staticFilter.on' : True,
-                             'staticFilter.dir': '/styles'
-                              },
                 }
         cherrypy.config.update(configDict)
-        cherrypy.server.start()
+        cherrypy.quickstart(shakespeare.cherrypy_handler.ShakespeareWebInterface())
+
+    def _runserver_plain_wsgi(self):
+        import wsgiref.simple_server
+        import shakespeare.wsgi
+        app = shakespeare.wsgi.app_factory(None)
+        port = 8080
+        httpd = wsgiref.simple_server.make_server('', port, app)
+        print "Serving HTTP on port %s..." % port
+        httpd.serve_forever()
+
+    def _runserver_paste_plain(self):
+        import shakespeare.wsgi
+        import paste.httpserver
+        app = shakespeare.wsgi.app_factory(None)
+        paste.httpserver.serve(app)
+
+    def _runserver_paste_deploy(self):
+        conf = shakespeare.conf()
+        paste_conf_file = os.path.abspath(conf.get('web', 'paste_conf_file'))
+        import paste.deploy
+        app = paste.deploy.loadapp('config:%s' % paste_conf_file)
+        import paste.httpserver
+        paste.httpserver.serve(app)
+
+    def do_runserver(self, line=None):
+        self._runserver_cherrypy()
 
     def help_runserver(self, line=None):
         usage = \
