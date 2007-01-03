@@ -71,13 +71,10 @@ class ShakespeareWebInterface(object):
 class ConcordancePage(object):
 
     def index(self):
-        cc = shakespeare.concordance.Concordance()
         stats = shakespeare.concordance.Statistics()
-        words = cc.keys()
-        # already sorted
-        # words.sort()
+        words = stats.keys()
         template = template_loader.load('concordance.html')
-        result = template.generate(words=words, stats=stats)
+        result = template.generate(words=words)
         return result.render()
     index.exposed = True
 
