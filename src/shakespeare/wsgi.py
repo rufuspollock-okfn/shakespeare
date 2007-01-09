@@ -12,9 +12,11 @@ def setup_cherrypy():
     cherrypy.engine.start(blocking=False)
     return app
 
+import shakespeare.wsgiplain
+
 def app_factory(global_config, **local_conf):
     """Implement PasteDeploy's app_factory interface.
     """
-    app = setup_cherrypy() 
+    app = shakespeare.wsgiplain.ShakespeareWebInterface()
     return app
 

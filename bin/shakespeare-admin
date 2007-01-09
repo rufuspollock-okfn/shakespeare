@@ -188,7 +188,7 @@ Otherwise arguments should be a space seperated list of work name ids
         cherrypy.config.update(configDict)
         cherrypy.quickstart(shakespeare.cherrypy_handler.ShakespeareWebInterface())
 
-    def _runserver_plain_wsgi(self):
+    def _runserver_wsgiref(self):
         import wsgiref.simple_server
         import shakespeare.wsgi
         app = shakespeare.wsgi.app_factory(None)
@@ -212,12 +212,22 @@ Otherwise arguments should be a space seperated list of work name ids
         paste.httpserver.serve(app)
 
     def do_runserver(self, line=None):
-        self._runserver_cherrypy()
+        if line is None: # default
+            self._runserver_cherrypy()
+        elif line == 'wsgiref':
+            self._runserver_wsgiref()
+        if line == 'cherrypy': # default
+            self._runserver_cherrypy()
+        else:
+            print 'Unknown argument: %s' % line
+            self.help_runserver()
 
     def help_runserver(self, line=None):
         usage = \
-'''Start a cherrypy webserver to provide the user interface to the shakespeare
-package.
+'''runserver [ cherrypy | wsgiref ]
+
+Start a webserver (of optional type) to provide the user interface to the
+shakespeare package.
 
 The resulting website should be availabe at http://localhost:8080
 '''
