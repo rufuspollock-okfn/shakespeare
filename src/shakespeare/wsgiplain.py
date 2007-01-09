@@ -39,7 +39,8 @@ class ShakespeareWebInterface(object):
             format = self.queryinfo.get('format', 'plain')
             return self.view(name, format)
         elif self.path.startswith('/concordance/word'): # order matters
-            return self.concordance_word()
+            word = self.queryinfo.get('word', None)
+            return self.concordance_word(word)
         elif self.path.startswith('/concordance'):
             return self.concordance_index()
         else:
