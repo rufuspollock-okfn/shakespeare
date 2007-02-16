@@ -212,11 +212,12 @@ Otherwise arguments should be a space seperated list of work name ids
         paste.httpserver.serve(app)
 
     def do_runserver(self, line=None):
-        if line is None: # default
-            self._runserver_cherrypy()
+        # default
+        if not line or line == 'paste':
+            self._runserver_paste_plain()
         elif line == 'wsgiref':
             self._runserver_wsgiref()
-        if line == 'cherrypy': # default
+        elif line == 'cherrypy':
             self._runserver_cherrypy()
         else:
             print 'Unknown argument: %s' % line
@@ -224,7 +225,7 @@ Otherwise arguments should be a space seperated list of work name ids
 
     def help_runserver(self, line=None):
         usage = \
-'''runserver [ cherrypy | wsgiref ]
+'''runserver [ paste (default) | cherrypy | wsgiref ]
 
 Start a webserver (of optional type) to provide the user interface to the
 shakespeare package.
