@@ -4,6 +4,7 @@ Web interface to view and analyze shakespeare texts.
 import os
 
 import paste.request
+import genshi
 import genshi.template
 
 import shakespeare.index
@@ -78,9 +79,7 @@ class ShakespeareWebInterface(object):
             tpath = item.get_cache_path('plain')
             tfileobj = file(tpath)
             ttext = shakespeare.format.format_text(tfileobj, format)
-            import genshi.input
-            import StringIO
-            thtml = genshi.input.HTMLParser(StringIO.StringIO(ttext))
+            thtml = genshi.XML(ttext)
             texts.append(thtml)
         # would have assumed this would be 100.0/numtexts but for some reason
         # you need to allow more room (maybe because of the scrollbars?)
@@ -88,7 +87,8 @@ class ShakespeareWebInterface(object):
         frame_width = 100.0/numtexts - 4.0
         template = template_loader.load('view.html')
         result = template.generate(frame_width=frame_width, texts=texts)
-        return self.response(result.render())
+        # set to not strip whitespace as o/w whitespace in pre tag gets removed
+        return self.response(result.render('html', strip_whitespace=False))
 
 
     def concordance_index(self):
