@@ -19,7 +19,7 @@ Foundation (http://www.okfn.org/).
 Contact the Project
 *******************
 
-Please mail shakespeare-info@okfn.org or join the okfn-discuss mailing list:
+Please mail info@okfn.org or join the okfn-discuss mailing list:
 
   http://lists.okfn.org/listinfo/okfn-discuss
 
@@ -33,10 +33,15 @@ Installation
 1.1: (EITHER) Install using setup.py (preferred)
 ------------------------------------------------
 
-1. Install setuptools: http://peak.telecommunity.com/DevCenter/EasyInstall#installation-instructions
-(download http://peak.telecommunity.com/dist/ez_setup.py and run it).
+1. Install setuptools:
 
-2. $ python setup.py install
+   <http://peak.telecommunity.com/DevCenter/EasyInstall#installation-instructions>
+
+   (Just download http://peak.telecommunity.com/dist/ez_setup.py and run it).
+
+2. Then do:
+
+   $ python setup.py install
 
 1.2 (OR) Get the code straight from subversion
 ------------------------------------------------
