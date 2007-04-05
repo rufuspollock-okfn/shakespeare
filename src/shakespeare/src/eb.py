@@ -16,15 +16,14 @@ class Wikimedia(object):
         # 28 pages starting at 772
         for ii in range(28):
             pagenum = 772 + ii
-            self.download(pagenum, check_success=False)
+            self.download(pagenum)
 
-    def download(self, page_number, check_success=True):
+    def download(self, page_number):
         url = self.make_url(page_number)
         if self.verbose:
             print 'Downloading: ', url
-        # problems with incomplete downloads from wikimedia for some files ...
-        # (d/l works from a browser but urllib.urlretrieve not working)
-        # This is an incomplete attempt to solve it
+        # problems with incomplete downloads from wikimedia for some files when
+        # using urllib.urlretrieve (d/l works from a browser or wget)
         # investigation showed we were getting stuff like for the problem files
         # X-Squid-Error: ERR_ACCESS_DENIED 0
         def download_success(url):
@@ -35,10 +34,9 @@ class Wikimedia(object):
                     and os.stat(local_path).st_size > expected_min_file_size
                     )
             return out
-        while(check_success and not download_success(url)):
-            # give the server a rest
-            # time.sleep(3)
-            cache.download_url(url, overwrite=True)
+        cache.download_url(url)
+        if not download_success(url):
+            print 'ERROR: failed to download %s successfully' % url
 
     def make_url(self, page_number):
         """Generate urls for wikimedia diffs.

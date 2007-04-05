@@ -32,7 +32,11 @@ class Cache(object):
         if overwrite or not(os.path.exists(localPath)):
             if not os.path.exists(dirpath):
                 os.makedirs(dirpath)
-            urllib.urlretrieve(url, localPath)
+            # use wget as it seems to work more reliably on wikimedia
+            # see extensive comments on issue in shakespeare.eb.Wikimedia class
+            # urllib.urlretrieve(url, localPath)
+            cmd = 'wget -O %s %s' % (localPath, url) 
+            os.system(cmd)
 
     def path_from_offset(self, offset):
         "Get full path of file in cache given by offset."
