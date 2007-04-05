@@ -68,4 +68,19 @@ class TestSite:
         url = self.siteurl + 'concordance/'
         web.go(url)
         web.code(200)
+
+    def test_annotation(self):
+        url = self.siteurl + 'annotation/'
+        web.go(url)
+        web.code(200)
+        print web.show()
+        web.title('Annotations')
  
+    def test_view_annotate(self):
+        url = self.siteurl + 'view?name=sonnets_gut&format=annotate'
+        web.go(url)
+        web.code(200)
+        web.title('Annotate')
+        print web.show()
+        web.find('THE SONNETS')
+

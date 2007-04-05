@@ -7,12 +7,16 @@ import paste.request
 import genshi
 import genshi.template
 
+import shakespeare
 import shakespeare.index
 import shakespeare.format
 import shakespeare.concordance
 import shakespeare.dm
 
-import shakespeare
+# import this after dm so that db connection is set
+import annotater.store
+import annotater.marginalia
+
 
 cfg = shakespeare.conf()
 template_path = cfg.get('web', 'template_dir')
@@ -44,8 +48,19 @@ class ShakespeareWebInterface(object):
             return self.concordance_word(word)
         elif self.path.startswith('/concordance'):
             return self.concordance_index()
+        elif self.path.startswith('/annotation'):
+            store = annotater.store.AnnotaterStore()
+            return store(environ, start_response)
+        elif self.path.startswith('/marginalia'):
+            media_dir = cfg.get('annotater', 'marginalia_files')
+            prefix = cfg.get('annotater', 'marginalia_prefix')
+            media_app = annotater.marginalia.MarginaliaMedia(
+                    media_dir,
+                    prefix)
+            return media_app(environ, start_response)
         else:
-            return response('Error')
+            # change to 404 or similar
+            return self.response('Error')
 
     def index(self):
         try:
@@ -85,11 +100,22 @@ class ShakespeareWebInterface(object):
         # you need to allow more room (maybe because of the scrollbars?)
         # result is not consistent across browsers ...
         frame_width = 100.0/numtexts - 4.0
-        template = template_loader.load('view.html')
-        result = template.generate(frame_width=frame_width, texts=texts)
+        if format == 'annotate':
+            template = template_loader.load('view_annotate.html')
+            prefix = cfg.get('annotater', 'marginalia_prefix')
+            marginalia_media = annotater.marginalia.get_media_header(prefix,
+                    name)
+            marginalia_media = genshi.HTML(marginalia_media)
+            result = template.generate(
+                    frame_width=frame_width,
+                    texts=texts, 
+                    marginalia_media=marginalia_media,
+                    )
+        else:
+            template = template_loader.load('view.html')
+            result = template.generate(frame_width=frame_width, texts=texts)
         # set to not strip whitespace as o/w whitespace in pre tag gets removed
         return self.response(result.render('html', strip_whitespace=False))
-
 
     def concordance_index(self):
         stats = shakespeare.concordance.Statistics()

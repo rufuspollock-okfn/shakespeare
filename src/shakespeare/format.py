@@ -12,6 +12,8 @@ def format_text(fileobj, format):
         formatter = TextFormatterPlain(fileobj)
     elif format == 'lineno':
         formatter = TextFormatterLineno(fileobj)
+    elif format == 'annotate':
+        formatter = TextFormatterAnnotate(fileobj)
     else:
         raise ValueError('Unknown format: %s' % format)
     return formatter.format()
@@ -66,3 +68,35 @@ class TextFormatterLineno(TextFormatter):
             result += u'<pre id="%s">%s %s</pre>\n' % (count, tlineno, tline)
             count += 1
         return result
+
+
+class TextFormatterAnnotate(TextFormatter):
+    """Format the text in a manner suitable for marginalia annotation.
+    """
+    entry_template = u'''
+    <div id="%(id)s" class="hentry">
+        <h3 class="entry-title">%(title)s</h3>
+        <div class="entry-content">
+            %(content)s
+        </div><!-- /entry-content -->
+        <div class="notes">
+            <button class="createAnnotation" onclick="createAnnotation('m1',true)" title="Click here to create an annotation">&gt;</button>
+            <ol>
+                <li></li>
+            </ol>
+        </div><!-- /notes -->
+    </div><!-- /hentry -->
+'''
+
+    def format(self):
+        line_numberer = TextFormatterLineno(self.file)
+        text_with_linenos = line_numberer.format()
+        # todo chunking
+        values = {
+                'content' : text_with_linenos,
+                'title' : 'Test Stuff',
+                'id' : 'm2',
+                }
+        result = self.entry_template % values
+        return result
+

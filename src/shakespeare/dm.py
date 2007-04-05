@@ -13,18 +13,25 @@ import shakespeare
 import shakespeare.cache
 
 uri = shakespeare.conf().get('db', 'uri')
-__connection__ = sqlobject.connectionForURI(uri)
+connection = sqlobject.connectionForURI(uri)
+sqlobject.sqlhub.processConnection = connection
+
+# import other sqlobject items
+from annotater.model import Annotation
+import annotater.model
 
 # note we run this at bottom of module to auto create db tables on import
 def createdb():
     Material.createTable(ifNotExists=True)
     Concordance.createTable(ifNotExists=True)
     Statistic.createTable(ifNotExists=True)
+    annotater.model.createdb()
 
 def cleandb():
     Statistic.dropTable(ifExists=True)
     Concordance.dropTable(ifExists=True)
     Material.dropTable(ifExists=True)
+    annotater.model.cleandb()
 
 def rebuilddb():
     cleandb()
