@@ -14,7 +14,5 @@ uri = sqlite:/:memory:
 template_dir = ./src/shakespeare/template
 
 [annotater]
-# path on disk to marginalia files
-marginalia_files = ./marginalia
 # url at which marginalia files (css/js etc) should be mounted
 marginalia_prefix = /marginalia

@@ -52,11 +52,8 @@ class ShakespeareWebInterface(object):
             store = annotater.store.AnnotaterStore()
             return store(environ, start_response)
         elif self.path.startswith('/marginalia'):
-            media_dir = cfg.get('annotater', 'marginalia_files')
             prefix = cfg.get('annotater', 'marginalia_prefix')
-            media_app = annotater.marginalia.MarginaliaMedia(
-                    media_dir,
-                    prefix)
+            media_app = annotater.marginalia.MarginaliaMedia(prefix)
             return media_app(environ, start_response)
         else:
             # change to 404 or similar
@@ -103,8 +100,9 @@ class ShakespeareWebInterface(object):
         if format == 'annotate':
             template = template_loader.load('view_annotate.html')
             prefix = cfg.get('annotater', 'marginalia_prefix')
+            ## TODO: remove hardcoded application fqdn
             marginalia_media = annotater.marginalia.get_media_header(prefix,
-                    name)
+                    'http://localhost:8080/')
             marginalia_media = genshi.HTML(marginalia_media)
             result = template.generate(
                     frame_width=frame_width,

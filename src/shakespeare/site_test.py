@@ -83,4 +83,12 @@ class TestSite:
         web.title('Annotate')
         print web.show()
         web.find('THE SONNETS')
+        web.find('rest-annotate.js')
+
+    def test_marginalia(self):
+        url = self.siteurl + 'marginalia/rest-annotate.js'
+        web.go(url)
+        web.code(200)
+        print web.show()
+        web.find('AnnotationService')
 
