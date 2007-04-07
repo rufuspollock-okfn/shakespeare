@@ -39,15 +39,6 @@ class TestTextFormatterLineno:
         out = self.formatter.format()
         assert out == self.exp
 
-def test_text_format():
-    formatlist = [ ('plain', TestTextFormatterPlain),
-        ('lineno', TestTextFormatterLineno),
-        ('annotate', TestTextFormatterAnnotate),
-        ]
-    for item in formatlist:
-        fileobj = StringIO.StringIO(starttext.encode('utf-8'))
-        tout = shakespeare.format.format_text(fileobj, item[0])
-        assert tout == item[1].exp
 
 class TestTextFormatterAnnotate:
 
@@ -61,8 +52,12 @@ class TestTextFormatterAnnotate:
 <pre id="1">1    blah &amp; blah</pre>
 
         </div><!-- /entry-content -->
+        <p class="metadata">
+            <a rel="bookmark" href="http://localhost:8080/#m2">#</a>
+            <span class="author">Nemo</span>
+        </p>
         <div class="notes">
-            <button class="createAnnotation" onclick="createAnnotation('m1',true)" title="Click here to create an annotation">&gt;</button>
+            <button class="createAnnotation" onclick="createAnnotation('m2',true)" title="Click here to create an annotation">&gt;</button>
             <ol>
                 <li></li>
             </ol>
@@ -79,4 +74,15 @@ class TestTextFormatterAnnotate:
     def test_valid_xml(self):
         import genshi
         outxml = genshi.XML(self.exp)
+
+
+def test_text_format():
+    formatlist = [ ('plain', TestTextFormatterPlain),
+        ('lineno', TestTextFormatterLineno),
+        ('annotate', TestTextFormatterAnnotate),
+        ]
+    for item in formatlist:
+        fileobj = StringIO.StringIO(starttext.encode('utf-8'))
+        tout = shakespeare.format.format_text(fileobj, item[0])
+        assert tout == item[1].exp
 

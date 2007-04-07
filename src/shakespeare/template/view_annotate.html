@@ -38,6 +38,12 @@
   </head>
 
   <div py:match="content">
+    <div id="annotation-controls">
+      <form>
+        <input type="button" onclick='showAllAnnotations( "http://localhost:8080/#*")' value="Show Annotations" /><br />
+        <input type="button" onclick='hideAllAnnotations( "http://localhost:8080/#*")' value="Hide Annotations" /><br />
+      </form>
+    </div>
     <div py:if="len(texts) == 1" class="singleview">
 			${texts[0]}
     </div>

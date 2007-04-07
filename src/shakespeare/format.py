@@ -79,8 +79,12 @@ class TextFormatterAnnotate(TextFormatter):
         <div class="entry-content">
             %(content)s
         </div><!-- /entry-content -->
+        <p class="metadata">
+            <a rel="bookmark" href="%(page_url)s#%(id)s">#</a>
+            <span class="author">%(author)s</span>
+        </p>
         <div class="notes">
-            <button class="createAnnotation" onclick="createAnnotation('m1',true)" title="Click here to create an annotation">&gt;</button>
+            <button class="createAnnotation" onclick="createAnnotation('%(id)s',true)" title="Click here to create an annotation">&gt;</button>
             <ol>
                 <li></li>
             </ol>
@@ -96,6 +100,8 @@ class TextFormatterAnnotate(TextFormatter):
                 'content' : text_with_linenos,
                 'title' : 'Test Stuff',
                 'id' : 'm2',
+                'page_url' : 'http://localhost:8080/',
+                'author' : 'Nemo',
                 }
         result = self.entry_template % values
         return result
