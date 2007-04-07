@@ -1,5 +1,3 @@
-import ez_setup
-ez_setup.use_setuptools()
 from setuptools import setup, find_packages
 
 import sys
@@ -14,11 +12,11 @@ setup(
     scripts = ['bin/shakespeare-admin'],
     include_package_data = True,
 
-    install_requires = ['SQLObject>=0.6,<=0.7.99'],
+    install_requires = ['SQLObject>=0.6'],
     # don't require cherrypy and kid as they are not needed for the core
     # library -- only for the web interface
     extras_require = {
-        'web_gui' : ['CherryPy>=0.3', 'Genshi>=0.3'],
+        'web_gui' : ['Paste>=0.1', 'Genshi>=0.3', 'annotater>=0.1' ],
         },
 
     # metadata for upload to PyPI
@@ -48,7 +46,7 @@ Foundation (http://www.okfn.org/).
     url = "http://www.openshakespeare.org/", 
     download_url = "http://www.openshakespeare.org/code/",
     classifiers = [
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Environment :: Console',
         'Environment :: Web',
         'Intended Audience :: Developers',
