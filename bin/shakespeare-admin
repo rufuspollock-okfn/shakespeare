@@ -177,17 +177,6 @@ Otherwise arguments should be a space seperated list of work name ids
     3. make_concordance'''
         print usage
 
-    def _runserver_cherrypy(self):
-        import shakespeare.cherrypy_handler
-        import cherrypy
-        configDict = {
-                'server.socketPort' : 8080,
-                'server.threadPool' : 10,
-                'server.showTracebacks' : True,
-                }
-        cherrypy.config.update(configDict)
-        cherrypy.quickstart(shakespeare.cherrypy_handler.ShakespeareWebInterface())
-
     def _runserver_wsgiref(self):
         import wsgiref.simple_server
         import shakespeare.wsgi
@@ -217,15 +206,13 @@ Otherwise arguments should be a space seperated list of work name ids
             self._runserver_paste_plain()
         elif line == 'wsgiref':
             self._runserver_wsgiref()
-        elif line == 'cherrypy':
-            self._runserver_cherrypy()
         else:
             print 'Unknown argument: %s' % line
             self.help_runserver()
 
     def help_runserver(self, line=None):
         usage = \
-'''runserver [ paste (default) | cherrypy | wsgiref ]
+'''runserver [ paste (default) | wsgiref ]
 
 Start a webserver (of optional type) to provide the user interface to the
 shakespeare package.
