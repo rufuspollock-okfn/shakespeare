@@ -9,31 +9,27 @@ def format_text(fileobj, format):
     """
     formatter = None
     if format == 'plain':
-        formatter = TextFormatterPlain(fileobj)
+        formatter = TextFormatterPlain()
     elif format == 'lineno':
-        formatter = TextFormatterLineno(fileobj)
+        formatter = TextFormatterLineno()
     elif format == 'annotate':
-        formatter = TextFormatterAnnotate(fileobj)
+        formatter = TextFormatterAnnotate()
     else:
         raise ValueError('Unknown format: %s' % format)
-    return formatter.format()
+    return formatter.format(fileobj)
 
 
 class TextFormatter(object):
     """Abstract base class for formatters.
     """
 
-    def __init__(self, file=None):
-        """
-        @file: file-like object containing a text in plain txt with utf-8
-        encoding
-        """
-        self.file = file
-
-    def format(self):
+    def format(self, file):
         """Format the supplied text.
 
-        The returned string will be in unicode format with utf-8 encoding
+        @file: file-like object containing a text in plain txt with utf-8
+        encoding
+
+        @return a string in unicode format with utf-8 encoding
         """
         raise NotImplementedError()
 
@@ -44,7 +40,8 @@ class TextFormatterPlain(TextFormatter):
     """Format the text as plain text (in an html <pre> tag).
     """
 
-    def format(self):
+    def format(self, file):
+        self.file = file
         out = unicode(self.file.read(), 'utf-8')
         out = self.escape_chars(out)
         out = \
@@ -58,7 +55,8 @@ class TextFormatterLineno(TextFormatter):
     """Format the text to have line numbers.
     """
 
-    def format(self):
+    def format(self, file):
+        self.file = file
         result = ''
         count = 0
         for line in self.file.readlines():
@@ -70,39 +68,22 @@ class TextFormatterLineno(TextFormatter):
         return result
 
 
+import annotater.marginalia
 class TextFormatterAnnotate(TextFormatter):
     """Format the text in a manner suitable for marginalia annotation.
     """
-    entry_template = u'''
-    <div id="%(id)s" class="hentry">
-        <h3 class="entry-title">%(title)s</h3>
-        <div class="entry-content">
-            %(content)s
-        </div><!-- /entry-content -->
-        <p class="metadata">
-            <a rel="bookmark" href="%(page_url)s#%(id)s">#</a>
-            <span class="author">%(author)s</span>
-        </p>
-        <div class="notes">
-            <button class="createAnnotation" onclick="createAnnotation('%(id)s',true)" title="Click here to create an annotation">&gt;</button>
-            <ol>
-                <li></li>
-            </ol>
-        </div><!-- /notes -->
-    </div><!-- /hentry -->
-'''
 
-    def format(self):
-        line_numberer = TextFormatterLineno(self.file)
-        text_with_linenos = line_numberer.format()
+    def format(self, file, **kwargs):
+        self.file = file
         # todo chunking
+        line_numberer = TextFormatterLineno()
+        text_with_linenos = line_numberer.format(self.file)
         values = {
                 'content' : text_with_linenos,
-                'title' : 'Test Stuff',
-                'id' : 'm2',
-                'page_url' : 'http://localhost:8080/',
-                'author' : 'Nemo',
+                'id' : 'm0',
                 }
-        result = self.entry_template % values
+        for key in kwargs:
+            values[key] = kwargs[key]
+        result = annotater.marginalia.format_entry(**values)
         return result
 

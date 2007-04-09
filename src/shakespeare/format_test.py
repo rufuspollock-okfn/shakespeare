@@ -17,69 +17,55 @@ class TestTextFormatter:
 
 class TestTextFormatterPlain:
     fileobj = StringIO.StringIO(starttext.encode('utf-8'))
-    formatter = shakespeare.format.TextFormatterPlain(fileobj)
+    formatter = shakespeare.format.TextFormatterPlain()
     exp = u'''
 <pre>
     %s
 </pre>''' % sometext
 
     def test_format(self):
-        out = self.formatter.format()
+        out = self.formatter.format(self.fileobj)
         assert out == self.exp
 
 
 class TestTextFormatterLineno:
     fileobj = StringIO.StringIO(starttext.encode('utf-8'))
-    formatter = shakespeare.format.TextFormatterLineno(fileobj)
+    formatter = shakespeare.format.TextFormatterLineno()
     exp = u'''<pre id="0">0    Blah \xe6</pre>
 <pre id="1">1    blah &amp; blah</pre>
 '''
 
     def test_format(self):
-        out = self.formatter.format()
+        out = self.formatter.format(self.fileobj)
         assert out == self.exp
 
 
 class TestTextFormatterAnnotate:
 
     fileobj = StringIO.StringIO(starttext.encode('utf-8'))
-    formatter = shakespeare.format.TextFormatterAnnotate(fileobj)
-    exp = u'''
-    <div id="m2" class="hentry">
-        <h3 class="entry-title">Test Stuff</h3>
-        <div class="entry-content">
-            <pre id="0">0    Blah \xe6</pre>
-<pre id="1">1    blah &amp; blah</pre>
-
-        </div><!-- /entry-content -->
-        <p class="metadata">
-            <a rel="bookmark" href="http://localhost:8080/#m2">#</a>
-            <span class="author">Nemo</span>
-        </p>
-        <div class="notes">
-            <button class="createAnnotation" onclick="createAnnotation('m2',true)" title="Click here to create an annotation">&gt;</button>
-            <ol>
-                <li></li>
-            </ol>
-        </div><!-- /notes -->
-    </div><!-- /hentry -->
-'''
+    formatter = shakespeare.format.TextFormatterAnnotate()
     
     def test_format(self):
-        out = self.formatter.format()
+        self.fileobj.seek(0)
+        page_url = 'http://somethingelse.com/'
+        newtitle = 'New Title'
+        out = self.formatter.format(
+                self.fileobj,
+                page_uri=page_url,
+                title=newtitle,
+                )
         print '"%s"' % out.encode('utf-8')
-        print '"%s"' % self.exp.encode('utf-8')
-        assert out == self.exp
-
-    def test_valid_xml(self):
+        assert page_url in out
+        assert newtitle in out
+        assert TestTextFormatterLineno.exp in out
+        # test valid xml
         import genshi
-        outxml = genshi.XML(self.exp)
+        outxml = genshi.XML(out)
 
 
 def test_text_format():
     formatlist = [ ('plain', TestTextFormatterPlain),
         ('lineno', TestTextFormatterLineno),
-        ('annotate', TestTextFormatterAnnotate),
         ]
     for item in formatlist:
         fileobj = StringIO.StringIO(starttext.encode('utf-8'))

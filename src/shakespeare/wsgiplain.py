@@ -2,6 +2,7 @@
 Web interface to view and analyze shakespeare texts.
 """
 import os
+import wsgiref.util
 
 import paste.request
 import genshi
@@ -33,6 +34,7 @@ class ShakespeareWebInterface(object):
 
     def __call__(self, environ, start_response):
         self.path = environ['PATH_INFO']
+        self.environ = environ
         self.start_response = start_response
         self.queryinfo = paste.request.parse_formvars(environ)
         if self.path == '/':
@@ -74,6 +76,8 @@ class ShakespeareWebInterface(object):
         return self.response(result)
 
     def view(self, name, format='plain'):
+        if format == 'annotate':
+            return self.view_annotate(name)
         import shakespeare.dm
         namelist = name.split()
         numtexts = len(namelist)
@@ -97,22 +101,37 @@ class ShakespeareWebInterface(object):
         # you need to allow more room (maybe because of the scrollbars?)
         # result is not consistent across browsers ...
         frame_width = 100.0/numtexts - 4.0
-        if format == 'annotate':
-            template = template_loader.load('view_annotate.html')
-            prefix = cfg.get('annotater', 'marginalia_prefix')
-            ## TODO: remove hardcoded application fqdn
-            marginalia_media = annotater.marginalia.get_media_header(prefix,
-                    'http://localhost:8080/')
-            marginalia_media = genshi.HTML(marginalia_media)
-            result = template.generate(
-                    frame_width=frame_width,
-                    texts=texts, 
-                    marginalia_media=marginalia_media,
-                    )
-        else:
-            template = template_loader.load('view.html')
-            result = template.generate(frame_width=frame_width, texts=texts)
+        template = template_loader.load('view.html')
+        result = template.generate(frame_width=frame_width, texts=texts)
         # set to not strip whitespace as o/w whitespace in pre tag gets removed
+        return self.response(result.render('html', strip_whitespace=False))
+
+    def view_annotate(self, name):
+        import shakespeare.dm
+        # only one name here ...
+        textobj = shakespeare.dm.Material.byName(name)
+        tpath = textobj.get_cache_path('plain')
+        tfileobj = file(tpath)
+        formatter = shakespeare.format.TextFormatterAnnotate()
+        # not perfect in that we might have the application mounted somewhere
+        annotation_store_fqdn = wsgiref.util.application_uri(self.environ)
+        page_url = wsgiref.util.request_uri(self.environ)
+        ttext = formatter.format(tfileobj, page_uri=page_url)
+        thtml = genshi.HTML(ttext)
+
+        template = template_loader.load('view_annotate.html')
+        prefix = cfg.get('annotater', 'marginalia_prefix')
+        marginalia_media = annotater.marginalia.get_media_header(prefix,
+                annotation_store_fqdn,
+                page_url)
+        buttons = annotater.marginalia.get_buttons(page_url)
+        marginalia_media = genshi.HTML(marginalia_media)
+        buttons = genshi.HTML(buttons)
+        result = template.generate(
+                text_with_annotation=thtml,
+                marginalia_media=marginalia_media,
+                annotation_buttons=buttons,
+                )
         return self.response(result.render('html', strip_whitespace=False))
 
     def concordance_index(self):
