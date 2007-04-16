@@ -1,4 +1,49 @@
-Use of this file is deprecated. Please see the relevant page of the trac
-installation:
+v0.4: 2007-04-16
+================
 
-  <http://project.knowledgeforge.net/shakespeare/trac/roadmap?show=all>
+  * Annotation of texts (js-based in browser) (ticket:20, ticket:21)
+    (<http://www.openshakespeare.org/2007/04/10/16/>)
+  * Switch to unicode for internal string handling (resolves ticket:23: some
+    texts breaking the viewer)
+  * Add functional tests for the web interface (ticket:11)
+  * Substantial improvements to speed of concordance (ticket:22)
+    (<http://www.openshakespeare.org/2007/01/03/improvements-to-the-concordance/>)
+  * Switch to genshi templates from kid
+  * Switch to Pylons (WSGI) from cherrypy
+
+Outstanding Issues
+------------------
+
+  * Annotation cannot handle long texts because of javascript performance
+    issues
+
+
+v0.3: 2006-10-04
+================
+
+  * Can now view mutiple texts side by side (ticket:15). See it in action at:
+    <http://demo.openshakespeare.org/view?name=othello_gut_f+othello_gut>
+  * Now include moby/bosak versions of shakespeare as well as gutenberg
+    (ticket:10) (though more work remains to be done to process these versions
+    to plaintext and html)
+  * Fix bug whereby we were missing some of the available gutenberg texts 
+    (ticket:18)
+  * Install the shakespeare python package (ticket:16)
+  * Move to py.test from unittest
+  * New project website at <http://www.openshakespeare.org/>
+
+Outstanding Issues
+------------------
+
+  * Several of the source texts (all of them Gutenberg folios) seem to 
+    break the viewer due to kid (the templating system) complaining about about
+    'not well-formed (invalid token) xml'. Any help in tracking this down would
+    be greatly appreciated.
+
+
+v0.2 2006-07-16
+===============
+
+  * Database backend with proper domain model (ticket:6)
+  * Text snippets in concordance system and links through to source (ticket:12)
+  * Sources document (ticket:5)
