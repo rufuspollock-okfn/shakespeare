@@ -9,7 +9,7 @@ v0.4: 2007-04-16
   * Substantial improvements to speed of concordance (ticket:22)
     (<http://www.openshakespeare.org/2007/01/03/improvements-to-the-concordance/>)
   * Switch to genshi templates from kid
-  * Switch to Pylons (WSGI) from cherrypy
+  * Switch to plain WSGI from cherrypy
 
 Outstanding Issues
 ------------------
