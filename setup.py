@@ -48,7 +48,7 @@ Foundation (http://www.okfn.org/).
     classifiers = [
         'Development Status :: 4 - Beta',
         'Environment :: Console',
-        'Environment :: Web',
+        'Environment :: Web Environment',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
