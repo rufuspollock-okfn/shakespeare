@@ -2,7 +2,7 @@ v0.4: 2007-04-16
 ================
 
   * Annotation of texts (js-based in browser) (ticket:20, ticket:21)
-    (<http://www.openshakespeare.org/2007/04/10/16/>)
+    (<http://www.openshakespeare.org/2007/04/10/annotation-is-working/>)
   * Switch to unicode for internal string handling (resolves ticket:23: some
     texts breaking the viewer)
   * Add functional tests for the web interface (ticket:11)
