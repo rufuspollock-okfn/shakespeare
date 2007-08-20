@@ -7,8 +7,7 @@ from shakespeare import __version__, __application_name__
 setup(
     name = __application_name__,
     version = __version__,
-    package_dir = { '' : 'src' },
-    packages = find_packages('src'),
+    packages = find_packages(),
     scripts = ['bin/shakespeare-admin'],
     include_package_data = True,
 
