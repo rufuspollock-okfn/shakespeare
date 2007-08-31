@@ -52,3 +52,93 @@ class Wikimedia(object):
         fn = 'ED4A' + urlnum + '.TIF'
         return base_path + volume + fn 
 
+
+import os
+import shutil
+
+class BasicCommand(object):
+
+    def __init__(self):
+        self.verbose = True
+
+    def _p(self, msg, force=False):
+        if self.verbose or force:
+            print(msg)
+    
+    def _run(self, system_cmd):
+        self._p(system_cmd)
+        os.system(system_cmd)
+
+    def execute(self):
+        '''Stub method: To be implemented in inheriting classes'''
+
+class OcrEbCommand(BasicCommand):
+    '''Convert Encyclopaedia Britannica scans to plain text
+
+    This requires ImageMagick convert utility to be installed.
+    '''
+
+    def __init__(self, src_dir, dest_dir):
+        '''
+        @param src_dir: directory where source tifs are located.
+        @param dest_dir: where to put out text files (named after tifs).
+        '''
+        super(OcrEbCommand, self).__init__()
+        self.src_dir = src_dir
+        self.dest_dir = dest_dir
+
+    def chop(self, fn, out):
+        # out should use _%d pattern for convert
+        chop_cmd = 'convert +gravity -crop 50x100% ' + fn + ' ' + out
+        self._run(chop_cmd)
+
+    def ocr(self, scan, out_file_path):
+        cmd = 'tesseract %s %s' % (scan, out_file_path)
+        self._run(cmd)
+
+    def ocr_all(self):
+        import tempfile
+        tmpdir = tempfile.mkdtemp()
+        # assume only have tifs in src directory
+        try:
+            for fn in os.listdir(self.src_dir):
+                print fn
+                src = os.path.join(self.src_dir, fn)
+                base, ext = text_file = os.path.splitext(fn)
+                intermediate_tif = os.path.join(tmpdir, base + '_%d.tif')
+                self.chop(src, intermediate_tif)
+                for extra in [ '0', '1' ]:
+                    tif_fn = base + '_' + extra + '.tif'
+                    tif_fp = os.path.join(tmpdir, tif_fn)
+                    # no need for extra .txt as added by tesseract
+                    dest = os.path.join(self.dest_dir, tif_fn)
+                    self.ocr(tif_fp, dest)
+        finally:
+            shutil.rmtree(tmpdir)
+
+    def put_text_files_together(self, out_file_path):
+        outfo = file(out_file_path, 'w')
+        # will list in correct order ...
+        for fn in os.listdir(self.dest_dir):
+            if fn.startswith('ED4A'):
+                srcpath = os.path.join(self.dest_dir, fn)
+                startmsg = '### START: %s ###\n\n' % fn
+                endmsg = '### END: %s ###\n\n' % fn
+                outfo.write(startmsg)
+                outfo.write(file(srcpath).read())
+                outfo.write(endmsg)
+        outfo.close()
+    
+    def execute(self):
+        self.ocr_all()
+
+
+if __name__ == '__main__':
+    # TODO: move this into shakespeare-admin
+    print 'Starting ...'
+    src_dir = '/Users/rgrp/svk/shakespeare/trunk/cache/upload.wikimedia.org/wikipedia/commons/scans/EB1911_tiff/VOL24%20SAINTE-CLAIRE%20DEVILLE-SHUTTLE'
+    dest_dir = '/Users/rgrp/svk/shakespeare/trunk/ocr/processed' 
+    ocrcmd = OcrEbCommand(src_dir, dest_dir)
+    # ocrcmd.execute()
+    ocrcmd.put_text_files_together('here.txt')
+
