@@ -122,7 +122,9 @@ class OcrEbCommand(BasicCommand):
         for fn in os.listdir(self.dest_dir):
             if fn.startswith('ED4A'):
                 srcpath = os.path.join(self.dest_dir, fn)
-                startmsg = '### START: %s ###\n\n' % fn
+                srcurl = 'http://upload.wikimedia.org/wikipedia/commons/scans/EB1911_tiff/VOL24%20SAINTE-CLAIRE%20DEVILLE-SHUTTLE/' + fn[:-10] + '.TIF'
+                startmsg = '### START: %s ###\n' % fn
+                startmsg += '#### Source: %s \n\n' % srcurl
                 endmsg = '### END: %s ###\n\n' % fn
                 outfo.write(startmsg)
                 outfo.write(file(srcpath).read())
