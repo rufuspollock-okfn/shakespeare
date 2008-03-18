@@ -4,18 +4,12 @@ import cmd
 import os
 import StringIO
 
-import shakespeare.index
-
 class ShakespeareAdmin(cmd.Cmd):
     """
     TODO: self.verbose option and associated self._print
     """
 
     prompt = 'The Bard > '
-
-    def __init__(self):
-        cmd.Cmd.__init__(self) # cmd.Cmd is not a new style class
-        self._index = shakespeare.index.all
 
     def run_interactive(self, line=None):
         """Run an interactive session.
@@ -49,20 +43,6 @@ Open Shakespeare is open-knowledge and open-source. See COPYING for details.
         print ''
         sys.exit()
 
-    def _filter_index(self, line):
-        """Filter items in index return only those whose id (url) is in line
-        If line is empty or None return all items
-        """
-        if line:
-            textsToAdd = []
-            textNames = line.split()
-            for item in self._index:
-                if item.name in textNames:
-                    textsToAdd.append(item)
-            return textsToAdd
-        else:
-            return self._index
-    
     # =================
     # Commands
 
@@ -117,8 +97,27 @@ Download and process all Project Gutenberg shakespeare texts"""
 Download and process all Moby/Bosak shakespeare texts'''
         print usage 
 
+    def _init_index(self):
+        import shakespeare.index
+        self._index = shakespeare.index.all
+
+    def _filter_index(self, line):
+        """Filter items in index return only those whose id (url) is in line
+        If line is empty or None return all items
+        """
+        if line:
+            textsToAdd = []
+            textNames = line.split()
+            for item in self._index:
+                if item.name in textNames:
+                    textsToAdd.append(item)
+            return textsToAdd
+        else:
+            self._init_index()
+            return self._index
     
     def do_print_index(self, line):
+        self._init_index()
         header = \
 '''          +-------------------+
           | Index of Material |
@@ -135,6 +134,7 @@ Download and process all Moby/Bosak shakespeare texts'''
         print usage
 
     def do_make_concordance(self, line=None):
+        self._init_index()
         print 'Making concordance (this may take some time ...):'
         from shakespeare.concordance import ConcordanceBuilder
         import time
