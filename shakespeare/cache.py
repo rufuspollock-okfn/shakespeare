@@ -34,9 +34,12 @@ class Cache(object):
                 os.makedirs(dirpath)
             # use wget as it seems to work more reliably on wikimedia
             # see extensive comments on issue in shakespeare.eb.Wikimedia class
-            # urllib.urlretrieve(url, localPath)
-            cmd = 'wget -O %s %s' % (localPath, url) 
-            os.system(cmd)
+            # rgrp: 2008-03-18 use urllib rather than wget despite these issues
+            # as wget is fairly specific to linux/unix and even there may not
+            # be installed.
+            # cmd = 'wget -O %s %s' % (localPath, url) 
+            # os.system(cmd)
+            urllib.urlretrieve(url, localPath)
 
     def path_from_offset(self, offset):
         "Get full path of file in cache given by offset."
