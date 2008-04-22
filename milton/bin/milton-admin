@@ -1,0 +1,214 @@
+#!/usr/bin/env python
+
+import cmd
+import os
+import StringIO
+
+import milton.index
+
+class MiltonAdmin(cmd.Cmd):
+    """
+    TODO: self.verbose option and associated self._print
+    """
+
+    prompt = 'The Bard > '
+
+    def __init__(self):
+        cmd.Cmd.__init__(self) # cmd.Cmd is not a new style class
+        self._index = milton.index.all
+
+    def run_interactive(self, line=None):
+        """Run an interactive session.
+        """
+        print 'Welcome to milton-admin interactive mode\n'
+        self.do_about()
+        print 'Type:  "?" or "help" for help on commands.\n'
+        while 1:
+            try:
+                self.cmdloop()
+                break
+            except KeyboardInterrupt:
+                raise
+
+    def do_help(self, line=None):
+        cmd.Cmd.do_help(self, line)
+
+    def do_about(self, line=None):
+        import milton
+        version = milton.__version__
+        about = \
+'''Open Milton version %s. Copyright the Open Knowledge Foundation.
+Open Milton is open-knowledge and open-source. See COPYING for details.
+''' % version
+        print about
+
+    def do_quit(self, line=None):
+        sys.exit()
+
+    def do_EOF(self, *args):
+        print ''
+        sys.exit()
+
+    def _filter_index(self, line):
+        """Filter items in index return only those whose id (url) is in line
+        If line is empty or None return all items
+        """
+        if line:
+            textsToAdd = []
+            textNames = line.split()
+            for item in self._index:
+                if item.name in textNames:
+                    textsToAdd.append(item)
+            return textsToAdd
+        else:
+            return self._index
+    
+    # =================
+    # Commands
+
+    def do_db(self, line=None):
+        actions = [ 'create', 'clean', 'rebuild' ]
+        if line is None or line not in actions:
+            self.help_db()
+            return 1
+        import milton.dm
+        milton.dm.__dict__[line+'db']()
+
+    def help_db(self, line=None):
+        usage = \
+'''db <action>
+
+Where action is one of create, clean, rebuild.'''
+        print usage
+    
+    def do_gutenberg(self, line=None):
+        import milton.gutenberg
+        helper = milton.gutenberg.Helper(verbose=True)
+        if not line:
+            helper.execute()
+        elif line == 'print_index':
+            import pprint
+            pprint.pprint(helper.get_index())
+        else:
+            msg = 'Unknown argument %s' % line
+            raise Exception(msg)
+
+    def help_gutenberg(self, line=None):
+        usage = \
+"""
+Download and process all Project Gutenberg Milton texts"""
+        print usage 
+
+
+    
+    def do_print_index(self, line):
+        header = \
+'''          +-------------------+
+          | Index of Material |
+          +-------------------+
+
+'''
+        print header
+        for row in self._index:
+            print row.name.ljust(35), row.title
+
+    def help_print_index(self, line=None):
+        usage = \
+'''Print index of Milton texts to stdout'''
+        print usage
+
+    def do_make_concordance(self, line=None):
+        print 'Making concordance (this may take some time ...):'
+        from milton.concordance import ConcordanceBuilder
+        import time
+        start = end = 0
+        start = time.time()
+        cc = ConcordanceBuilder()
+        textsToAdd = []
+        if line is not None:
+            textsToAdd = self._filter_index(line)
+        else:
+            def gut_non_folio(material):
+                return '_gut' in material.name and 'gut_f' not in material.name
+            textsToAdd = filter(gut_non_folio, self._index) 
+        for item in textsToAdd:
+            print 'Adding: %s (%s)' % (item.name, item.title)
+            cc.add_text(item.name)
+        end = time.time()
+        timetaken = end - start
+        print 'Finished. Time taken was %ss' % timetaken
+
+    def help_make_concordance(self, line=None):
+        usage = \
+'''Create a concordance
+
+If no arguments supplied then use all non-folio gutenberg shakespeare texts.
+Otherwise arguments should be a space seperated list of work name ids
+'''
+        print usage
+
+    def do_init(self, line=None):
+        self.do_gutenberg(line)
+        self.do_make_concordance(line)
+
+    def help_init(self, line=None):
+        usage = \
+'''Convenience function that sets everything up by running:
+    1. gutenberg
+    3. make_concordance'''
+        print usage
+
+    def _runserver_wsgiref(self):
+        import wsgiref.simple_server
+        import milton.wsgi
+        app = milton.wsgi.app_factory(None)
+        port = 8080
+        httpd = wsgiref.simple_server.make_server('', port, app)
+        print "Serving HTTP on port %s..." % port
+        httpd.serve_forever()
+
+    def _runserver_paste_plain(self):
+        import milton.wsgi
+        import paste.httpserver
+        app = milton.wsgi.app_factory(None)
+        paste.httpserver.serve(app)
+
+    def _runserver_paste_deploy(self):
+        conf = milton.conf()
+        paste_conf_file = os.path.abspath(conf.get('web', 'paste_conf_file'))
+        import paste.deploy
+        app = paste.deploy.loadapp('config:%s' % paste_conf_file)
+        import paste.httpserver
+        paste.httpserver.serve(app)
+
+    def do_runserver(self, line=None):
+        # default
+        if not line or line == 'paste':
+            self._runserver_paste_plain()
+        elif line == 'wsgiref':
+            self._runserver_wsgiref()
+        else:
+            print 'Unknown argument: %s' % line
+            self.help_runserver()
+
+    def help_runserver(self, line=None):
+        usage = \
+'''runserver [ paste (default) | wsgiref ]
+
+Start a webserver (of optional type) to provide the user interface to the
+Milton package.
+
+The resulting website should be available at http://localhost:8080
+'''
+        print usage
+
+
+if __name__ == '__main__':
+    import sys
+    adminCmd = MiltonAdmin()
+    if len(sys.argv) < 2:
+        adminCmd.run_interactive()
+    else:
+        args = ' '.join(sys.argv[1:])
+        args = args.replace('-','_')
+        adminCmd.onecmd(args)

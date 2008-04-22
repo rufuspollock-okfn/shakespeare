@@ -1,0 +1,51 @@
+<html xmlns:py="http://genshi.edgewall.org/"
+  xmlns:xi="http://www.w3.org/2001/XInclude">
+
+  <py:def function="page_title">View Works</py:def>
+
+    <style type="text/css" py:def="page_specific_css">
+      body
+      {
+        margin: 0;
+        padding: 0;
+      }
+
+      div.frame
+      {
+        height: 90%;
+        overflow: auto;
+        float: left;
+        padding: 1em;
+      }
+
+      div.singleview
+      {
+        padding: 2em;
+        padding-left: 10%;
+        padding-right: 10%;
+      }
+
+      /* ensure we take up the whole width */
+      div.multiview
+      {
+        width: 100%;
+        height: 90%;
+      }
+    </style>
+
+  
+
+  <div py:match="content">
+    <div py:if="len(texts) == 1" class="singleview">
+			${texts[0]}
+    </div>
+    <div class="multiview" py:if="len(texts) > 1" >
+      <div py:for="text in texts" class="frame"
+        style="width: ${frame_width}%;" >
+        ${text}
+      </div>
+    </div>
+  </div>
+
+  <xi:include href="layout.html" />
+</html>
