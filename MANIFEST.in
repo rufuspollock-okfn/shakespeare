@@ -1,0 +1,2 @@
+recursive-include shakespeare/public *
+recursive-include shakespeare/templates *

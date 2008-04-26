@@ -24,8 +24,8 @@ Please mail info@okfn.org or join the okfn-discuss mailing list:
   http://lists.okfn.org/listinfo/okfn-discuss
 
 
-Installation
-************
+Installation and Setup
+**********************
 
 1. Install the code
 ===================
@@ -33,23 +33,33 @@ Installation
 1.1: (EITHER) Install using setup.py (preferred)
 ------------------------------------------------
 
-1. Install setuptools:
+Install ``shakespeare`` using easy_install::
 
-   <http://peak.telecommunity.com/DevCenter/EasyInstall#installation-instructions>
+    easy_install shakespeare
 
-   (Just download http://peak.telecommunity.com/dist/ez_setup.py and run it).
+NB: If you don't have easy_install you can get from here:
 
-2. Then do:
+<http://peak.telecommunity.com/DevCenter/EasyInstall#installation-instructions>
 
-   $ python setup.py install
+Make a config file as follows::
+
+    paster make-config shakespeare config.ini
+
+Tweak the config file as appropriate and then setup the application::
+
+    paster setup-app config.ini
 
 1.2 (OR) Get the code straight from subversion
 ------------------------------------------------
 
-1. Check out the subversion trunk
-2. Add the path/to/src to your PYTHONPATH
-3. Make sure you have all required dependencies (see install_requires in
-   setup.py)
+1. Check out the subversion trunk::
+
+    svn co https://knowledgeforge.net/shakespeare/svn/trunk
+
+2. Do::
+
+    sudo python setup.py develop
+
 
 2. Cache Directory
 ==================
@@ -59,7 +69,8 @@ Create a cache directory where texts and other material can be stored
 This directory needs to be semi-permanent so do *not* put under a location such
 as /tmp. 
 
-4. Create a configuration file
+
+3. Create a configuration file
 ==============================
 
 1. copy the template at etc/shakespeare.conf.new to a suitable new location
@@ -74,7 +85,8 @@ as /tmp.
   2. OR: set the SHAKESPEARECONF environment variable to contain the path to
        the configuration file
 
-4. Initialize the system
+
+5. Initialize the system
 ========================
 
 Run: $ bin/shakespeare-admin init

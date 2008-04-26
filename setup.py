@@ -1,19 +1,39 @@
-from setuptools import setup, find_packages
+try:
+    from setuptools import setup, find_packages
+except ImportError:
+    from ez_setup import use_setuptools
+    use_setuptools()
+    from setuptools import setup, find_packages
 
 import sys
-sys.path.insert(0, './src')
+sys.path.insert(0, '.')
 from shakespeare import __version__, __application_name__
 
 setup(
     name = __application_name__,
     version = __version__,
-    packages = find_packages(),
+    packages=find_packages(exclude=['ez_setup']),
     scripts = ['bin/shakespeare-admin'],
-    include_package_data = True,
+    include_package_data=True,
 
-    install_requires = ['SQLObject>=0.6',
-        'Paste>=0.1', 'Genshi>=0.3', 'annotater>=0.1',
+    install_requires=[
+        'Pylons>=0.9.6.1',
+        'SQLObject>=0.6',
+        'Genshi>=0.3',
+        'annotater>=0.1',
         ],
+    test_suite='nose.collector',
+    package_data={'shakespeare': ['i18n/*/LC_MESSAGES/*.mo']},
+    #message_extractors = {'shakespeare': [
+    #        ('**.py', 'python', None),
+    #        ('public/**', 'ignore', None)]},
+    entry_points='''
+    [paste.app_factory]
+    main = shakespeare.config.middleware:make_app
+
+    [paste.app_install]
+    main = pylons.util:PylonsInstaller
+    ''',
 
     # metadata for upload to PyPI
     author = "Rufus Pollock (Open Knowledge Foundation)",
