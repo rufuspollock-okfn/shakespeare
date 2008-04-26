@@ -10,6 +10,11 @@ debug = true
 smtp_server = localhost
 error_email_from = paste@localhost
 
+# directory where we can store all local copies of texts
+# at present should be different from the app's cache_dir
+cachedir = %(here)s/cache
+
+
 [server:main]
 use = egg:Paste#http
 host = 0.0.0.0
@@ -32,6 +37,10 @@ beaker.session.secret = somesecret
 # Debug mode will enable the interactive debugging tool, allowing ANYONE to
 # execute malicious code after an exception is raised.
 #set debug = false
+
+# using sqlite in memory leads to thread issues when using db ...
+# sqlobject.dburi = sqlite:///:memory:
+sqlobject.dburi = postgres://<username>:<password>@localhost/<your-dbname>
 
 
 # Logging configuration
@@ -62,3 +71,4 @@ formatter = generic
 [formatter_generic]
 format = %(asctime)s,%(msecs)03d %(levelname)-5.5s [%(name)s] %(message)s
 datefmt = %H:%M:%S
+

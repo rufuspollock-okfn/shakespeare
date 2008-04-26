@@ -6,12 +6,14 @@ import shakespeare.cache
 
 class TestCache(object):
 
+    @classmethod
     def setup_class(cls):
         cls.cache_path = tempfile.mkdtemp()
         cls.cache = shakespeare.cache.Cache(cls.cache_path)
         cls.url = 'http://www.gutenberg.org/dirs/GUTINDEX.ALL'
         cls.url2 = 'http://project.knowledgeforge.net/shakespeare/svn/trunk/CHANGELOG.txt'
 
+    @classmethod
     def teardown_class(cls):
         shutil.rmtree(cls.cache_path)
 

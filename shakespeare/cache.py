@@ -46,6 +46,6 @@ class Cache(object):
         return os.path.join(self.cache_path, offset)
 
 
-default_path = shakespeare.conf().get('misc', 'cachedir')
+default_path = shakespeare.conf()['cachedir']
 default = Cache(default_path)
 

@@ -18,7 +18,11 @@ def make_map():
 
     # CUSTOM ROUTES HERE
 
+
+    map.connect('', controller='site', action='index')
+    map.connect('marginalia/*url', controller='site', action='marginalia')
     map.connect(':controller/:action/:id')
+    map.connect(':action', controller='site')
     map.connect('*url', controller='template', action='view')
 
     return map

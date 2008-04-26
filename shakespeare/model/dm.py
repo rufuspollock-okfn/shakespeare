@@ -9,12 +9,16 @@ text is a version.
 """
 import sqlobject
 
+# make sure config is registered
+import shakespeare
+shakespeare.conf()
+
+from pylons.database import PackageHub
+hub = PackageHub('shakespeare')
+sqlobject.sqlhub.processConnection = hub.getConnection()
+
 import shakespeare
 import shakespeare.cache
-
-uri = shakespeare.conf().get('db', 'uri')
-connection = sqlobject.connectionForURI(uri)
-sqlobject.sqlhub.processConnection = connection
 
 # import other sqlobject items
 from annotater.model import Annotation

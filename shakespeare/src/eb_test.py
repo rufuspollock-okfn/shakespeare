@@ -5,6 +5,7 @@ from shakespeare.cache import default as cache
 
 class TestWikimedia:
 
+    @classmethod
     def setup_class(self):
         self.wikimedia = eb.Wikimedia()
 

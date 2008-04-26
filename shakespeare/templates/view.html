@@ -37,12 +37,12 @@
   
 
   <div py:match="content">
-    <div py:if="len(texts) == 1" class="singleview">
-			${texts[0]}
+    <div py:if="len(c.texts) == 1" class="singleview">
+			${c.texts[0]}
     </div>
-    <div class="multiview" py:if="len(texts) > 1" >
-      <div py:for="text in texts" class="frame"
-        style="width: ${frame_width}%;" >
+    <div class="multiview" py:if="len(c.texts) > 1" >
+      <div py:for="text in c.texts" class="frame"
+        style="width: ${c.frame_width}%;" >
         ${text}
       </div>
     </div>

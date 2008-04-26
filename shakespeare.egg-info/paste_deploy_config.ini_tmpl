@@ -9,6 +9,10 @@ email_to = you@yourdomain.com
 smtp_server = localhost
 error_email_from = paste@localhost
 
+# directory where we can store all local copies of texts
+# at present should be different from the app's cache_dir
+cachedir = ./cache
+
 [server:main]
 use = egg:Paste#http
 host = 0.0.0.0
@@ -33,6 +37,9 @@ app_instance_uuid = ${app_instance_uuid}
 # execute malicious code after an exception is raised.
 set debug = false
 
+# using sqlite in memory leads to thread issues when using db ...
+# sqlobject.dburi = sqlite:///:memory:
+sqlobject.dburi = postgres://<username>:<password>@localhost/<your-dbname>
 
 # Logging configuration
 [loggers]
@@ -56,3 +63,21 @@ formatter = generic
 
 [formatter_generic]
 format = %(asctime)s %(levelname)-5.5s [%(name)s] %(message)s
+
+
+[misc]
+# directory where we can store all local copies of texts
+cachedir = ./cache
+
+[db]
+# sqlobject database uri. see sqlobject documentation for details
+# uri = postgres://user:pass@host/dbname
+uri = sqlite:/:memory:
+
+[web]
+# directory where the templates used by web front end are kept
+template_dir = ./src/shakespeare/template
+
+[annotater]
+# url at which marginalia files (css/js etc) should be mounted
+marginalia_prefix = /marginalia

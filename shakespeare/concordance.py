@@ -20,8 +20,8 @@ class ConcordanceBase(object):
     """
     TODO: caching??
     """
-    sqlcc = shakespeare.dm.Concordance
-    sqlstat = shakespeare.dm.Statistic
+    sqlcc = shakespeare.model.Concordance
+    sqlstat = shakespeare.model.Statistic
 
     def __init__(self, filter_names=None):
         """
@@ -43,7 +43,7 @@ class ConcordanceBase(object):
         return sql_filter
     
     def _name2id(self, name):
-        return shakespeare.dm.Material.byName(name).id
+        return shakespeare.model.Material.byName(name).id
 
     def keys(self):
         """Return list of *distinct* words in concordance/statistics
@@ -115,8 +115,8 @@ class ConcordanceBuilder(object):
         return bool1 or bool2 or bool3
 
     def _text_already_done(self, text):
-        numrecs = shakespeare.dm.Concordance.select(
-                shakespeare.dm.Concordance.q.textID==text.id
+        numrecs = shakespeare.model.Concordance.select(
+                shakespeare.model.Concordance.q.textID==text.id
                 ).count()
         return numrecs > 0
 
@@ -127,7 +127,7 @@ class ConcordanceBuilder(object):
             provided will default to using file in cache associated with named
             text
         """
-        dmText = shakespeare.dm.Material.byName(name)
+        dmText = shakespeare.model.Material.byName(name)
         if self._text_already_done(dmText):
             msg = 'Have already added to concordance text: %s' % dmText
             # raise ValueError(msg)
@@ -140,13 +140,13 @@ class ConcordanceBuilder(object):
         lineCount = 0
         charIndex = 0
         stats = {}
-        trans = shakespeare.dm.Concordance._connection.transaction()
+        trans = shakespeare.model.Concordance._connection.transaction()
         for line in text.readlines():
             for match in self.word_regex.finditer(line):
                 word = match.group().lower() # case insensitive
                 if self.ignore_word(word):
                     continue
-                shakespeare.dm.Concordance(connection=trans,
+                shakespeare.model.Concordance(connection=trans,
                                            text=dmText,
                                            word=word,
                                            line=lineCount,
@@ -155,18 +155,18 @@ class ConcordanceBuilder(object):
             lineCount += 1
             charIndex += len(line)
         trans.commit()
-        trans = shakespeare.dm.Concordance._connection.transaction()
+        trans = shakespeare.model.Concordance._connection.transaction()
         for word, value in stats.items():
-            tresults  = shakespeare.dm.Statistic.select(
+            tresults  = shakespeare.model.Statistic.select(
                 sqlobject.AND(
-                    shakespeare.dm.Statistic.q.textID == dmText.id,
-                    shakespeare.dm.Statistic.q.word == word
+                    shakespeare.model.Statistic.q.textID == dmText.id,
+                    shakespeare.model.Statistic.q.word == word
                     ))
             try:
                 dbstat = list(tresults)[0]
                 dbstat.occurrences += value
             except:
-                shakespeare.dm.Statistic(
+                shakespeare.model.Statistic(
                         connection=trans,
                         text=dmText,
                         word=word,
@@ -180,15 +180,15 @@ class ConcordanceBuilder(object):
 
         @param name: as for add_text
         """
-        dmText = shakespeare.dm.Material.byName(name)
-        recs = shakespeare.dm.Concordance.select(
-                shakespeare.dm.Concordance.q.textID==dmText.id
+        dmText = shakespeare.model.Material.byName(name)
+        recs = shakespeare.model.Concordance.select(
+                shakespeare.model.Concordance.q.textID==dmText.id
                 )
         for rec in recs:
-            shakespeare.dm.Concordance.delete(rec.id)
-        stats = shakespeare.dm.Statistic.select(
-                shakespeare.dm.Statistic.q.textID==dmText.id
+            shakespeare.model.Concordance.delete(rec.id)
+        stats = shakespeare.model.Statistic.select(
+                shakespeare.model.Statistic.q.textID==dmText.id
                 )
         for stat in stats:
-            shakespeare.dm.Statistic.delete(stat.id)
+            shakespeare.model.Statistic.delete(stat.id)
 

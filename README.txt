@@ -70,21 +70,6 @@ This directory needs to be semi-permanent so do *not* put under a location such
 as /tmp. 
 
 
-3. Create a configuration file
-==============================
-
-1. copy the template at etc/shakespeare.conf.new to a suitable new location
-   (suggestion: etc/shakespeare.conf)
-
-2. edit to reflect your setup (see comments in file)
-
-3. make sure the config file can be found:
-  1. EITHER: it must be located at etc/shakespeare.conf relative to the
-       directory from which you run scripts
-  
-  2. OR: set the SHAKESPEARECONF environment variable to contain the path to
-       the configuration file
-
 
 5. Initialize the system
 ========================
@@ -113,17 +98,11 @@ Then visit http://localhost:8080/ using your favourite web browser.
 As a developer:
 ===============
 
+0. Copy development.ini.tmpl to development.ini and edit to your taste.
+
 1. Check out the administrative commands: $ bin/shakespeare-admin help.
 
-2. Run the tests: $ py.test
-   
-Note that:
-   
-  * The tests use [py.test] so you will need to have installed this
+2. Run the tests using either py.test of nosetests::
 
-  * To run the website tests (site_test etc) you will need to install [twill]
-    and have the webserver running
-
-[py.test]: http://codespeak.net/py/current/doc/getting-started.html
-[twill]: http://twill.idyll.org/
+    $ nosetests shakespeare
 

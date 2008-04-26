@@ -1,23 +1,25 @@
 import sqlobject
 
-import shakespeare.dm
+import shakespeare.model as model
 
-class TestMaterial:
+class TestMaterial(object):
 
+    @classmethod
     def setup_class(self):
         self.name = 'test-123'
         self.title = 'Hamlet'
         self.url = 'http://www.openshakespeare.org/blah.txt'
-        self.text = shakespeare.dm.Material(name=self.name,
+        self.text = model.Material(name=self.name,
                 title=self.title, url=self.url)
 
+    @classmethod
     def teardown_class(self):
-        shakespeare.dm.Material.delete(self.text.id)
+        model.Material.delete(self.text.id)
     
     def test1(self):
         txtid = self.text.id
-        txt2 = shakespeare.dm.Material.get(txtid)
-        txt3 = shakespeare.dm.Material.byName(self.name)
+        txt2 = model.Material.get(txtid)
+        txt3 = model.Material.byName(self.name)
         assert self.text.id == txt2.id
         assert self.text.id == txt3.id
     
@@ -26,56 +28,60 @@ class TestMaterial:
         # do not want anything too specific or we end up duplicating cache_test
         assert len(out) > 0
 
-class TestConcordance:
+class TestConcordance(object):
 
+    @classmethod
     def setup_class(self):
         self.name = 'test-123'
         self.title = 'Hamlet'
-        self.text = shakespeare.dm.Material(name=self.name, title=self.title)
+        self.text = model.Material(name=self.name, title=self.title)
         word = 'jones'
         line = 20
         char_index = 500
-        self.cc1 = shakespeare.dm.Concordance(text=self.text,
+        self.cc1 = model.Concordance(text=self.text,
                                          word=word,
                                          line=line,
                                          char_index=char_index)
 
+    @classmethod
     def teardown_class(self):
-        shakespeare.dm.Concordance.delete(self.cc1.id)
-        shakespeare.dm.Material.delete(self.text.id)
+        model.Concordance.delete(self.cc1.id)
+        model.Material.delete(self.text.id)
 
     def test1(self):
-        out1 = shakespeare.dm.Concordance.get(self.cc1.id)
+        out1 = model.Concordance.get(self.cc1.id)
         assert self.text == out1.text
 
 class TestStatistic:
 
+    @classmethod
     def setup_class(self):
         self.name = 'test-123'
         self.title = 'Hamlet'
-        self.text = shakespeare.dm.Material(name=self.name, title=self.title)
+        self.text = model.Material(name=self.name, title=self.title)
         self.word = 'jones'
         self.occurrences = 5
-        self.cc1 = shakespeare.dm.Statistic(
+        self.cc1 = model.Statistic(
                 text=self.text,
                 word=self.word,
                 occurrences=self.occurrences
                 )
 
+    @classmethod
     def teardown_class(self):
-        shakespeare.dm.Statistic.delete(self.cc1.id)
-        shakespeare.dm.Material.delete(self.text.id)
+        model.Statistic.delete(self.cc1.id)
+        model.Material.delete(self.text.id)
 
     def test1(self):
-        out1 = shakespeare.dm.Statistic.get(self.cc1.id)
+        out1 = model.Statistic.get(self.cc1.id)
         assert self.text == out1.text
         assert out1.occurrences == self.occurrences
 
     def test_select(self):
-        tresults  = shakespeare.dm.Statistic.select(
+        tresults  = model.Statistic.select(
             sqlobject.AND(
-                shakespeare.dm.Statistic.q.textID == self.text.id,
-                shakespeare.dm.Statistic.q.word == self.word,
+                model.Statistic.q.textID == self.text.id,
+                model.Statistic.q.word == self.word,
                 ))
         num = tresults.count()
         assert num == 1

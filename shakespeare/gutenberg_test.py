@@ -108,7 +108,7 @@ class TestGutenbergShakespeare:
             notFound = (out.find('Gutenberg') == -1)
             assert notFound
 
-import shakespeare.dm
+import shakespeare.model
 class TestHelper:
     url1 = 'http://www.gutenberg.org/dirs/etext00/0ws2510.txt'
     url2 = 'http://www.gutenberg.org/dirs/etext98/2ws2510.txt'
@@ -138,16 +138,16 @@ class TestHelper:
 
     def test_add_to_db(self):
         self.helper.add_to_db()
-        text1 = shakespeare.dm.Material.byName('hamlet_gut')
-        shakespeare.dm.Material.byName('hamlet_gut_f')
+        text1 = shakespeare.model.Material.byName('hamlet_gut')
+        shakespeare.model.Material.byName('hamlet_gut_f')
         assert 'Shakespeare, William' == text1.creator
-        alltexts = shakespeare.dm.Material.select()
+        alltexts = shakespeare.model.Material.select()
         # do not delete because we may remove stuff that was there
         # though this may undermine tests
         # TODO: sort this out satisfactorily 
         # for text in alltexts:
         #    if '_gut' in text.name:
-        #        shakespeare.dm.Material.delete(text.id)
+        #        shakespeare.model.Material.delete(text.id)
 
     def test_execute(self):
         self.helper.execute()
