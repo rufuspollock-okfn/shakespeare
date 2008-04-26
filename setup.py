@@ -11,12 +11,9 @@ setup(
     scripts = ['bin/shakespeare-admin'],
     include_package_data = True,
 
-    install_requires = ['SQLObject>=0.6'],
-    # don't require cherrypy and kid as they are not needed for the core
-    # library -- only for the web interface
-    extras_require = {
-        'web_gui' : ['Paste>=0.1', 'Genshi>=0.3', 'annotater>=0.1' ],
-        },
+    install_requires = ['SQLObject>=0.6',
+        'Paste>=0.1', 'Genshi>=0.3', 'annotater>=0.1',
+        ],
 
     # metadata for upload to PyPI
     author = "Rufus Pollock (Open Knowledge Foundation)",
