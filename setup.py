@@ -13,7 +13,6 @@ setup(
     name = __application_name__,
     version = __version__,
     packages=find_packages(exclude=['ez_setup']),
-    scripts = ['bin/shakespeare-admin'],
     include_package_data=True,
 
     install_requires=[
@@ -33,6 +32,9 @@ setup(
 
     [paste.app_install]
     main = pylons.util:PylonsInstaller
+
+    [console_scripts]
+    shakespeare-admin=shakespeare.cli:main
     ''',
 
     # metadata for upload to PyPI

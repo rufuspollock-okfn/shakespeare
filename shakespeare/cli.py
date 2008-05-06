@@ -177,57 +177,37 @@ Otherwise arguments should be a space seperated list of work name ids
     3. make_concordance'''
         print usage
 
-    def _runserver_wsgiref(self):
-        import wsgiref.simple_server
-        import shakespeare.wsgi
-        app = shakespeare.wsgi.app_factory(None)
-        port = 8080
-        httpd = wsgiref.simple_server.make_server('', port, app)
-        print "Serving HTTP on port %s..." % port
-        httpd.serve_forever()
-
-    def _runserver_paste_plain(self):
-        import shakespeare.wsgi
-        import paste.httpserver
-        app = shakespeare.wsgi.app_factory(None)
-        paste.httpserver.serve(app)
-
-    def _runserver_paste_deploy(self):
-        conf = shakespeare.conf()
-        paste_conf_file = os.path.abspath(conf.get('web', 'paste_conf_file'))
-        import paste.deploy
-        app = paste.deploy.loadapp('config:%s' % paste_conf_file)
-        import paste.httpserver
-        paste.httpserver.serve(app)
-
     def do_runserver(self, line=None):
-        # default
-        if not line or line == 'paste':
-            self._runserver_paste_plain()
-        elif line == 'wsgiref':
-            self._runserver_wsgiref()
-        else:
-            print 'Unknown argument: %s' % line
-            self.help_runserver()
+        self.help_runserver()
 
     def help_runserver(self, line=None):
         usage = \
-'''runserver [ paste (default) | wsgiref ]
+'''This command has been DEPRECATED.
 
-Start a webserver (of optional type) to provide the user interface to the
-shakespeare package.
+Please use `paster serve` to run a server now, e.g.::
 
-The resulting website should be availabe at http://localhost:8080
+    paster serve <my-config.ini>
 '''
         print usage
 
 
-if __name__ == '__main__':
-    import sys
-    adminCmd = ShakespeareAdmin()
-    if len(sys.argv) < 2:
-        adminCmd.run_interactive()
+def main():
+    import optparse
+    usage = \
+'''%prog [options] <command>
+
+Run about or help for details.'''
+    parser = optparse.OptionParser(usage)
+    parser.add_option('-v', '--verbose', dest='verbose', help='Be verbose',
+            action='store_true', default=False) 
+    options, args = parser.parse_args()
+    
+    if len(args) == 0:
+        parser.print_help()
+        return 1
     else:
-        args = ' '.join(sys.argv[1:])
+        cmd = ShakespeareAdmin()
+        args = ' '.join(args)
         args = args.replace('-','_')
-        adminCmd.onecmd(args)
+        cmd.onecmd(args)
+
