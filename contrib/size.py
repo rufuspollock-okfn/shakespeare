@@ -23,7 +23,7 @@ for text in shakespeare.index.all:
     # if you want to include folios remove the second condition
     if '_gut' in name and not '_gut_f' in name:
         numtexts += 1
-        fileobj = file(text.get_cache_path('plain'))
+        fileobj = file(text.get_text())
         numwords = count_words(fileobj)
         print name.ljust(60), numwords
         totalwords += numwords

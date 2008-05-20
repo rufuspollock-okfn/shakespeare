@@ -5,7 +5,7 @@ import shakespeare.dm
 
 name = sys.argv[1]
 work = shakespeare.dm.Material.byName(name)
-path = work.get_cache_path('plain')
+path = work.get_text()
 ff = file(path)
 print path
 indata = unicode(ff.read(), 'utf-8')

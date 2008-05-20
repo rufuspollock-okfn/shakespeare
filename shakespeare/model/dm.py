@@ -41,6 +41,9 @@ def rebuilddb():
     cleandb()
     createdb()
 
+
+
+from ConfigParser import SafeConfigParser
 class Material(sqlobject.SQLObject):
     """Material related to Shakespeare (usually text of works and ancillary
     matter such as introductions).
@@ -59,19 +62,35 @@ class Material(sqlobject.SQLObject):
     url = sqlobject.StringCol(default=None, length=255)
     notes = sqlobject.StringCol(default=None)
 
-    def get_cache_path(self, format):
-        """Get path within cache to data file associated with this material.
-        @format: the version ('plain', original='' etc)
-        """
-        return shakespeare.cache.default.path(self.url, format)
+    def get_text(self, format=None):
+        '''Get text (if any) associated with this material.
 
-    def get_store_fileobj(self):
+        # ignore format for time being
+        '''
         import pkg_resources
         pkg = 'shksprdata'
         # default to plain txt format (TODO: generalise this)
         path = 'texts/%s.txt' % self.name
         fileobj = pkg_resources.resource_stream(pkg, path)
         return fileobj
+
+    def get_cache_path(self, format):
+        """Get path within cache to data file associated with this material.
+        @format: the version ('plain', original='' etc)
+        """
+        return shakespeare.cache.default.path(self.url, format)
+
+    @classmethod
+    def load_from_metadata(self, fileobj):
+        cfgp = SafeConfigParser()
+        cfgp.readfp(fileobj)
+        for section in cfgp.sections():
+            try:
+                item = Material.byName(section)
+            except:
+                item = Material(name=section)
+            for key, val in cfgp.items(section):
+                setattr(item, key, val)
 
 
 class Concordance(sqlobject.SQLObject):

@@ -36,15 +36,13 @@ class SiteController(BaseController):
         textlist = [model.Material.byName(tname) for tname in namelist]
         # special case (only return the first text)
         if format == 'raw':
-            tpath = textlist[0].get_cache_path('plain')
-            result = file(tpath).read()
+            result = textlist[0].get_text().read()
             status = '200 OK'
             response.headers['Content-Type'] = 'text/plain'
             return result
         texts = []
         for item in textlist:
-            tpath = item.get_cache_path('plain')
-            tfileobj = file(tpath)
+            tfileobj = item.get_text()
             ttext = shakespeare.format.format_text(tfileobj, format)
             thtml = genshi.XML(ttext)
             texts.append(thtml)
@@ -75,8 +73,7 @@ class SiteController(BaseController):
         newrefs = []
         for ref in refs:
             # we use the 'plain' format when building the concordance
-            tpath = ref.text.get_cache_path('plain')
-            ff = file(tpath)
+            ff = ref.text.get_text()
             snippet = shakespeare.textutils.get_snippet(ff, ref.char_index)
             ref.snippet = snippet
         c.word = word
@@ -101,8 +98,7 @@ class SiteController(BaseController):
         # only one name here ...
         name = request.params.get('name')
         textobj = model.Material.byName(name)
-        tpath = textobj.get_cache_path('plain')
-        tfileobj = file(tpath)
+        tfileobj = textobj.get_text()
         formatter = shakespeare.format.TextFormatterAnnotate()
         # not perfect in that we might have the application mounted somewhere
         annotation_store_fqdn = wsgiref.util.application_uri(request.environ)

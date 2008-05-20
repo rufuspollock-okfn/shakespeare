@@ -135,7 +135,7 @@ class ConcordanceBuilder(object):
             print 'Skipping'
             return
         if text is None:
-            tpath = dmText.get_cache_path('plain')
+            tpath = dmText.get_text()
             text = file(tpath)
         lineCount = 0
         charIndex = 0

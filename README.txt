@@ -74,13 +74,18 @@ as /tmp.
 5. Initialize the system
 ========================
 
-Run: $ bin/shakespeare-admin init
+Run::
 
-This may take some time to run so be patient
+    $ shakespeare-admin db create
+    $ shakespeare-admin db init
 
-TIP: using sqlite building the concordance really **does** seem to run forever
-so recommend using postgresql or mysql if you are going to build the
-concordance. 
+If you want to build the concordance do::
+
+    $ shakespeare-admin concordance
+
+NB: This may take some time to run so be patient. TIP: using sqlite building
+the concordance really **does** seem to run forever so recommend using
+postgresql or mysql if you are going to build the concordance. 
 
 
 Getting Started
@@ -89,11 +94,13 @@ Getting Started
 As a user:
 ==========
 
-Start up the web interface by running the webserver:
+Start up the web interface by running the webserver::
 
-  $ bin/shakespeare-admin runserver
+    $ paster serve {your-config.ini}
 
-Then visit http://localhost:8080/ using your favourite web browser.
+NB: {your-config.ini} should be replaced with the name of the config file you
+created earlier.
+
 
 As a developer:
 ===============

@@ -47,18 +47,23 @@ Open Shakespeare is open-knowledge and open-source. See COPYING for details.
     # Commands
 
     def do_db(self, line=None):
-        actions = [ 'create', 'clean', 'rebuild' ]
+        actions = [ 'create', 'clean', 'rebuild', 'init' ]
         if line is None or line not in actions:
             self.help_db()
             return 1
-        import shakespeare.dm
-        shakespeare.dm.__dict__[line+'db']()
+        import shakespeare.model
+        if line == 'init':
+            import pkg_resources
+            pkg = 'shksprdata'
+            meta = pkg_resources.resource_stream(pkg, 'texts/metadata.txt')
+            shakespeare.model.Material.load_from_metadata(meta)
+        else:
+            shakespeare.model.__dict__[line+'db']()
 
     def help_db(self, line=None):
         usage = \
-'''db <action>
-
-Where action is one of create, clean, rebuild.'''
+'''db { create | clean | rebuild | init }
+'''
         print usage
     
     def do_gutenberg(self, line=None):
@@ -116,7 +121,7 @@ Download and process all Moby/Bosak shakespeare texts'''
             self._init_index()
             return self._index
     
-    def do_print_index(self, line):
+    def do_index(self, line):
         self._init_index()
         header = \
 '''          +-------------------+
@@ -128,12 +133,12 @@ Download and process all Moby/Bosak shakespeare texts'''
         for row in self._index:
             print row.name.ljust(35), row.title
 
-    def help_print_index(self, line=None):
+    def help_index(self, line=None):
         usage = \
 '''Print index of Shakespeare texts to stdout'''
         print usage
 
-    def do_make_concordance(self, line=None):
+    def do_concordance(self, line=None):
         self._init_index()
         print 'Making concordance (this may take some time ...):'
         from shakespeare.concordance import ConcordanceBuilder
@@ -155,26 +160,13 @@ Download and process all Moby/Bosak shakespeare texts'''
         timetaken = end - start
         print 'Finished. Time taken was %ss' % timetaken
 
-    def help_make_concordance(self, line=None):
+    def help_concordance(self, line=None):
         usage = \
 '''Create a concordance
 
 If no arguments supplied then use all non-folio gutenberg shakespeare texts.
 Otherwise arguments should be a space seperated list of work name ids
 '''
-        print usage
-
-    def do_init(self, line=None):
-        self.do_gutenberg(line)
-        self.do_moby(line)
-        self.do_make_concordance(line)
-
-    def help_init(self, line=None):
-        usage = \
-'''Convenience function that sets everything up by running:
-    1. gutenberg
-    2. moby
-    3. make_concordance'''
         print usage
 
     def do_runserver(self, line=None):
