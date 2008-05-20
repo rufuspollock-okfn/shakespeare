@@ -65,6 +65,15 @@ class Material(sqlobject.SQLObject):
         """
         return shakespeare.cache.default.path(self.url, format)
 
+    def get_store_fileobj(self):
+        import pkg_resources
+        pkg = 'shksprdata'
+        # default to plain txt format (TODO: generalise this)
+        path = 'texts/%s.txt' % self.name
+        fileobj = pkg_resources.resource_stream(pkg, path)
+        return fileobj
+
+
 class Concordance(sqlobject.SQLObject):
 
     text = sqlobject.ForeignKey('Material')

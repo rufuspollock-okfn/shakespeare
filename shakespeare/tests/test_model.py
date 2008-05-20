@@ -28,6 +28,14 @@ class TestMaterial(object):
         # do not want anything too specific or we end up duplicating cache_test
         assert len(out) > 0
 
+    def test_get_store_fileobj(self):
+        text = model.Material.byName('phoenix_and_the_turtle_gut')
+        out = text.get_store_fileobj()
+        out = out.read()
+        assert len(out) > 0
+        assert out[:26] == 'THE PHOENIX AND THE TURTLE'
+
+
 class TestConcordance(object):
 
     @classmethod

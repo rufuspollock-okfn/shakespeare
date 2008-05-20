@@ -1,2 +1,3 @@
 recursive-include shakespeare/public *
 recursive-include shakespeare/templates *
+recursive-include shksprdata
