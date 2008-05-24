@@ -8,6 +8,7 @@ except ImportError:
 import sys
 sys.path.insert(0, '.')
 from shakespeare import __version__, __application_name__
+from shakespeare import __doc__ as __long_description__
 
 setup(
     name = __application_name__,
@@ -38,27 +39,11 @@ setup(
     ''',
 
     # metadata for upload to PyPI
-    author = "Rufus Pollock (Open Knowledge Foundation)",
-    author_email = "rufus.pollock@okfn.org",
+    author = "Open Knowledge Foundation",
+    author_email = 'info@okfn.org',
     description = \
 "A full open set of Shakespeare's works along with anciallary material, a variety of tools and a python api",
-    long_description = \
-"""
-The Open Shakespeare package provides a full open set of shakespeare's works
-(often in multiple versions) along with ancillary material, a variety of tools
-and a python API.
-
-Specifically in addition to the works themselves (often in multiple versions)
-there is an introduction, a chronology, explanatory notes, a concordance and
-search facilities.
-
-All material is open source/open knowledge so that anyone can use, redistribute
-and reuse these materials freely. For exact details of the license under which
-this package is made available please see COPYING.txt.
-
-Open Shakespeare has been developed under the aegis of the Open Knowledge
-Foundation (http://www.okfn.org/).
-""",
+    long_description = __long_description__,
     license = "MIT",
     keywords = "open shakespeare search view",
     url = "http://www.openshakespeare.org/", 

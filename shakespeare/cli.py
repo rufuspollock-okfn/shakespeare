@@ -33,6 +33,8 @@ class ShakespeareAdmin(cmd.Cmd):
         about = \
 '''Open Shakespeare version %s. Copyright the Open Knowledge Foundation.
 Open Shakespeare is open-knowledge and open-source. See COPYING for details.
+
+For more information about the package run `info`.
 ''' % version
         print about
 
@@ -181,7 +183,16 @@ Please use `paster serve` to run a server now, e.g.::
     paster serve <my-config.ini>
 '''
         print usage
-
+    
+    def do_info(self, line=None):
+        import shakespeare
+        info = shakespeare.__doc__
+        print
+        print '       ## Open Shakespeare ##'
+        print info
+    
+    def help_info(self, line=None):
+        print 'Information about this package.'
 
 def main():
     import optparse
