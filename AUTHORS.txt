@@ -1,7 +1,12 @@
 Project Authors
 ***************
 
-Rufus Pollock
+  * Rufus Pollock
+  * Iain Emsley
+
+Proof-Editors for Britannica:
+
+  * Jonathan Gray
 
 
 Sources for Material
