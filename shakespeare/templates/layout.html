@@ -53,10 +53,9 @@
      
     <h3 class="hidden">Sections:</h3>
     <ul id="navigation">
-      <li><a href="${h.url_for(controller='site', action='index')}">Home</a></li>
+      <li><a href="${h.url_for('/')}">Home</a></li>
       <li><a href="${h.url_for(controller='site', action='guide')}">Guide</a></li>
-      <li><a href="${h.url_for(controller='site', action='index')}">Texts</a></li>
-      <li><a href="/account/">User Accounts</a></li>
+      <li><a href="${h.url_for(controller='text', action='index')}">Texts</a></li>
     </ul>
     <h3 class="hidden">In this section:</h3>
     <ul id="subnav">

@@ -8,38 +8,8 @@ class TestSiteController(TestController):
         url = url_for(controller='site')
         res = self.app.get(url)
         print res
-        assert 'Index of Shakespeare plays' in res
-        assert 'The Tempest' in res
-
-    def test_view_1(self):
-        url = url_for(controller='site', action='view', name='tempest_gut',
-            format='plain')
-        res = self.app.get(url)
-        assert 'CALIBAN, a savage and deformed Slave' in res
-
-    def test_index_2(self):
-        url = url_for(controller='site')
-        res = self.app.get(url)
-        res = res.click('The Tempest', index=0)
-        assert 'CALIBAN, a savage and deformed Slave' in res
-
-    def test_view_2(self):
-        url = url_for(controller='site', action='view',
-                name=['tempest_gut','tempest_gut_f'], format='plain')
-        res = self.app.get(url)
-        assert 'CALIBAN, a savage and deformed Slave' in res
-
-    def test_view_3(self):
-        url = url_for(controller='site', action='view',
-                name=['tempest_gut', 'tempest_gut_f'], format='raw')
-        res = self.app.get(url)
-        assert 'CALIBAN, a savage and deformed Slave' in res
-
-    def test_view_with_unicode_source(self):
-        url = url_for(controller='site', action='view',
-                name='all_is_well_that_ends_well_gut_f', format='plain')
-        res = self.app.get(url)
-        assert "All's Well, that Ends Well" in res
+        assert "Home" in res
+        assert 'Welcome to the Open Shakespeare web interface' in res
 
     def test_guide(self):
         url = url_for(controller='site', action='guide')

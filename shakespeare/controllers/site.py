@@ -26,34 +26,6 @@ class SiteController(BaseController):
     def guide(self):
         return render('guide')
 
-    def view(self):
-        name = request.params.get('name', '')
-        format = request.params.get('format', 'plain')
-        if format == 'annotate':
-            return self.view_annotate(name)
-        namelist = name.split()
-        numtexts = len(namelist)
-        textlist = [model.Material.byName(tname) for tname in namelist]
-        # special case (only return the first text)
-        if format == 'raw':
-            result = textlist[0].get_text().read()
-            status = '200 OK'
-            response.headers['Content-Type'] = 'text/plain'
-            return result
-        texts = []
-        for item in textlist:
-            tfileobj = item.get_text()
-            ttext = shakespeare.format.format_text(tfileobj, format)
-            thtml = genshi.XML(ttext)
-            texts.append(thtml)
-        # would have assumed this would be 100.0/numtexts but for some reason
-        # you need to allow more room (maybe because of the scrollbars?)
-        # result is not consistent across browsers ...
-        c.frame_width = 100.0/numtexts - 4.0
-        c.texts = texts
-        # set to not strip whitespace as o/w whitespace in pre tag gets removed
-        return render('view', strip_whitespace=False)
-
     def concordance(self, word=None):
         # TODO: support concordance/word
         return self.concordance_index()
