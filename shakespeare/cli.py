@@ -9,6 +9,11 @@ class ShakespeareAdmin(cmd.Cmd):
     TODO: self.verbose option and associated self._print
     """
 
+    def __init__(self, verbose=False):
+        # cmd.Cmd is not a new style class
+        cmd.Cmd.__init__(self)
+        self.verbose = verbose
+
     prompt = 'The Bard > '
 
     def run_interactive(self, line=None):
@@ -194,6 +199,56 @@ Please use `paster serve` to run a server now, e.g.::
     def help_info(self, line=None):
         print 'Information about this package.'
 
+    def do_search_add(self, line=None):
+        path = line.strip()
+        if not os.path.exists(path):
+            print '"%s" is not an existent path' % path
+            return 1
+        if os.path.isdir(path):
+            fns = os.listdir(path)
+            fns = filter(lambda x: x.endswith('.txt'), fns)
+            works = [ os.path.join(path, fn) for fn in fns ]
+        else:
+            works = [ path ]
+        import shakespeare.search
+        index = shakespeare.search.SearchIndex.default_index()
+        for work in works:
+            if self.verbose:
+                print 'Processing %s' % work
+            fileobj = open(work)
+            index.add_item(fileobj)
+
+    def help_search_add(self, line=None):
+        info = '''search_add {path}
+
+Add contents of {path} (file itself or all text files in directory if
+directory) to the search index.'''
+        print info
+
+    def do_search_add_all(self):
+        # TODO: automatically add all texts listed in index
+        pass
+
+    def do_search(self, line=None):
+        import shakespeare.search
+        index = shakespeare.search.SearchIndex.default_index()
+        query = line.strip()
+        if not query:
+            print 'No search term supplied.'
+            return 1
+        matches = index.search(query)
+        print "%i results found." % matches.get_matches_estimated()
+        print "Results 1-%i:" % matches.size()
+
+        for m in matches:
+            print
+            print '%i: %i%% docid=%i' % (m.rank + 1, m.percent, m.docid)
+            print m.document.get_data()
+
+    def help_search(self, line=None):
+        info = 'Supply a query with which to search the search index.'
+        print info
+
 def main():
     import optparse
     usage = \
@@ -209,7 +264,7 @@ Run about or help for details.'''
         parser.print_help()
         return 1
     else:
-        cmd = ShakespeareAdmin()
+        cmd = ShakespeareAdmin(verbose=options.verbose)
         args = ' '.join(args)
         args = args.replace('-','_')
         cmd.onecmd(args)

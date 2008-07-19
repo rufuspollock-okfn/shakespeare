@@ -55,42 +55,41 @@ NB: If you don't have easy_install you can get from here:
     sudo python setup.py develop
 
 
-2. Setup Package
-================
-
-Make a config file as follows::
-
-    paster make-config shakespeare config.ini
-
-Tweak the config file as appropriate and then setup the application::
-
-    paster setup-app config.ini
-
-
-3. Initialize the system
-========================
-
-Run::
-
-    $ shakespeare-admin db create
-    $ shakespeare-admin db init
-
-If you want to build the concordance do::
-
-    $ shakespeare-admin concordance
-
-NB: This may take some time to run so be patient. TIP: using sqlite building
-the concordance really **does** seem to run forever so recommend using
-postgresql or mysql if you are going to build the concordance. 
-
-
 Getting Started
 ***************
 
 As a user:
 ==========
 
-Start up the web interface by running the webserver::
+1. Basic setup
+--------------
+
+To access most of the main features of Open Shakespeare you need a database.
+For this an other bits and bobs of configuration you will need a configuration
+file.
+
+You can make a config file as follows::
+
+    paster make-config shakespeare {your-config.ini}
+
+Tweak the config file as appropriate and then setup the application::
+
+    paster setup-app config.ini
+ 
+[TODO: this should be part of setup-app]
+
+Run::
+
+    $ shakespeare-admin db create
+    $ shakespeare-admin db init
+
+2. Extras
+---------
+
+1. Search index. [TODO]
+
+2. You can start a web server to provide a easy-to-use web interface to the
+shakespeare material and facilities by doing::
 
     $ paster serve {your-config.ini}
 
@@ -101,11 +100,20 @@ created earlier.
 As a developer:
 ===============
 
-0. Copy development.ini.tmpl to development.ini and edit to your taste.
+0. Setup
+--------
 
-1. Check out the administrative commands: $ bin/shakespeare-admin help.
+Follow the basic steps above put with an ini file named: development.ini
+
+NB: you'll probably want to change log levels to debug.
+
+1. Check out the administrative commands
+----------------------------------------
+
+    $ bin/shakespeare-admin help.
 
 2. Run the tests using either py.test of nosetests::
+----------------------------------------------------
 
     $ nosetests shakespeare
 '''

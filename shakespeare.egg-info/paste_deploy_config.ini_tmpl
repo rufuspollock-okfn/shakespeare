@@ -16,7 +16,11 @@ error_email_from = paste@localhost
 # such as /tmp. 
 # 
 # At present should be different from the app's cache_dir
-cachedir = ./cache
+cachedir = cache
+
+# Directory for Xapian search index
+search_index_dir = searchindex
+
 
 [server:main]
 use = egg:Paste#http
