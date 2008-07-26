@@ -11,7 +11,10 @@
   <script type="text/javascript" src="/scripts/behaviour.js"></script>
   <script type="text/javascript" src="/scripts/master.js"></script>
   <style type="text/css">
+    /* remove login info at top-right */
     #top-bar { display: none; }
+    /* mess with standard ckan theme to remove second submenu for time being */
+    #subnav { background: transparent; height: 1px; }
     #subnav * { display: none; }
   </style>
 
@@ -46,7 +49,6 @@
         </py:choose>
         </topbar>
       </div><!-- /top-bar -->
-      
     <h1><a href="${h.url_for(controller='site', action='home')}" title="Open Shakespeare Home">Open Shakespeare</a></h1>
     
     </div><!-- /top-inner -->
@@ -54,8 +56,9 @@
     <h3 class="hidden">Sections:</h3>
     <ul id="navigation">
       <li><a href="${h.url_for('/')}">Home</a></li>
-      <li><a href="${h.url_for(controller='site', action='guide')}">Guide</a></li>
       <li><a href="${h.url_for(controller='text', action='index')}">Texts</a></li>
+      <li><a href="${h.url_for(controller='search', action='index')}">Search</a></li>
+      <li><a href="${h.url_for(controller='site', action='guide')}">Guide</a></li>
     </ul>
     <h3 class="hidden">In this section:</h3>
     <ul id="subnav">
@@ -84,7 +87,7 @@
   
   <div id="primary" class="sidebar">
     <div class="box">
-      <h2>Using </h2>
+      <h2>Further Assistance</h2>
       <p>For information on using Open Shakespeare check out the
       <a href="${h.url_for(action='guide')}">Guide</a>.
       If you have a question or have found a bug please post to the <a href="http://lists.okfn.org/mailman/listinfo/okfn-help">okfn-help</a> mailing list.
