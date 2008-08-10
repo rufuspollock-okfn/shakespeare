@@ -20,8 +20,8 @@ class ConcordanceBase(object):
     """
     TODO: caching??
     """
-    sqlcc = milton.dm.Concordance
-    sqlstat = milton.dm.Statistic
+    sqlcc = milton.model.Concordance
+    sqlstat = milton.model.Statistic
 
     def __init__(self, filter_names=None):
         """
@@ -43,7 +43,7 @@ class ConcordanceBase(object):
         return sql_filter
     
     def _name2id(self, name):
-        return milton.dm.Material.byName(name).id
+        return milton.model.Material.byName(name).id
 
     def keys(self):
         """Return list of *distinct* words in concordance/statistics
@@ -115,8 +115,8 @@ class ConcordanceBuilder(object):
         return bool1 or bool2 or bool3
 
     def _text_already_done(self, text):
-        numrecs = milton.dm.Concordance.select(
-                milton.dm.Concordance.q.textID==text.id
+        numrecs = milton.model.Concordance.select(
+                milton.model.Concordance.q.textID==text.id
                 ).count()
         return numrecs > 0
 
@@ -127,7 +127,7 @@ class ConcordanceBuilder(object):
             provided will default to using file in cache associated with named
             text
         """
-        dmText = milton.dm.Material.byName(name)
+        dmText = milton.model.Material.byName(name)
         if self._text_already_done(dmText):
             msg = 'Have already added to concordance text: %s' % dmText
             # raise ValueError(msg)
@@ -140,13 +140,13 @@ class ConcordanceBuilder(object):
         lineCount = 0
         charIndex = 0
         stats = {}
-        trans = milton.dm.Concordance._connection.transaction()
+        trans = milton.model.Concordance._connection.transaction()
         for line in text.readlines():
             for match in self.word_regex.finditer(line):
                 word = match.group().lower() # case insensitive
                 if self.ignore_word(word):
                     continue
-                milton.dm.Concordance(connection=trans,
+                milton.model.Concordance(connection=trans,
                                            text=dmText,
                                            word=word,
                                            line=lineCount,
@@ -155,18 +155,18 @@ class ConcordanceBuilder(object):
             lineCount += 1
             charIndex += len(line)
         trans.commit()
-        trans = milton.dm.Concordance._connection.transaction()
+        trans = milton.model.Concordance._connection.transaction()
         for word, value in stats.items():
-            tresults  = milton.dm.Statistic.select(
+            tresults  = milton.model.Statistic.select(
                 sqlobject.AND(
-                    milton.dm.Statistic.q.textID == dmText.id,
-                    milton.dm.Statistic.q.word == word
+                    milton.model.Statistic.q.textID == dmText.id,
+                    milton.model.Statistic.q.word == word
                     ))
             try:
                 dbstat = list(tresults)[0]
                 dbstat.occurrences += value
             except:
-                milton.dm.Statistic(
+                milton.model.Statistic(
                         connection=trans,
                         text=dmText,
                         word=word,
@@ -180,15 +180,15 @@ class ConcordanceBuilder(object):
 
         @param name: as for add_text
         """
-        dmText = milton.dm.Material.byName(name)
-        recs = milton.dm.Concordance.select(
-                milton.dm.Concordance.q.textID==dmText.id
+        dmText = milton.model.Material.byName(name)
+        recs = milton.model.Concordance.select(
+                milton.model.Concordance.q.textID==dmText.id
                 )
         for rec in recs:
-            milton.dm.Concordance.delete(rec.id)
-        stats = milton.dm.Statistic.select(
-                milton.dm.Statistic.q.textID==dmText.id
+            milton.model.Concordance.delete(rec.id)
+        stats = milton.model.Statistic.select(
+                milton.model.Statistic.q.textID==dmText.id
                 )
         for stat in stats:
-            milton.dm.Statistic.delete(stat.id)
+            milton.model.Statistic.delete(stat.id)
 

@@ -32,13 +32,8 @@ class GutenbergIndex(object):
 
         Results are sorted by work title.
 
-        Notes regarding list of plays:
-
-          * no Folio edition of Troilus and Cressida
-          * no Folio edition of Pericles
         """
         # results have format [ title, url, comments ]
-        # folio in comments indicates it is a first folio
         results = [ ["Areopagitica", 'http://www.gutenberg.org/files/608/608.txt', ''] ]
         results.append(["L'Allegro, Il Penseroso, Comus, and Lycidas",
                 'http://www.gutenberg.org/dirs/etext96/miltp10.txt', '']
@@ -156,22 +151,6 @@ class Gutenbergmilton(object):
         return min(indices)
 
 
-#def get_etext_url(number):
-#    """
-#    [[TODO: DOES NOT WORK]]
-#    Get the url for an etext given its number.
-#    This is non-trivial and follows instructions at start of GUTINDEX.ALL
-#    """
-#    baseUrl = 'http://www.gutenberg.org/dirs/'
-#    ss = ''
-#    if number > 10000:
-#        ss = str(number)
-#        for char in ss[:-1]:
-#            pass
-#    if number <= 10000:
-#        raise 'Cannot deal with etext numbers less than 10000'
-#    return ss
-
 
 class Helper(object):
 
@@ -266,7 +245,7 @@ class Helper(object):
         
         If a text already exists in the db it will be skipped.
         """
-        import milton.dm
+        import milton.model
         for text in self._index:
             title = text[0]
             name = self.title_to_name(title) + '_gut'
@@ -276,15 +255,15 @@ class Helper(object):
             if text[2] == 'folio':
                 name += '_f'
             
-            numExistingTexts = milton.dm.Material.select(
-                        milton.dm.Material.q.name==name).count()
+            numExistingTexts = milton.model.Material.select(
+                        milton.model.Material.q.name==name).count()
             if numExistingTexts > 0:
                 if self.verbose:
                     print('Skip: Add to db. Gutenberg text already exists with name: %s' % name)
             else:
                 if self.verbose:
                     print('Add to db. Gutenberg text named [%s]' % name)
-                milton.dm.Material(name=name,
+                milton.model.Material(name=name,
                                         title=title,
                                         creator='Milton, John',
                                         url=url,

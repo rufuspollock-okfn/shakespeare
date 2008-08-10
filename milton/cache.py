@@ -45,6 +45,6 @@ class Cache(object):
         return os.path.join(self.cache_path, offset)
 
 
-default_path = milton.conf().get('misc', 'cachedir')
+default_path = milton.conf()['cachedir']
 default = Cache(default_path)
 

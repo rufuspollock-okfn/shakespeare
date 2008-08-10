@@ -60,7 +60,6 @@ class TextFormatterLineno(TextFormatter):
         result = ''
         count = 0
         for line in self.file.readlines():
-            #line count updated from 4 
             tlineno = unicode(count).ljust(5) # assume line no < 100000
             tline = unicode(line, 'utf-8').rstrip() 
             tline = self.escape_chars(tline)
