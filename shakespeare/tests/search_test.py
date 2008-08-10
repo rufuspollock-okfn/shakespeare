@@ -44,6 +44,18 @@ When in eternal lines to time thou grow'st,
         self.index.add_item(StringIO.StringIO(self.text))
         out = self.index.search('summer')
         assert len(out) == 2
+        mset1 = out[1]
+        # 'But thy eternal summer ...
+        exp = "But thy eternal summer shall not fade,\nNor lose possession of that fair thou ow'st,"
+        assert mset1.document.get_data().startswith(exp)
         out = self.index.search('rough')
         assert len(out) == 1
+
+    def test_get_stats(self):
+        simpletext = 'Death death dead love loved loving'
+        out = self.index.get_stats(StringIO.StringIO(simpletext))
+        assert len(out) == 3
+        assert out['love'] == 3
+        assert out['death'] == 2
+        assert out['dead'] == 1
 
