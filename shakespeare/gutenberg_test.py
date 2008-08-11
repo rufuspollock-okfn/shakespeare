@@ -141,7 +141,7 @@ class TestHelper:
         text1 = shakespeare.model.Material.byName('hamlet_gut')
         shakespeare.model.Material.byName('hamlet_gut_f')
         assert 'Shakespeare, William' == text1.creator
-        alltexts = shakespeare.model.Material.select()
+        alltexts = shakespeare.model.Material.query.all()
         # do not delete because we may remove stuff that was there
         # though this may undermine tests
         # TODO: sort this out satisfactorily 

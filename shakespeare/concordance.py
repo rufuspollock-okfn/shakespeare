@@ -10,8 +10,6 @@ case-insensitive
 """
 import re
 
-import sqlobject
-
 import shakespeare.index
 import shakespeare.cache
 
@@ -20,7 +18,7 @@ class ConcordanceBase(object):
     """
     TODO: caching??
     """
-    sqlcc = shakespeare.model.Concordance
+    # sqlcc = shakespeare.model.Concordance
     sqlstat = shakespeare.model.Statistic
 
     def __init__(self, filter_names=None):

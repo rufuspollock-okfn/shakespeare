@@ -6,7 +6,8 @@ import tempfile
 import shakespeare.index
 import shakespeare.concordance
 
-class TestConcordancer:
+# Disable in preparation for removal
+class _TestConcordancer:
 
     inText = \
 """A fake fake line

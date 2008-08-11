@@ -7,15 +7,21 @@ to be a specific version of a work. e.g. the 1623 folio of King Richard III.
 We may in future add a Work object to refer to 'abstract' work of which a given
 text is a version.
 """
-import sqlobject
+from pylons import config
+from sqlalchemy import Column, MetaData, Table, types, ForeignKey
+from sqlalchemy import orm
+from sqlalchemy.orm import relation, backref
 
 # make sure config is registered
 import shakespeare
 shakespeare.conf()
 
-from pylons.database import PackageHub
-hub = PackageHub('shakespeare')
-sqlobject.sqlhub.processConnection = hub.getConnection()
+metadata = MetaData()
+Session = orm.scoped_session(orm.sessionmaker(
+    autoflush=True,
+    transactional=False,
+    bind=config['pylons.g'].sa_engine
+))
 
 import shakespeare
 import shakespeare.cache
@@ -24,27 +30,29 @@ import shakespeare.cache
 from annotater.model import Annotation
 import annotater.model
 
-# note we run this at bottom of module to auto create db tables on import
-def createdb():
-    Material.createTable(ifNotExists=True)
-    Concordance.createTable(ifNotExists=True)
-    Statistic.createTable(ifNotExists=True)
-    annotater.model.createdb()
+material_table = Table('material', metadata,
+    Column('id', types.Integer, primary_key=True),
+    Column('name', types.String(255)),
+    Column('title', types.String(255)),
+    Column('creator', types.String(255)),
+    Column('url', types.String(255)),
+    Column('notes', types.Text())
+    )
 
-def cleandb():
-    Statistic.dropTable(ifExists=True)
-    Concordance.dropTable(ifExists=True)
-    Material.dropTable(ifExists=True)
-    annotater.model.cleandb()
-
-def rebuilddb():
-    cleandb()
-    createdb()
-
+# TODO: indices on word and occurences
+statistic_table = Table('statistic', metadata,
+    Column('id', types.Integer, primary_key=True),
+    Column('material_id', types.Integer, ForeignKey('material.id')),
+    Column('word', types.String(50)),
+    Column('occurrences', types.Integer, default=1),
+    )
 
 
 from ConfigParser import SafeConfigParser
-class Material(sqlobject.SQLObject):
+
+
+
+class Material(object):
     """Material related to Shakespeare (usually text of works and ancillary
     matter such as introductions).
 
@@ -54,14 +62,12 @@ class Material(sqlobject.SQLObject):
     
     TODO: mutiple creators ??
     """
-    
-    name = sqlobject.StringCol(alternateID=True)
-    title = sqlobject.StringCol(default=None, length=255)
-    # creator rather than author to fit with dublin core
-    creator = sqlobject.StringCol(default=None, length=255)
-    url = sqlobject.StringCol(default=None, length=255)
-    notes = sqlobject.StringCol(default=None)
 
+    # TODO: remove (just here for sqlobject bkwards compat)
+    @classmethod
+    def byName(self, name):
+        return self.query.filter_by(name=name).one()
+    
     def get_text(self, format=None):
         '''Get text (if any) associated with this material.
 
@@ -92,27 +98,13 @@ class Material(sqlobject.SQLObject):
             for key, val in cfgp.items(section):
                 setattr(item, key, val)
 
+class Statistic(object):
+    pass
 
-class Concordance(sqlobject.SQLObject):
-
-    text = sqlobject.ForeignKey('Material')
-    word = sqlobject.StringCol(length=50)
-    line = sqlobject.IntCol()
-    char_index = sqlobject.IntCol()
-
-    word_index = sqlobject.DatabaseIndex('word')
-    text_index = sqlobject.DatabaseIndex('text')
-
-class Statistic(sqlobject.SQLObject):
-
-    text = sqlobject.ForeignKey('Material')
-    word = sqlobject.StringCol(length=50)
-    occurrences = sqlobject.IntCol(default=1)
-
-    word_index = sqlobject.DatabaseIndex('word')
-    text_index = sqlobject.DatabaseIndex('text')
-
-
-# auto create db tables on import
-createdb()
+# Map each domain model class to its corresponding relational table.
+mapper = Session.mapper
+mapper(Material, material_table)
+mapper(Statistic, statistic_table, properties={
+    'text':relation(Material, backref='statistics')
+    })
 

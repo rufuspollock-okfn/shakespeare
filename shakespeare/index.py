@@ -8,7 +8,7 @@ class ShakespeareIndex(object):
     """
 
     def __init__(self):
-        self.all = shakespeare.model.Material.select(orderBy='name')
+        self.all = shakespeare.model.Material.query.order_by('name').all()
 
 
 all = ShakespeareIndex().all

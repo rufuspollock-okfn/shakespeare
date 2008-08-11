@@ -12,3 +12,8 @@ def setup_config(command, filename, section, vars):
     """Place any commands to setup shakespeare here"""
     conf = appconfig('config:' + filename)
     load_environment(conf.global_conf, conf.local_conf)
+    from shakespeare import model
+    log.info('Creating tables')
+    model.metadata.create_all(bind=config['pylons.g'].sa_engine)
+    log.info('Creating tables: SUCCESS')
+

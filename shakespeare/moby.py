@@ -123,8 +123,8 @@ class Helper(shakespeare.gutenberg.Helper):
             name = self.title_to_name(title) + '_moby'
             url = text[1]
             notes = 'Moby/Bosak Shakespeare, sourced from %s' % text[1]
-            numExistingTexts = shakespeare.model.Material.select(
-                        shakespeare.model.Material.q.name==name).count()
+            numExistingTexts = shakespeare.model.Material.query.filter_by(
+                        name=name).count()
             if numExistingTexts > 0:
                 if self.verbose:
                     print('Skip: Add to db. Moby/Bosak text already exists with name: %s' % name)

@@ -16,7 +16,7 @@ class TestSiteController(TestController):
         res = self.app.get(url)
         assert 'guide to the features of the Open Shakespeare web' in res
 
-    def test_concordance(self):
+    def _test_concordance(self):
         url = url_for(controller='site', action='concordance')
         res = self.app.get(url)
 

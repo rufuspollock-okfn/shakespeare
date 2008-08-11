@@ -318,8 +318,8 @@ class Helper(object):
             if text[2] == 'folio':
                 name += '_f'
             
-            numExistingTexts = shakespeare.model.Material.select(
-                        shakespeare.model.Material.q.name==name).count()
+            numExistingTexts = shakespeare.model.Material.query.filter_by(
+                        name=name).count()
             if numExistingTexts > 0:
                 if self.verbose:
                     print('Skip: Add to db. Gutenberg text already exists with name: %s' % name)
