@@ -3,7 +3,7 @@
   xmlns:xi="http://www.w3.org/2001/XInclude">
 
 <head>
-  <title>Open Shakespeare - ${page_title()}</title>
+  <title>Open Milton - ${page_title()}</title>
 
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link rel="stylesheet" href="/css/master.css" type="text/css" media="screen, print" title="Master stylesheet" charset="utf-8" />
@@ -17,10 +17,10 @@
     #subnav { background: transparent; height: 1px; }
     #subnav * { display: none; }
   </style>
-
+<!--
   <py:if test="page_specific_css">
     ${page_specific_css()}
-  </py:if>
+  </py:if>-->
 </head>
 
 <body>
@@ -49,7 +49,7 @@
         </py:choose>
         </topbar>
       </div><!-- /top-bar -->
-    <h1><a href="${h.url_for(controller='site', action='home')}" title="Open Shakespeare Home">Open Shakespeare</a></h1>
+    <h1><a href="${h.url_for(controller='site', action='home')}" title="Open Shakespeare Home">Open Milton</a></h1>
     
     </div><!-- /top-inner -->
      
@@ -88,7 +88,7 @@
   <div id="primary" class="sidebar">
     <div class="box">
       <h2>Further Assistance</h2>
-      <p>For information on using Open Shakespeare check out the
+      <p>For information on using Open Milton check out the
       <a href="${h.url_for(action='guide')}">Guide</a>.
       If you have a question or have found a bug please post to the <a href="http://lists.okfn.org/mailman/listinfo/okfn-help">okfn-help</a> mailing list.
       </p>
