@@ -117,7 +117,7 @@ NB: you'll probably want to change log levels to debug.
 
     $ nosetests shakespeare
 '''
-__version__ = '0.5dev'
+__version__ = '0.6a'
 __application_name__ = 'shakespeare'
 
 def conf():
