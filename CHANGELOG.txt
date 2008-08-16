@@ -1,10 +1,17 @@
-v0.5: 2008-05-10
+v0.6: 2008-?
+================
+
+  * Text search via Xapian 
+  * Text statistics
+
+v0.5: 2008-06-01
 ================
 
   * Move to Pylons and rework web interface
   * Move command line interface to use pastescript
   * Now have Milton in addition to Shakespeare
   * Store copies of texts in package (shksprdata) rather than downloading.
+  * Refactor site layout and move to 'KForge/CKAN' look.
 
 v0.4: 2007-04-16
 ================
