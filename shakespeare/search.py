@@ -57,25 +57,6 @@ class SearchIndex(object):
             os.makedirs(index_dir)
         return SearchIndex(index_dir)
 
-    @classmethod
-    def get_stats(self, fileobj):
-        '''Get statistics on text in fileobj.
-
-        Words are stemmed so that e.g. love and loved count as the same word.
-        '''
-        # (?) maybe could use xapian.TermGenerator to split document
-        WORD_RE = re.compile('\\w{1,32}', re.U)
-        stemmer = xapian.Stem('english')
-        results = {}
-        text = fileobj.read()
-        text = text.encode('utf8')
-        for term in WORD_RE.finditer(text):
-            word = term.group()
-            word = word.lower()
-            stemmed_word = stemmer(word)
-            results[stemmed_word] = results.get(stemmed_word, 0) + 1
-        return results
-
     def add_item(self, fileobj):
         document = xapian.WritableDatabase (self.index_dir, xapian.DB_CREATE_OR_OPEN)
         indexer = xapian.TermGenerator()
@@ -130,12 +111,37 @@ class SearchIndex(object):
         matches = enquire.get_mset(offset, count)
         return matches
 
+    def add_from_path(self, path):
+        '''Add contents of {path} (file itself or all text files in directory
+        if directory) to the search index.'''
+        path = path.strip()
+        if not os.path.exists(path):
+            print '"%s" is not an existent path' % path
+            return 1
+        if os.path.isdir(path):
+            fns = os.listdir(path)
+            fns = filter(lambda x: x.endswith('.txt'), fns)
+            works = [ os.path.join(path, fn) for fn in fns ]
+        else:
+            works = [ path ]
+        for work in works:
+            if self.verbose:
+                print 'Processing %s' % work
+            fileobj = open(work)
+            self.index.add_item(fileobj)
+
     @classmethod
     def print_matches(self, matches):
         # Display the results.
-        print "%i results found." % matches.get_matches_estimated()
-        print "Results 1-%i:" % matches.size()
+        msg = '%i results found.' % matches.get_matches_estimated()
+        msg += 'Results 1-%i:' % matches.size()
 
         for m in matches:
-            print "%i: %i%% docid=%i [%s]" % (m.rank + 1, m.percent, m.docid, m.document.get_data())
+            msg += '\n'
+            msg += '%i: %i%% docid=%i' % (m.rank + 1, m.percent, m.docid)
+            msg += '\n'
+            msg += m.document.get_data()
+            msg += '\n'
+        return msg
+
 

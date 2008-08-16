@@ -65,11 +65,11 @@ For more information about the package run `info`.
             meta = pkg_resources.resource_stream(pkg, 'texts/metadata.txt')
             shakespeare.model.Material.load_from_metadata(meta)
         else:
-            shakespeare.model.__dict__[line+'db']()
+            print 'To create db use paster: paster setup-app {config-file}'
 
     def help_db(self, line=None):
         usage = \
-'''db { create | clean | rebuild | init }
+'''db { create | init }
 '''
         print usage
     
@@ -145,37 +145,6 @@ Download and process all Moby/Bosak shakespeare texts'''
 '''Print index of Shakespeare texts to stdout'''
         print usage
 
-    def do_concordance(self, line=None):
-        self._init_index()
-        print 'Making concordance (this may take some time ...):'
-        from shakespeare.concordance import ConcordanceBuilder
-        import time
-        start = end = 0
-        start = time.time()
-        cc = ConcordanceBuilder()
-        textsToAdd = []
-        if line is not None:
-            textsToAdd = self._filter_index(line)
-        else:
-            def gut_non_folio(material):
-                return '_gut' in material.name and 'gut_f' not in material.name
-            textsToAdd = filter(gut_non_folio, self._index) 
-        for item in textsToAdd:
-            print 'Adding: %s (%s)' % (item.name, item.title)
-            cc.add_text(item.name)
-        end = time.time()
-        timetaken = end - start
-        print 'Finished. Time taken was %ss' % timetaken
-
-    def help_concordance(self, line=None):
-        usage = \
-'''Create a concordance
-
-If no arguments supplied then use all non-folio gutenberg shakespeare texts.
-Otherwise arguments should be a space seperated list of work name ids
-'''
-        print usage
-
     def do_runserver(self, line=None):
         self.help_runserver()
 
@@ -199,55 +168,96 @@ Please use `paster serve` to run a server now, e.g.::
     def help_info(self, line=None):
         print 'Information about this package.'
 
-    def do_search_add(self, line=None):
-        path = line.strip()
-        if not os.path.exists(path):
-            print '"%s" is not an existent path' % path
-            return 1
-        if os.path.isdir(path):
-            fns = os.listdir(path)
-            fns = filter(lambda x: x.endswith('.txt'), fns)
-            works = [ os.path.join(path, fn) for fn in fns ]
-        else:
-            works = [ path ]
+    def _parse_line(self, line):
+        line = line.strip()
+        args = line.split()
+        action = ''
+        remainder = ''
+        if len(args) > 0:
+            action = args[0]
+        if len(args) > 1:
+            remainder = ' '.join(args[1:])
+        return (action, remainder)
+
+    def do_search(self, line):
         import shakespeare.search
         index = shakespeare.search.SearchIndex.default_index()
-        for work in works:
-            if self.verbose:
-                print 'Processing %s' % work
-            fileobj = open(work)
+
+        action, extra = self._parse_line(line)
+        if action == 'addpath':
+            index.add_from_path(extra)
+        elif action == 'query':
+            results = index.search(extra)
+            print index.print_matches(results)
+        elif action == 'addtext':
+            import shakespeare.model as model
+            text = model.Material.byName(extra)
+            fileobj = text.get_text()
             index.add_item(fileobj)
-
-    def help_search_add(self, line=None):
-        info = '''search_add {path}
-
-Add contents of {path} (file itself or all text files in directory if
-directory) to the search index.'''
-        print info
-
-    def do_search_add_all(self):
-        # TODO: automatically add all texts listed in index
-        pass
-
-    def do_search(self, line=None):
-        import shakespeare.search
-        index = shakespeare.search.SearchIndex.default_index()
-        query = line.strip()
-        if not query:
-            print 'No search term supplied.'
+        elif action == 'init':
+            self._init_index()
+            for text in self._index:
+                fileobj = text.get_text()
+                index.add_item(fileobj)
+        else:
+            print 'Unrecognized action: %s' % action
+            self.help_search()
             return 1
-        matches = index.search(query)
-        print "%i results found." % matches.get_matches_estimated()
-        print "Results 1-%i:" % matches.size()
-
-        for m in matches:
-            print
-            print '%i: %i%% docid=%i' % (m.rank + 1, m.percent, m.docid)
-            print m.document.get_data()
 
     def help_search(self, line=None):
-        info = 'Supply a query with which to search the search index.'
+        info = \
+'''
+search addpath {path}
+    - Add contents of {path} (file itself or all text files in directory if
+      directory) to the search index.
+      
+search addtext {name}
+    - Add db text named {name} to search index.
+
+search query {query}
+    - Query search index with {query}.
+
+search init
+    - Add all texts in DB to index.
+'''
         print info
+
+    def do_stats(self, line):
+        action, extra = self._parse_line(line)
+
+        import shakespeare.stats
+        stats = shakespeare.stats.Stats()
+        if action == 'init':
+            self._init_index()
+            for text in self._index:
+                stats.statsify(text, text.get_text())
+        elif action == 'addtext':
+            import shakespeare.model as model
+            text = model.Material.byName(extra)
+            stats.statsify(text, text.get_text())
+        elif action == 'show':
+            textstats = stats.text_stats(extra)
+            for s in textstats:
+                print s.word, s.freq
+        else:
+            print 'Unrecognized action: %s' % action
+            self.help_stats()
+            return 1
+
+    def help_stats(self, line=None):
+        info = \
+'''
+stats addtext {name}
+    - Add db text named {name} to stats index.
+
+stats show {name}
+    - Query stats index with {query}.
+
+stats init
+    - Prepare statistics for all texts in DB.
+'''
+        print info
+
 
 def main():
     import optparse

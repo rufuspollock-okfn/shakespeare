@@ -51,11 +51,3 @@ When in eternal lines to time thou grow'st,
         out = self.index.search('rough')
         assert len(out) == 1
 
-    def test_get_stats(self):
-        simpletext = 'Death death dead love loved loving'
-        out = self.index.get_stats(StringIO.StringIO(simpletext))
-        assert len(out) == 3
-        assert out['love'] == 3
-        assert out['death'] == 2
-        assert out['dead'] == 1
-
