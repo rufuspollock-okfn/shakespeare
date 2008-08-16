@@ -10,11 +10,14 @@
     </form>
 
     <div class="search-results" py:if="c.matches is not None">
-      <h3>Search Results</h3>
+      <h3>Search Results For: ${c.query}</h3>
       There were ${c.total} results.
       <ul>
-        <li py:for="m in c.matches">
-        ${m.document.get_data()}
+        <li py:for="m in c.results">
+        Work: ${m.title}, Line: ${m._lineno}
+        <blockquote>
+          <pre>${m._snippet}</pre>
+        </blockquote>
         </li>
       </ul>
     </div>

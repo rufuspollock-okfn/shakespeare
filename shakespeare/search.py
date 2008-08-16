@@ -35,6 +35,10 @@ import re
 
 import xapian
 
+# keys for document values
+ITEM_ID = 0
+LINE_NO = 1
+
 class SearchIndex(object):
     def __init__(self, index_dir):
         self.index_dir = index_dir
@@ -57,58 +61,60 @@ class SearchIndex(object):
             os.makedirs(index_dir)
         return SearchIndex(index_dir)
 
-    def add_item(self, fileobj):
-        document = xapian.WritableDatabase (self.index_dir, xapian.DB_CREATE_OR_OPEN)
+    def add_item(self, fileobj, item_id=None):
+        database = xapian.WritableDatabase(self.index_dir, xapian.DB_CREATE_OR_OPEN)
         indexer = xapian.TermGenerator()
         stemmer = xapian.Stem("english")
         indexer.set_stemmer(stemmer)
 
         para = ''
         try:
+            count = -1
+            para_start = 0
             for line in fileobj:
+                count += 1
                 line = line.strip()
                 if line == '':
                     if para != '':
                         doc = xapian.Document()
                         doc.set_data(para)
+                        id_term = 'I' + str(item_id)
+                        doc.add_term(id_term)
+                        doc.add_value(ITEM_ID, str(item_id))
+                        doc.add_value(LINE_NO, str(para_start))
 
                         indexer.set_document(doc)
                         # this *will* include positional information
                         indexer.index_text(para)
 
-                        # Add the document to the database.
-                        document.add_document(doc)
+                        database.add_document(doc)
+                        # assume next para starts
                         para = ''
+                    # must come after
+                    para_start = count
                 else:
                     if para != '':
                         para += '\n'
                     para += line
         except StopIteration:
             # TODO: what is happening here?
-            pass
+            raise
 
-    def search(self, query_string):
-        # Open the database for searching.
+    def get_database(self):
         database = xapian.Database(self.index_dir)
+        return database
 
-            # Start an enquire session.
+    def search(self, query_string, offset=0, numresults=10):
+        database = self.get_database()
         enquire = xapian.Enquire(database)
-
-        # Parse the query string to produce a Xapian::Query object.
         qp = xapian.QueryParser()
         stemmer = xapian.Stem("english")
         qp.set_stemmer(stemmer)
         qp.set_database(database)
         qp.set_stemming_strategy(xapian.QueryParser.STEM_SOME)
         query = qp.parse_query(query_string)
-        print "Parsed query is: %s" % query.get_description()
-
-         # Find the top 10 results for the query.
         enquire.set_query(query)
-        # get search results offset, offset+count
-        offset = 0
-        count = 10
-        matches = enquire.get_mset(offset, count)
+        matches = enquire.get_mset(offset, numresults)
         return matches
 
     def add_from_path(self, path):
@@ -125,10 +131,8 @@ class SearchIndex(object):
         else:
             works = [ path ]
         for work in works:
-            if self.verbose:
-                print 'Processing %s' % work
             fileobj = open(work)
-            self.index.add_item(fileobj)
+            self.add_item(fileobj)
 
     @classmethod
     def print_matches(self, matches):
@@ -143,5 +147,4 @@ class SearchIndex(object):
             msg += m.document.get_data()
             msg += '\n'
         return msg
-
-
+    

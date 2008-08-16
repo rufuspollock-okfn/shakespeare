@@ -4,31 +4,11 @@ import tempfile
 import StringIO
 
 import shakespeare.search
+import shakespeare.tests
 
 class TestSearch:
-    # break up a little to make indexing more interesting
-    text = \
-'''
-Shall I compare thee to a summer's day?
-Thou art more lovely and more temperate:
-Rough winds do shake the darling buds of May,
-And summer's lease hath all too short a date:
-
-Sometime too hot the eye of heaven shines,
-And often is his gold complexion dimm'd,
-And every fair from fair sometime declines,
-By chance, or nature's changing course untrimm'd: 
-
-But thy eternal summer shall not fade,
-Nor lose possession of that fair thou ow'st,
-Nor shall death brag thou wander'st in his shade,
-When in eternal lines to time thou grow'st,
-
-  So long as men can breathe, or eyes can see,
-  So long lives this, and this gives life to thee.
-'''
-
     def setUp(self):
+        self.text = shakespeare.tests.make_fixture()
         basetmp = tempfile.gettempdir()
         self.tmpdir = os.path.join(basetmp, 'openshkspr-search')
         # we leave directory in existence to help with debugging
@@ -36,12 +16,15 @@ When in eternal lines to time thou grow'st,
             shutil.rmtree(self.tmpdir)
         os.makedirs(self.tmpdir)
         self.index = shakespeare.search.SearchIndex(self.tmpdir)
+        self.index.add_item(StringIO.StringIO(self.text.content),
+                self.text.name)
+
+    # TODO: remove the document from the index
 
     def test_add_item(self):
-        self.index.add_item(StringIO.StringIO(self.text))
+        assert self.index.get_database().get_doccount() > 0
 
     def test_search(self):
-        self.index.add_item(StringIO.StringIO(self.text))
         out = self.index.search('summer')
         assert len(out) == 2
         mset1 = out[1]
@@ -50,4 +33,16 @@ When in eternal lines to time thou grow'st,
         assert mset1.document.get_data().startswith(exp)
         out = self.index.search('rough')
         assert len(out) == 1
+    
+    def test_retrieve_lineno(self):
+        out = self.index.search('summer')
+        mset1 = out[1]
+        lineno = mset1.document.get_value(shakespeare.search.LINE_NO)
+        assert lineno == '9'
+
+    def test_retrieve_itemid(self):
+        out = self.index.search('summer')
+        mset1 = out[1]
+        name = mset1.document.get_value(shakespeare.search.ITEM_ID)
+        assert name == self.text.name
 

@@ -10,7 +10,7 @@ class TestSearchController(TestController):
         # TODO: remove this item from index in tearDown
         text = make_fixture()
         sindex = shakespeare.search.SearchIndex.default_index()
-        sindex.add_item(StringIO.StringIO(text.content))
+        sindex.add_item(StringIO.StringIO(text.content), text.name)
 
     def test_index(self):
         url = url_for(controller='search')
@@ -23,6 +23,7 @@ class TestSearchController(TestController):
         form = res.forms[0]
         form['query'] = 'summer'
         res = form.submit()
+        # print res
         assert 'Search Results' in res
         assert 'Shall I compare thee' in res
 
