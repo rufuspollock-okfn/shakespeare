@@ -47,11 +47,11 @@ class TestStatistic:
         self.title = 'Hamlet'
         self.text = model.Material(name=self.name, title=self.title)
         self.word = 'jones'
-        self.occurrences = 5
+        self.freq = 5
         self.cc1 = model.Statistic(
                 text=self.text,
                 word=self.word,
-                occurrences=self.occurrences
+                freq=self.freq
                 )
         model.Session.flush()
         self.statid = self.cc1.id
@@ -68,7 +68,7 @@ class TestStatistic:
     def test1(self):
         out1 = model.Statistic.query.get(self.statid)
         assert out1.text.name == self.name
-        assert out1.occurrences == self.occurrences
+        assert out1.freq == self.freq
 
     def test_select(self):
         tresults = model.Statistic.query.filter_by(text=self.text

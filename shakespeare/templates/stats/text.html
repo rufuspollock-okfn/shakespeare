@@ -1,0 +1,32 @@
+<html xmlns:py="http://genshi.edgewall.org/"
+  xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+  <py:def function="page_title">Stats for ${c.text.name}</py:def>
+
+  <div py:match="content">
+    <table border="1">
+    <thead>
+      <tr>
+        <th>
+          Word  
+        </th>
+        <th>
+          Frequency
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr py:for="stat in c.stats">
+        <td>
+          ${stat.word}
+        </td>
+        <td>
+          ${stat.freq}
+        </td>
+      </tr>
+    </tbody>
+    </table>
+  </div>
+
+  <xi:include href="../layout.html" />
+</html>

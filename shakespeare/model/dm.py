@@ -44,7 +44,7 @@ statistic_table = Table('statistic', metadata,
     Column('id', types.Integer, primary_key=True),
     Column('material_id', types.Integer, ForeignKey('material.id')),
     Column('word', types.String(50)),
-    Column('occurrences', types.Integer, default=1),
+    Column('freq', types.Integer),
     )
 
 
@@ -66,7 +66,7 @@ class Material(object):
     # TODO: remove (just here for sqlobject bkwards compat)
     @classmethod
     def byName(self, name):
-        return self.query.filter_by(name=name).one()
+        return self.query.filter_by(name=name).first()
     
     def get_text(self, format=None):
         '''Get text (if any) associated with this material.
@@ -91,12 +91,13 @@ class Material(object):
         cfgp = SafeConfigParser()
         cfgp.readfp(fileobj)
         for section in cfgp.sections():
-            try:
-                item = Material.byName(section)
-            except:
+            item = Material.byName(section)
+            if item is None:
                 item = Material(name=section)
+            assert item is not None
             for key, val in cfgp.items(section):
                 setattr(item, key, val)
+            Session.flush()
 
 class Statistic(object):
     pass
