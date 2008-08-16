@@ -5,7 +5,7 @@
 
   <div py:match="content">
     <p>
-      This page provides a guide to the features of the Open Milton web
+      This page provides a guide to the features of the Open Shakespeare web
       interface.
     </p>
     <h2>
@@ -29,9 +29,9 @@
     <p>
       You can view a given text in a different format by setting the format
       argument in the url query string like so:
-      /view?name={id}&amp;format={format_name} So to view Areopagitica with line
+      /view?name={id}&amp;format={format_name} So to view hamlet with line
       numbers visit: <a
-        href="/text/view?format=lineno&amp;name=areopagitica_gut">/text/view?format=lineno&amp;name=areopagitica_gut</a> Available formats are:
+        href="/view?name=hamlet_gut&amp;format=lineno">/view?name=hamlet_gut&amp;format=lineno</a> Available formats are:
     </p>
     <ul>
       <li>format=plain - plain version of the file (default)</li>
@@ -39,12 +39,20 @@
       <li>format=lineno - text with line numbers added</li>
     </ul> 
 
+    <h3>Multiviews</h3>
+    <p>
+      You can view mutiple texts at once by concatenating the name-ids
+      separated by '+'. For example to see the Gutenberg folio and non-folio
+      Othello side-by-side you would visit: <a
+        href="/view?name=othello_gut_f+othello_gut">/view?name=othello_gut_f+othello_gut</a>
+    </p>
+
     <h2>
       Concordance
     </h2>
     <p>
       The <a href="/concordance/">concordance page</a> provides a concordance of
-      Milton's work along with some associated statistics on word
+      Shakespeare's work along with some associated statistics on word
       occurences.
     </p>
 
