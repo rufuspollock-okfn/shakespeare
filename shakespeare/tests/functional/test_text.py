@@ -1,8 +1,18 @@
 from StringIO import StringIO
 
+import pkg_resources
+
 from shakespeare.tests import *
+import shakespeare.model as model
 
 class TestTextController(TestController):
+    @classmethod
+    def setup_class(cls):
+        text = model.Material.byName('tempest_gut')
+        if text is None:
+            pkg = 'shksprdata'
+            meta = pkg_resources.resource_stream(pkg, 'texts/metadata.txt')
+            model.Material.load_from_metadata(meta)
 
     def test_index(self):
         url = url_for(controller='text')
