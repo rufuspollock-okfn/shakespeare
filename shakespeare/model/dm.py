@@ -26,9 +26,6 @@ Session = orm.scoped_session(orm.sessionmaker(
 import shakespeare
 import shakespeare.cache
 
-# import other sqlobject items
-from annotater.model import Annotation
-import annotater.model
 
 material_table = Table('material', metadata,
     Column('id', types.Integer, primary_key=True),

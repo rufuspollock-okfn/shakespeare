@@ -68,22 +68,3 @@ class TextFormatterLineno(TextFormatter):
         return result
 
 
-import annotater.marginalia
-class TextFormatterAnnotate(TextFormatter):
-    """Format the text in a manner suitable for marginalia annotation.
-    """
-
-    def format(self, file, **kwargs):
-        self.file = file
-        # todo chunking
-        line_numberer = TextFormatterLineno()
-        text_with_linenos = line_numberer.format(self.file)
-        values = {
-                'content' : text_with_linenos,
-                'id' : 'm0',
-                }
-        for key in kwargs:
-            values[key] = kwargs[key]
-        result = annotater.marginalia.format_entry(**values)
-        return result
-

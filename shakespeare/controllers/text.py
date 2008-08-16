@@ -11,8 +11,8 @@ import shakespeare.concordance
 import shakespeare.model as model
 
 # import this after dm so that db connection is set
-import annotater.store
-import annotater.marginalia
+# import annotater.store
+# import annotater.marginalia
 
 log = logging.getLogger(__name__)
 

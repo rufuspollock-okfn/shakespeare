@@ -40,29 +40,6 @@ class TestTextFormatterLineno:
         assert out == self.exp
 
 
-class TestTextFormatterAnnotate:
-
-    fileobj = StringIO.StringIO(starttext.encode('utf-8'))
-    formatter = shakespeare.format.TextFormatterAnnotate()
-    
-    def test_format(self):
-        self.fileobj.seek(0)
-        page_url = 'http://somethingelse.com/'
-        newtitle = 'New Title'
-        out = self.formatter.format(
-                self.fileobj,
-                page_uri=page_url,
-                title=newtitle,
-                )
-        print '"%s"' % out.encode('utf-8')
-        assert page_url in out
-        assert newtitle in out
-        assert TestTextFormatterLineno.exp in out
-        # test valid xml
-        import genshi
-        outxml = genshi.XML(out)
-
-
 def test_text_format():
     formatlist = [ ('plain', TestTextFormatterPlain),
         ('lineno', TestTextFormatterLineno),
