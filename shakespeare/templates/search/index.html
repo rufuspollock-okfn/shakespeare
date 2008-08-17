@@ -9,14 +9,14 @@
       <input type="submit" name="submit" value="Submit" />
     </form>
 
-    <div class="search-results" py:if="c.matches is not None">
+    <div class="search-results" py:if="c.total >= 0">
       <h3>Search Results For: ${c.query}</h3>
       There were ${c.total} results.
       <ul>
         <li py:for="m in c.results">
-        Work: ${m.title}, Line: ${m._lineno}
+        Work: ${m.title}, Line: ${m.lineno}
         <blockquote>
-          <pre>${m._snippet}</pre>
+          <pre>${m.snippet}</pre>
         </blockquote>
         </li>
       </ul>

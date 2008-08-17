@@ -22,15 +22,28 @@ class TestSearch:
     # TODO: remove the document from the index
 
     def test_add_item(self):
+        # as 4 paras should be 4 but not certain
         assert self.index.get_database().get_doccount() > 0
 
-    def test_search(self):
+    def test_remove_item(self):
+        self.index.remove_item(self.text.name)
+        assert self.index.get_database().get_doccount() == 0
+
+    def test_search_1(self):
         out = self.index.search('summer')
         assert len(out) == 2
+        mset1 = out[0]
+        exp = "Shall I compare thee to a summer's day"
+        assert mset1.document.get_data().startswith(exp)
+    
+    def test_search_2(self):
+        out = self.index.search('summer')
         mset1 = out[1]
         # 'But thy eternal summer ...
         exp = "But thy eternal summer shall not fade,\nNor lose possession of that fair thou ow'st,"
         assert mset1.document.get_data().startswith(exp)
+    
+    def test_search_3(self):
         out = self.index.search('rough')
         assert len(out) == 1
     

@@ -1,9 +1,16 @@
 """
 Statistics for texts.
 
-NB: all word keys have been lower-cased in order to render them
-case-insensitive
+All word keys are lower-cased in order to render them case-insensitive and
+are stemmed using the Xapian standard English stemmer.
 
+TODO
+====
+
+1. Provide for normalized statistics (that is occurences normalized by their
+occurence in the particular text).
+
+2. Support for aggregate statistics across multiple texts
 """
 import re
 import xapian

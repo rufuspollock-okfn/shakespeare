@@ -11,11 +11,11 @@ class SearchController(BaseController):
     def index(self):
         c.query = request.params.get('query', '')
         if c.query:
-            c.matches = self._get_matches(c.query)
-            c.results = self._get_results(c.matches)
-            c.total = c.matches.get_matches_estimated()
+            matches = self._get_matches(c.query)
+            c.results = [ SearchResult.from_match(m) for m in matches ]
+            c.total = matches.get_matches_estimated()
         else:
-            c.matches = None
+            c.total = -1
         return render('search/index')
     
     def _get_matches(self, query):
@@ -23,23 +23,20 @@ class SearchController(BaseController):
         matches = index.search(query, numresults=50)
         return matches
 
-    def _get_results(self, matches):
-        results = []
-        for m in matches:
-            text, lineno = self._match_to_text(m)
-            if text:
-                # slight hack -- just attach direct to object
-                text._lineno = lineno
-                text._snippet = m.document.get_data()
-                results.append(text)
-            else:
-                # TODO: create a dummy text ...
-                pass
-        return results
+class SearchResult(object):
+    def __init__(self, snippet='', text=None, lineno=None):
+        for k,v in locals().items():
+            setattr(self, k, v)
+        if self.text:
+            self.title = self.text.title
+        else:
+            self.title = 'Unknown'
 
-    def _match_to_text(self, m):
+    @classmethod
+    def from_match(cls, m):
+        snippet = m.document.get_data()
         item_id = m.document.get_value(shakespeare.search.ITEM_ID)
         text = model.Material.byName(item_id)
         lineno = m.document.get_value(shakespeare.search.LINE_NO)
-        return (text, lineno)
+        return cls(snippet, text, lineno)
 

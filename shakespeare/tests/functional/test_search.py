@@ -6,11 +6,15 @@ import shakespeare.search
 
 class TestSearchController(TestController):
 
-    def setUp(self):
-        # TODO: remove this item from index in tearDown
-        text = make_fixture()
-        sindex = shakespeare.search.SearchIndex.default_index()
-        sindex.add_item(StringIO.StringIO(text.content), text.name)
+    @classmethod
+    def setup_class(self):
+        self.text = make_fixture()
+        self.sindex = shakespeare.search.SearchIndex.default_index()
+        self.sindex.add_item(StringIO.StringIO(self.text.content), self.text.name)
+
+    @classmethod
+    def teardown_class(self):
+        self.sindex.remove_item(self.text.name)
 
     def test_index(self):
         url = url_for(controller='search')
@@ -23,7 +27,8 @@ class TestSearchController(TestController):
         form = res.forms[0]
         form['query'] = 'summer'
         res = form.submit()
-        # print res
+        assert 'There were 2 results' in res
         assert 'Search Results' in res
+        assert 'Sonnet 18' in res
         assert 'Shall I compare thee' in res
 

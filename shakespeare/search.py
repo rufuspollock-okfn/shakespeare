@@ -61,7 +61,20 @@ class SearchIndex(object):
             os.makedirs(index_dir)
         return SearchIndex(index_dir)
 
-    def add_item(self, fileobj, item_id=None):
+    def _make_id_term(self, item_id):
+        return 'I' + str(item_id)
+
+    def add_item(self, fileobj, item_id):
+        '''Add a text contained in fileobj and identified by item_id to the
+        Xapian search database.
+        
+        Each item added is broken in paragraphs to be indexed with each
+        paragraph becoming a separate L{xapian.Document}.
+
+        Each such document has an associated id_term based on the item_id and
+        the value and lineno are stored in Xapian values keyed by ITEM_ID and
+        LINE_NO.
+        '''
         database = xapian.WritableDatabase(self.index_dir, xapian.DB_CREATE_OR_OPEN)
         indexer = xapian.TermGenerator()
         stemmer = xapian.Stem("english")
@@ -78,7 +91,7 @@ class SearchIndex(object):
                     if para != '':
                         doc = xapian.Document()
                         doc.set_data(para)
-                        id_term = 'I' + str(item_id)
+                        id_term = self._make_id_term(item_id)
                         doc.add_term(id_term)
                         doc.add_value(ITEM_ID, str(item_id))
                         doc.add_value(LINE_NO, str(para_start))
@@ -99,6 +112,11 @@ class SearchIndex(object):
         except StopIteration:
             # TODO: what is happening here?
             raise
+
+    def remove_item(self, item_id):
+        id_term = self._make_id_term(item_id)
+        database = xapian.WritableDatabase(self.index_dir, xapian.DB_CREATE_OR_OPEN)
+        database.delete_document(id_term)
 
     def get_database(self):
         database = xapian.Database(self.index_dir)
