@@ -1,12 +1,17 @@
 <html xmlns:py="http://genshi.edgewall.org/"
   xmlns:xi="http://www.w3.org/2001/XInclude">
   
-  <py:def function="page_title">Stats for ${c.text.name}</py:def>
+  <py:def function="page_title">Stats for ${c.text.title}</py:def>
 
   <div py:match="content">
-    <table border="1">
+    <img style="float: left;"
+      src="${c.img_url}"
+      alt="Word Statistics Bar Chart" />
+
+    <table border="1" style="margin-left: 550px;">
     <thead>
       <tr>
+        <th>Index</th>
         <th>
           Word  
         </th>
@@ -16,7 +21,10 @@
       </tr>
     </thead>
     <tbody>
-      <tr py:for="stat in c.stats">
+      <tr py:for="index, stat in enumerate(c.stats)">
+        <td>
+          ${index + 1}
+        </td>
         <td>
           ${stat.word}
         </td>
