@@ -14,6 +14,10 @@ class ShakespeareAdmin(cmd.Cmd):
         cmd.Cmd.__init__(self)
         self.verbose = verbose
 
+    def _print(self, msg, force=False):
+        if self.verbose or force:
+            print msg
+
     prompt = 'The Bard > '
 
     def run_interactive(self, line=None):
@@ -197,6 +201,10 @@ Please use `paster serve` to run a server now, e.g.::
         elif action == 'init':
             self._init_index()
             for text in self._index:
+                # exclude folios as many odd spellings
+                if text.name.endswith('_f'):
+                    continue
+                self._print('Adding: %s' % text.name)
                 fileobj = text.get_text()
                 index.add_item(fileobj)
         else:
@@ -230,6 +238,10 @@ search init
         if action == 'init':
             self._init_index()
             for text in self._index:
+                # exclude folios as many odd spellings
+                if text.name.endswith('_f'):
+                    continue
+                self._print('Adding: %s' % text.name)
                 stats.statsify(text, text.get_text())
         elif action == 'addtext':
             import shakespeare.model as model
