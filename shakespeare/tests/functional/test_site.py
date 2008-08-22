@@ -16,10 +16,6 @@ class TestSiteController(TestController):
         res = self.app.get(url)
         assert 'guide to the features of the Open Shakespeare web' in res
 
-    def _test_concordance(self):
-        url = url_for(controller='site', action='concordance')
-        res = self.app.get(url)
-
     # 2008-04-26 rgrp: not working
     # seems to be issues inside the annotater stuff so leaving for the time
     # being.

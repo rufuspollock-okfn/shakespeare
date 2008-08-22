@@ -12,8 +12,8 @@
       The Index
     </h2>
     <p>
-      The <a href="/index/">index page</a> contains a list of all of the
-      material on the system.
+      The <a href="${h.url_for(controller='text', action='index')}">text index
+        page</a> contains a list of all of the material on the system.
     </p>
     <h2>
       Viewing Works
@@ -21,17 +21,27 @@
     <p>
       You can view works by clicking on the link available from the index page.
       If you know the 'id' of a text you can view it directly by visiting the
-			url: /view?name={id} (you can work out id names by looking at the link
-			urls on the index page).
+      url: ${h.url_for(controller='text', action='view', name='id')} (you can work
+      out id names by looking at the link urls on the index page).
     </p>
     
     <h3>Viewing in different formats</h3>
     <p>
       You can view a given text in a different format by setting the format
       argument in the url query string like so:
-      /view?name={id}&amp;format={format_name} So to view hamlet with line
-      numbers visit: <a
-        href="/view?name=hamlet_gut&amp;format=lineno">/view?name=hamlet_gut&amp;format=lineno</a> Available formats are:
+    </p>
+    <pre>
+      ${h.url_for(controller='text', action='view', name='id', format='format_name')}
+    </pre>
+    <p>
+      So to view Hamlet with line numbers shown you would visit:
+    </p>
+    <blockquote><p>
+      <a href="${h.url_for(controller='text', action='view', name='hamlet_gut', format='lineno')}">
+        ${h.url_for(controller='text', action='view', name='hamlet_gut', format='lineno')}</a>
+    </p></blockquote>
+    <p>
+      Available formats are:
     </p>
     <ul>
       <li>format=plain - plain version of the file (default)</li>
@@ -44,22 +54,30 @@
       You can view mutiple texts at once by concatenating the name-ids
       separated by '+'. For example to see the Gutenberg folio and non-folio
       Othello side-by-side you would visit: <a
-        href="/view?name=othello_gut_f+othello_gut">/view?name=othello_gut_f+othello_gut</a>
+        href="${h.url_for(controller='text', action='view', name='othello_gut_f othello_gut')}">
+        ${h.url_for(controller='text', action='view', name='othello_gut_f othello_gut')}
+      </a>
     </p>
 
     <h2>
-      Concordance
+      Search
     </h2>
     <p>
-      The <a href="/concordance/">concordance page</a> provides a concordance of
-      Shakespeare's work along with some associated statistics on word
-      occurences.
+      See the <a href="${h.url_for(controller='search', action='index')}">search section</a>.
     </p>
+
+    <h2>
+      Search
+    </h2>
+    <p>
+      See the <a href="${h.url_for(controller='stats', action='index')}">stats section</a>.
+    </p>
+
 
     <h2>Comments</h2>
     <p>
-      If you wish to comment on this guide (or help improve it!) please visit
-      <a href="http://www.openshakespeare.org/">http://www.openshakespeare.org</a>
+      If you wish to comment on this guide (or help improve it!) please drop a
+      line to the Open Shakespeare team via at info [at] okfn [dot] org.
     </p>
   </div>
 

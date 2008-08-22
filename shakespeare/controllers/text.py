@@ -7,7 +7,6 @@ from shakespeare.lib.base import *
 import shakespeare
 import shakespeare.index
 import shakespeare.format
-import shakespeare.concordance
 import shakespeare.model as model
 
 # import this after dm so that db connection is set

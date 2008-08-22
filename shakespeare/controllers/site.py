@@ -7,7 +7,6 @@ from shakespeare.lib.base import *
 import shakespeare
 import shakespeare.index
 import shakespeare.format
-import shakespeare.concordance
 import shakespeare.model as model
 
 # import this after dm so that db connection is set
@@ -25,32 +24,6 @@ class SiteController(BaseController):
 
     def guide(self):
         return render('guide')
-
-    def concordance(self, word=None):
-        # TODO: support concordance/word
-        return self.concordance_index()
-
-    def concordance_index(self):
-        stats = shakespeare.concordance.Statistics()
-        c.words = stats.keys()
-        return render('concordance')
-
-    def concordance_word(self, word=None):
-        # TODO: sort by work etc
-        import shakespeare.textutils
-        refs = []
-        cc = shakespeare.concordance.Concordance()
-        if word is not None:
-            refs = list(cc.get(word))
-        newrefs = []
-        for ref in refs:
-            # we use the 'plain' format when building the concordance
-            ff = ref.text.get_text()
-            snippet = shakespeare.textutils.get_snippet(ff, ref.char_index)
-            ref.snippet = snippet
-        c.word = word
-        c.refs = refs
-        return render('concordance_by_word')
 
     # 2008-04-26 (rgrp): none of these annotater related items
     # seem to working properly
