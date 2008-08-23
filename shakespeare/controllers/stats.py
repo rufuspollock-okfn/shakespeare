@@ -10,10 +10,20 @@ class StatsController(BaseController):
 
     def index(self):
         return render('stats/index')
-    
+
+    def text_index(self):
+        # only get those texts with stats
+        c.texts = model.Material.query.all()
+        import shakespeare.controllers.text
+        ctrl = shakespeare.controllers.text.TextController()
+        return ctrl.index()
+
     def text(self, id):
         text_name = id
         text = model.Material.byName(text_name)
+        # no id or no text by that id
+        if not text:
+            return self.text_index()
         stats = shakespeare.stats.Stats()
         c.text = text
         c.stats = stats.text_stats(text)
@@ -22,8 +32,25 @@ class StatsController(BaseController):
         c.img_url = self.vertical_bar_chart(data)
         return render('stats/text')
 
+    def word_index(self):
+        return ''
+    
+    def word(self, id):
+        if id is None:
+            return self.word_index()
+        word = id
+        c.word = word
+        stats = shakespeare.stats.Stats()
+        c.stats = stats.word_stats(word)
+        # will not have that many texts so do not need to limit c.stats
+        data = [ (s.text.title, s.freq) for s in c.stats ]
+        c.img_url = self.vertical_bar_chart(data)
+        return render('stats/word')
+
     # TODO: factor this out to its module (?)
     def vertical_bar_chart(self, data, width=500):
+        if not data:
+            return ''
         # tranpose
         tdata = zip(*data)
         labels = list(tdata[0])

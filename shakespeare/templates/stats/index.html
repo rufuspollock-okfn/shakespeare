@@ -4,10 +4,22 @@
   <py:def function="page_title">Stats</py:def>
 
   <div py:match="content">
-    <p>This section provides statistical information about word occurences in
-    the various textual materials available on the site. If you know the name
-    of a text you can get information by visiting ./text_name/
+    <p>This section provides statistical information about the various textual
+    materials available on the site.
     </p>
+    <p>
+      Currently information is provided organized by:
+    </p>
+    <ul>
+      <li>
+        <a href="${h.url_for(controller='stats', action='text',
+          id=None)}">Text</a>
+      </li>
+      <li>
+        <a href="${h.url_for(controller='stats', action='word',
+          id=None)}">Word</a>
+      </li>
+    </ul>
   </div>
 
   <xi:include href="../layout.html" />

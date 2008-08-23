@@ -17,6 +17,7 @@ class TestStats:
     def setUp(self):
         self.stats = shakespeare.stats.Stats()
         self.text = make_fixture()
+        self.text2 = make_fixture2()
         model.Session.begin()
 
     def tearDown(self):
@@ -43,7 +44,9 @@ class TestStats:
         assert freq == 3
 
     def test_text_stats(self):
+        # create stats for at least 2 texts to make sure we only pick up one
         stats_fixture(self.text)
+        stats_fixture(self.text2)
 
         stats = self.stats.text_stats(self.text)
         for s in stats:
@@ -53,6 +56,15 @@ class TestStats:
         assert stats[0].freq == 5
         assert stats[2].word == 'summer'
         assert stats[2].freq == 3
-
+    
+    def test_word_stats(self):
+        stats_fixture(self.text)
+        stats_fixture(self.text2)
+        stats = self.stats.word_stats('summer')
+        assert len(stats) == 2
+        assert stats[0].text.name == self.text.name
+        assert stats[0].freq == 3
+        # same text so should be the same!
+        assert stats[0].freq == stats[1].freq
 
 

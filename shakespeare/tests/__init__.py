@@ -17,7 +17,7 @@ import paste.script.appinstall
 from paste.deploy import loadapp
 from routes import url_for
 
-__all__ = ['url_for', 'TestController', 'make_fixture' ]
+__all__ = ['url_for', 'TestController', 'make_fixture', 'make_fixture2' ]
 
 here_dir = os.path.dirname(os.path.abspath(__file__))
 conf_dir = os.path.dirname(os.path.dirname(here_dir))
@@ -65,6 +65,17 @@ def make_fixture():
     sonnet18.content = sonnet18_text
     return sonnet18
 
+def make_fixture2():
+    import shakespeare.model as model
+    sonnet18_name = 'test_sonnet18_2'
+    sonnet18 = model.Material.byName(sonnet18_name)
+    if not sonnet18:
+        sonnet18 = model.Material(name=sonnet18_name,
+                title='Sonnet 18 Duplicate',
+                )
+        model.Session.flush()
+    sonnet18.content = sonnet18_text
+    return sonnet18
 
 class TestController(object):
 

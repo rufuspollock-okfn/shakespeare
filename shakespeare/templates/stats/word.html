@@ -1,7 +1,7 @@
 <html xmlns:py="http://genshi.edgewall.org/"
   xmlns:xi="http://www.w3.org/2001/XInclude">
   
-  <py:def function="page_title">Stats for ${c.text.title}</py:def>
+  <py:def function="page_title">Stats for '${c.word}'</py:def>
 
   <div py:match="content">
     <img style="float: left;"
@@ -16,7 +16,7 @@
       <tr>
         <th>Index</th>
         <th>
-          Word  
+          Text
         </th>
         <th>
           Frequency
@@ -29,7 +29,7 @@
           ${index + 1}
         </td>
         <td>
-          ${stat.word}
+          ${stat.text.title}
         </td>
         <td>
           ${stat.freq}

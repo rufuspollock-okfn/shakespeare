@@ -59,7 +59,17 @@ class Stats(object):
             return 0
 
     def text_stats(self, text):
-        '''Return word statistics for text, most popular word first.'''
-        stats = model.Statistic.query.order_by(model.Statistic.freq.desc()).all()
+        '''Statistics for text, most popular word first.'''
+        stats = model.Statistic.query.filter_by(text=text).order_by(
+                model.Statistic.freq.desc()
+                ).all()
+        return stats
+
+    def word_stats(self, word):
+        '''Statistics for word (i.e. which texts use it) in order or
+        usage.'''
+        stats = model.Statistic.query.filter_by(word=word).order_by(
+                model.Statistic.freq.desc()
+                ).all()
         return stats
 
