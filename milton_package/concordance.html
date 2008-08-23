@@ -1,0 +1,31 @@
+<html xmlns:py="http://genshi.edgewall.org/"
+  xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+  <py:def function="page_title">Concordance and statistics</py:def>
+
+  <div py:match="content">
+    <p>
+      <strong>Click on a word to be taken to a detailed listing of its
+        occurrences</strong>
+    </p>
+    <table border="1">
+    <thead>
+      <tr>
+        <th>
+          Word  
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr py:for="word in c.words">
+        <td>
+          <a href="word/?word=${word}">${word}</a>
+        </td>
+      </tr>
+    </tbody>
+    </table>
+  </div>
+
+  <xi:include href="layout.html" />
+</html>
+
