@@ -43,12 +43,12 @@ class StatsController(BaseController):
         stats = shakespeare.stats.Stats()
         c.stats = stats.word_stats(word)
         # will not have that many texts so do not need to limit c.stats
-        data = [ (s.text.title, s.freq) for s in c.stats ]
+        data = [ (s.text.title[:min(len(s.text.title), 10)], s.freq) for s in c.stats ]
         c.img_url = self.vertical_bar_chart(data)
         return render('stats/word')
 
     # TODO: factor this out to its module (?)
-    def vertical_bar_chart(self, data, width=500):
+    def vertical_bar_chart(self, data, width=300):
         if not data:
             return ''
         # tranpose

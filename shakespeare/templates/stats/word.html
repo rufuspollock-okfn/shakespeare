@@ -9,9 +9,9 @@
       alt="Word Statistics Bar Chart" />
 
     <p py:if="not c.stats">
-      Sorry, no statistics are available for ${c.text.title} (name: ${c.text.name})
+      Sorry, no statistics are available for ${c.word} (NB: words are stemmed for stats purposes, so loved becomes love, bloody becomes blood etc).
     </p>
-    <table style="margin-left: 550px;">
+		<table>
     <thead>
       <tr>
         <th>Index</th>
