@@ -9,29 +9,24 @@ class ShakespeareAdmin(cmd.Cmd):
     TODO: self.verbose option and associated self._print
     """
 
-    def __init__(self, verbose=False):
+    def __init__(self, config=None, verbose=False):
         # cmd.Cmd is not a new style class
         cmd.Cmd.__init__(self)
+        self.config = config
         self.verbose = verbose
 
     def _print(self, msg, force=False):
         if self.verbose or force:
             print msg
 
-    prompt = 'The Bard > '
-
-    def run_interactive(self, line=None):
-        """Run an interactive session.
-        """
-        print 'Welcome to shakespeare-admin interactive mode\n'
-        self.do_about()
-        print 'Type:  "?" or "help" for help on commands.\n'
-        while 1:
-            try:
-                self.cmdloop()
-                break
-            except KeyboardInterrupt:
-                raise
+    def _register_config(self):
+        import sys
+        if not self.config:
+            msg = 'No configuration file has been specified. See -h help for details'
+            print msg
+            sys.exit(1)
+        import shakespeare
+        shakespeare.register_config(self.config)
 
     def do_help(self, line=None):
         cmd.Cmd.do_help(self, line)
@@ -58,18 +53,25 @@ For more information about the package run `info`.
     # Commands
 
     def do_db(self, line=None):
-        actions = [ 'create', 'clean', 'rebuild', 'init' ]
+        actions = [ 'create', 'clean', 'init' ]
         if line is None or line not in actions:
             self.help_db()
             return 1
+        self._register_config()
         import shakespeare.model
+        import shakespeare
         if line == 'init':
             import pkg_resources
             pkg = 'shksprdata'
             meta = pkg_resources.resource_stream(pkg, 'texts/metadata.txt')
             shakespeare.model.Material.load_from_metadata(meta)
-        else:
+        elif line == 'clean':
+            config = shakespeare.conf()
+            shakespeare.model.metadata.drop_all(bind=config['pylons.g'].sa_engine)
+        elif line == 'create':
             print 'To create db use paster: paster setup-app {config-file}'
+        else:
+            print self.help_db()
 
     def help_db(self, line=None):
         usage = \
@@ -78,6 +80,7 @@ For more information about the package run `info`.
         print usage
     
     def do_gutenberg(self, line=None):
+        self._register_config()
         import shakespeare.gutenberg
         helper = shakespeare.gutenberg.Helper(verbose=True)
         if not line:
@@ -108,12 +111,14 @@ Download and process all Project Gutenberg shakespeare texts"""
             raise Exception(msg)
 
     def help_moby(self, line=None):
+        self._register_config()
         usage = \
 '''
 Download and process all Moby/Bosak shakespeare texts'''
         print usage 
 
     def _init_index(self):
+        self._register_config()
         import shakespeare.index
         self._index = shakespeare.index.all
 
@@ -184,6 +189,7 @@ Please use `paster serve` to run a server now, e.g.::
         return (action, remainder)
 
     def do_search(self, line):
+        self._register_config()
         import shakespeare.search
         index = shakespeare.search.SearchIndex.default_index()
 
@@ -231,6 +237,7 @@ search init
         print info
 
     def do_stats(self, line):
+        self._register_config()
         action, extra = self._parse_line(line)
 
         import shakespeare.stats
@@ -276,17 +283,23 @@ def main():
     usage = \
 '''%prog [options] <command>
 
-Run about or help for details.'''
+For list of the commands available run:
+
+    $ shakespeare-admin help
+
+For more general information run the about or info commands.'''
     parser = optparse.OptionParser(usage)
     parser.add_option('-v', '--verbose', dest='verbose', help='Be verbose',
             action='store_true', default=False) 
+    parser.add_option('-c', '--config', dest='config',
+        help='Path to config file', default=None)
     options, args = parser.parse_args()
     
     if len(args) == 0:
         parser.print_help()
         return 1
     else:
-        cmd = ShakespeareAdmin(verbose=options.verbose)
+        cmd = ShakespeareAdmin(verbose=options.verbose, config=options.config)
         args = ' '.join(args)
         args = args.replace('-','_')
         cmd.onecmd(args)

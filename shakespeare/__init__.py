@@ -80,7 +80,6 @@ Tweak the config file as appropriate and then setup the application::
 
 Run::
 
-    $ shakespeare-admin db create
     $ shakespeare-admin db init
 
 2. Extras
@@ -120,27 +119,22 @@ NB: you'll probably want to change log levels to debug.
 __version__ = '0.6a'
 __application_name__ = 'shakespeare'
 
-def conf():
+def register_config(config_path):
     import os
-    defaultPath = os.path.abspath('./development.ini')
-    envVarName = __application_name__.upper() + 'CONF'
-    confPath = os.environ.get(envVarName, defaultPath)
-    if not os.path.exists(confPath):
-        raise ValueError('No Configuration file exists at: %s' % confPath)
-
-    # register the config
+    # TODO: remove? 2008-08-24 not mentioned in docs any more
+    # envVarName = __application_name__.upper() + 'CONF'
+    # config_path = os.environ.get(envVarName, '')
+    config_path = os.path.abspath(config_path)
     import paste.deploy
+    pasteconf = paste.deploy.appconfig('config:' + config_path)
     import shakespeare.config.environment
-    pasteconf = paste.deploy.appconfig('config:' + confPath)
-
     shakespeare.config.environment.load_environment(pasteconf.global_conf,
         pasteconf.local_conf)
+
+
+# TODO: rename to get_config()
+def conf():
     from pylons import config
     conf = config
-
-    # import ConfigParser
-    # conf = ConfigParser.SafeConfigParser()
-    # conf.read(confPath)
-
     return conf
      
