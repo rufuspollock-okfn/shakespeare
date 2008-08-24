@@ -203,7 +203,7 @@ Please use `paster serve` to run a server now, e.g.::
             import shakespeare.model as model
             text = model.Material.byName(extra)
             fileobj = text.get_text()
-            index.add_item(fileobj)
+            index.add_item(fileobj, text.name)
         elif action == 'init':
             self._init_index()
             for text in self._index:
@@ -212,7 +212,7 @@ Please use `paster serve` to run a server now, e.g.::
                     continue
                 self._print('Adding: %s' % text.name)
                 fileobj = text.get_text()
-                index.add_item(fileobj)
+                index.add_item(fileobj, text.name)
         else:
             print 'Unrecognized action: %s' % action
             self.help_search()
