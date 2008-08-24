@@ -11,7 +11,7 @@
           Title
         </th>
         <th>Author</th>
-        <th>Comments</th>
+        <th>Other Information</th>
       </tr>
     </thead>
     <tbody>
@@ -24,7 +24,11 @@
         <td>
           ${item.creator}
         </td>
-        <td py:content="item.notes"></td>
+        <td>
+          <a href="${h.url_for(controller='stats', action='text',
+            name=item.name)}">
+            Text statistics link</a>. ${item.notes}
+        </td>
       </tr>
     </tbody>
     </table>
