@@ -29,7 +29,8 @@
           ${index + 1}
         </td>
         <td>
-          ${stat.word}
+          <a href="${h.url_for(controller='stats', action='word', id=stat.word)}">
+            ${stat.word}</a>
         </td>
         <td>
           ${stat.freq}
