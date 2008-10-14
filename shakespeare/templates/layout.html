@@ -18,7 +18,7 @@
     #subnav * { display: none; }
   </style>
 
-  <py:if test="page_specific_css">
+  <py:if test="defined('page_specific_css')">
     ${page_specific_css()}
   </py:if>
 </head>
