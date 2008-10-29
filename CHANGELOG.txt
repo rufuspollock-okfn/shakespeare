@@ -1,8 +1,13 @@
-v0.6: 2008-?
+v0.6: 2008-09-15
 ================
 
-  * Text search via Xapian 
-  * Text statistics
+  * Major refactoring of internal code to be cleaner and simpler
+  * A new cleaner and reorganized web interface
+  * Search support via Xapian: <http://www.openshakespeare.org/search/>
+  * Statistical analysis and graphing
+    * By word: <http://www.openshakespeare.org/stats/word/love/>
+    * By text: <http://www.openshakespeare.org/stats/text/hamlet_gut>
+  * Start on Open Milton
 
 v0.5: 2008-06-01
 ================
