@@ -8,7 +8,11 @@ class TestMaterial(object):
         self.title = 'Hamlet'
         self.url = 'http://www.openshakespeare.org/blah.txt'
         self.text = model.Material(name=self.name,
-                title=self.title, url=self.url)
+            title=self.title, url=self.url,
+            src_pkg='shksprdata',
+            src_locator='/texts/phoenix_and_the_turtle_gut.txt'
+            )
+
         model.Session.flush()
         self.textid = self.text.id
         model.Session.clear()
@@ -30,9 +34,8 @@ class TestMaterial(object):
         # do not want anything too specific or we end up duplicating cache_test
         assert len(out) > 0
 
-    # TODO: set up fixtures before running this ...
-    def _test_get_text(self):
-        text = model.Material.byName('phoenix_and_the_turtle_gut')
+    def test_get_text(self):
+        text = model.Material.byName('test-123')
         out = text.get_text()
         out = out.read()
         assert len(out) > 0

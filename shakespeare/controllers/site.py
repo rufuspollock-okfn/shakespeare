@@ -5,7 +5,6 @@ import genshi
 from shakespeare.lib.base import *
 
 import shakespeare
-import shakespeare.index
 import shakespeare.format
 import shakespeare.model as model
 
@@ -19,7 +18,6 @@ log = logging.getLogger(__name__)
 class SiteController(BaseController):
 
     def index(self):
-        c.works_index = shakespeare.index.all
         return render('index')
 
     def guide(self):

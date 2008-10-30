@@ -58,69 +58,30 @@ For more information about the package run `info`.
             self.help_db()
             return 1
         self._register_config()
-        import shakespeare.model
+        import shakespeare.model as model
         import shakespeare
         if line == 'init':
-            import pkg_resources
-            pkg = 'shksprdata'
-            meta = pkg_resources.resource_stream(pkg, 'texts/metadata.txt')
-            shakespeare.model.Material.load_from_metadata(meta)
+            model.metadata.create_all()
+            import shksprdata.load
+            shksprdata.load.load_texts()
         elif line == 'clean':
             config = shakespeare.conf()
-            shakespeare.model.metadata.drop_all(bind=config['pylons.g'].sa_engine)
+            model.metadata.drop_all()
         elif line == 'create':
-            print 'To create db use paster: paster setup-app {config-file}'
+            model.metadata.create_all()
         else:
             print self.help_db()
 
     def help_db(self, line=None):
         usage = \
-'''db { create | init }
+'''db { create | init | clean }
 '''
         print usage
     
-    def do_gutenberg(self, line=None):
-        self._register_config()
-        import shakespeare.gutenberg
-        helper = shakespeare.gutenberg.Helper(verbose=True)
-        if not line:
-            helper.execute()
-        elif line == 'print_index':
-            import pprint
-            pprint.pprint(helper.get_index())
-        else:
-            msg = 'Unknown argument %s' % line
-            raise Exception(msg)
-
-    def help_gutenberg(self, line=None):
-        usage = \
-"""
-Download and process all Project Gutenberg shakespeare texts"""
-        print usage 
-
-    def do_moby(self, line=None):
-        import shakespeare.moby
-        helper = shakespeare.moby.Helper(verbose=True)
-        if not line:
-            helper.execute()
-        elif line == 'print_index':
-            import pprint
-            pprint.pprint(helper.get_index())
-        else:
-            msg = 'Unknown argument %s' % line
-            raise Exception(msg)
-
-    def help_moby(self, line=None):
-        self._register_config()
-        usage = \
-'''
-Download and process all Moby/Bosak shakespeare texts'''
-        print usage 
-
     def _init_index(self):
         self._register_config()
-        import shakespeare.index
-        self._index = shakespeare.index.all
+        import shakespeare.model as model
+        self._index = model.Material.query.all()
 
     def _filter_index(self, line):
         """Filter items in index return only those whose id (url) is in line
@@ -151,22 +112,9 @@ Download and process all Moby/Bosak shakespeare texts'''
 
     def help_index(self, line=None):
         usage = \
-'''Print index of Shakespeare texts to stdout'''
+'''Print index of texts to stdout'''
         print usage
 
-    def do_runserver(self, line=None):
-        self.help_runserver()
-
-    def help_runserver(self, line=None):
-        usage = \
-'''This command has been DEPRECATED.
-
-Please use `paster serve` to run a server now, e.g.::
-
-    paster serve <my-config.ini>
-'''
-        print usage
-    
     def do_info(self, line=None):
         import shakespeare
         info = shakespeare.__doc__

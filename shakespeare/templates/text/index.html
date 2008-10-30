@@ -17,7 +17,7 @@
     <tbody>
       <tr py:for="item in c.works_index">
         <td>
-          <a href="${h.url_for(controller='text', action='view',
+          <a href="${h.url_for(controller='text', action='view', id=None,
             name=item.name, format='lineno')}">
             ${item.title}</a>
         </td>

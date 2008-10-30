@@ -1,21 +1,32 @@
 from StringIO import StringIO
 
-import pkg_resources
-
 from shakespeare.tests import *
 import shakespeare.model as model
 
 class TestTextController(TestController):
     @classmethod
     def setup_class(cls):
+        assert len(model.Material.query.all()) == 0
         text = model.Material.byName('tempest_gut')
         if text is None:
-            pkg = 'shksprdata'
-            meta = pkg_resources.resource_stream(pkg, 'texts/metadata.txt')
-            model.Material.load_from_metadata(meta)
+            print 'Adding items'
+            import shksprdata.load
+            shksprdata.load.load_texts()
+            model.Session.flush()
+            model.Session.remove()
+        assert len(model.Material.query.all()) > 20
+        print [ m.title for m in model.Material.query.all()]
+    
+    @classmethod
+    def teardown_class(cls):
+        all = model.Material.query.all()
+        for m in all:
+            model.Session.delete(m)
+        model.Session.flush()
+        model.Session.remove()
 
     def test_index(self):
-        url = url_for(controller='text')
+        url = url_for(controller='text', action='index', id=None)
         res = self.app.get(url)
         print res
         assert "Shakespeare's Works" in res

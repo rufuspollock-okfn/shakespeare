@@ -3,19 +3,18 @@ from shakespeare.tests import *
 import shakespeare.model as model
 import shakespeare.tests.test_stats
 
-
-class TestSearchController(TestController):
-
-    text = make_fixture()
-    text2 = make_fixture2()
+class TestStatsController(TestController):
 
     def setUp(self):
-        model.Session.begin()
+        # can't use begin/rollback trick as make calls to webapp
+        self.text = make_fixture()
+        self.text2 = make_fixture2()
         shakespeare.tests.test_stats.stats_fixture(self.text)
 
     def tearDown(self):
-        model.Session.rollback()
-        model.Session.remove()
+        # cheap and dirty
+        model.metadata.drop_all()
+        model.metadata.create_all()
 
     def test_index(self):
         url = url_for(controller='stats')

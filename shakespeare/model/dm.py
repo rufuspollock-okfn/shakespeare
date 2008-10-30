@@ -1,11 +1,5 @@
 """
 Domain model
-
-Material contains all data we have including shakespeare texts. A text is taken
-to be a specific version of a work. e.g. the 1623 folio of King Richard III.
-
-We may in future add a Work object to refer to 'abstract' work of which a given
-text is a version.
 """
 from pylons import config
 from sqlalchemy import Column, MetaData, Table, types, ForeignKey
@@ -16,7 +10,7 @@ from sqlalchemy.orm import relation, backref
 import shakespeare
 shakespeare.conf()
 
-metadata = MetaData()
+metadata = MetaData(bind=config['pylons.g'].sa_engine)
 Session = orm.scoped_session(orm.sessionmaker(
     autoflush=True,
     transactional=False,
@@ -32,8 +26,14 @@ material_table = Table('material', metadata,
     Column('name', types.String(255)),
     Column('title', types.String(255)),
     Column('creator', types.String(255)),
+    # TODO: remove url
     Column('url', types.String(255)),
-    Column('notes', types.Text())
+    Column('notes', types.Text),
+    Column('format', types.Text),
+    # python package it lives in, if any
+    Column('src_pkg', types.Text),
+    # url (file or web) or standard (unix) file path
+    Column('src_locator', types.Text),
     )
 
 # TODO: indices on word and occurences
@@ -43,10 +43,6 @@ statistic_table = Table('statistic', metadata,
     Column('word', types.String(50)),
     Column('freq', types.Integer),
     )
-
-
-from ConfigParser import SafeConfigParser
-
 
 
 class Material(object):
@@ -71,10 +67,8 @@ class Material(object):
         # ignore format for time being
         '''
         import pkg_resources
-        pkg = 'shksprdata'
         # default to plain txt format (TODO: generalise this)
-        path = 'texts/%s.txt' % self.name
-        fileobj = pkg_resources.resource_stream(pkg, path)
+        fileobj = pkg_resources.resource_stream(self.src_pkg, self.src_locator)
         return fileobj
 
     def get_cache_path(self, format):
@@ -83,26 +77,18 @@ class Material(object):
         """
         return shakespeare.cache.default.path(self.url, format)
 
-    @classmethod
-    def load_from_metadata(self, fileobj):
-        cfgp = SafeConfigParser()
-        cfgp.readfp(fileobj)
-        for section in cfgp.sections():
-            item = Material.byName(section)
-            if item is None:
-                item = Material(name=section)
-            assert item is not None
-            for key, val in cfgp.items(section):
-                setattr(item, key, val)
-            Session.flush()
 
 class Statistic(object):
     pass
 
 # Map each domain model class to its corresponding relational table.
 mapper = Session.mapper
-mapper(Material, material_table)
+mapper(Material, material_table,
+    order_by=material_table.c.name
+    )
 mapper(Statistic, statistic_table, properties={
     'text':relation(Material, backref='statistics')
-    })
+    },
+    order_by=statistic_table.c.id
+    )
 
