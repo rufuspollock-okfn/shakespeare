@@ -9,13 +9,13 @@ email_to = you@yourdomain.com
 smtp_server = localhost
 error_email_from = paste@localhost
 
+# configure site title e.g. to Open Milton
+# site_title = Open Shakespeare
 
 # Cache directory where cached copies of downloaded materials can be stored
 # 
-# This directory needs to be semi-permanent so do *not* put under a location
-# such as /tmp. 
-# 
-# At present should be different from the app's cache_dir
+# Needs to be semi-permanent so do *not* put under a location such as /tmp.
+# Should be different from the app's cache_dir
 cachedir = cache
 
 # Directory for Xapian search index

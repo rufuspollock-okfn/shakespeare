@@ -22,6 +22,9 @@ class BaseController(WSGIController):
         # available in environ['pylons.routes_dict']
         return WSGIController.__call__(self, environ, start_response)
 
+    def __before__(self, action, **params):
+        c.site_title = config.get('site_title', 'Open Shakespeare')
+
 # Include the '_' function in the public names
 __all__ = [__name for __name in locals().keys() if not __name.startswith('_') \
            or __name == '_']

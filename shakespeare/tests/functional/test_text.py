@@ -11,11 +11,10 @@ class TestTextController(TestController):
         if text is None:
             print 'Adding items'
             import shksprdata.load
-            shksprdata.load.load_texts()
+            shksprdata.load.LoadTexts.load_texts()
             model.Session.flush()
             model.Session.remove()
         assert len(model.Material.query.all()) > 20
-        print [ m.title for m in model.Material.query.all()]
     
     @classmethod
     def teardown_class(cls):
@@ -29,7 +28,7 @@ class TestTextController(TestController):
         url = url_for(controller='text', action='index', id=None)
         res = self.app.get(url)
         print res
-        assert "Shakespeare's Works" in res
+        assert "List of Works" in res
         assert 'The Tempest' in res
 
     def test_view_1(self):

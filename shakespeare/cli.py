@@ -1,8 +1,33 @@
-#!/usr/bin/env python
-
 import cmd
 import os
 import StringIO
+
+import paste.script.command
+
+class BaseCommand(paste.script.command.Command):
+    parser = paste.script.command.Command.standard_parser(verbose=True)
+    parser.add_option('-c', '--config', dest='config',
+            default='development.ini', help='Config file to use.')
+    parser.add_option('-f', '--file',
+        action='store',
+        dest='file_path',
+        help="File path")
+    default_verbosity = 1
+
+    def _load_config(self):
+        from paste.deploy import appconfig
+        from shakespeare.config.environment import load_environment
+        if not self.options.config:
+            msg = 'No config file supplied'
+            raise self.BadCommand(msg)
+        self.filename = os.path.abspath(self.options.config)
+        conf = appconfig('config:' + self.filename)
+        load_environment(conf.global_conf, conf.local_conf)
+
+    def _setup_app(self):
+        cmd = paste.script.appinstall.SetupCommand('setup-app') 
+        cmd.run([self.filename]) 
+
 
 class ShakespeareAdmin(cmd.Cmd):
     """
@@ -53,18 +78,14 @@ For more information about the package run `info`.
     # Commands
 
     def do_db(self, line=None):
-        actions = [ 'create', 'clean', 'init' ]
+        actions = [ 'create', 'clean' ]
         if line is None or line not in actions:
             self.help_db()
             return 1
         self._register_config()
         import shakespeare.model as model
         import shakespeare
-        if line == 'init':
-            model.metadata.create_all()
-            import shksprdata.load
-            shksprdata.load.load_texts()
-        elif line == 'clean':
+        if line == 'clean':
             config = shakespeare.conf()
             model.metadata.drop_all()
         elif line == 'create':

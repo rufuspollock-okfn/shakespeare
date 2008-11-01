@@ -18,7 +18,7 @@ setup(
 
     install_requires=[
         'Pylons>=0.9.6.1',
-        'SQLObject>=0.6',
+        'SQLAlchemy>=0.4,<0.4.99',
         'Genshi>=0.3',
         'pygooglechart>=0.2,<0.3',
         # 'annotater>=0.1',
@@ -34,6 +34,10 @@ setup(
 
     [paste.app_install]
     main = pylons.util:PylonsInstaller
+
+    [paste.paster_command]
+    load-shkspr = shksprdata.load:LoadTexts
+    load-milton = miltondata.cli:LoadTexts
 
     [console_scripts]
     shakespeare-admin=shakespeare.cli:main
