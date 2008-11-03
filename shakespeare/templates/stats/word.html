@@ -1,9 +1,10 @@
 <html xmlns:py="http://genshi.edgewall.org/"
   xmlns:xi="http://www.w3.org/2001/XInclude">
   
-  <py:def function="page_title">Stats for '${c.word}'</py:def>
+  <py:def function="page_title">Stats - Word</py:def>
 
   <div py:match="content">
+    <h2>Statistics for '${c.word}'</h2>
     <img style="float: left;"
       src="${c.img_url}"
       alt="Word Statistics Bar Chart" />

@@ -48,17 +48,17 @@ class TextController(BaseController):
             status = '200 OK'
             response.headers['Content-Type'] = 'text/plain'
             return result
-        texts = []
+        texthtml = {}
         for item in textlist:
             tfileobj = item.get_text()
             ttext = shakespeare.format.format_text(tfileobj, format)
-            thtml = genshi.HTML(ttext)
-            texts.append(thtml)
+            texthtml[item.name] = genshi.HTML(ttext)
         # would have assumed this would be 100.0/numtexts but for some reason
         # you need to allow more room (maybe because of the scrollbars?)
         # result is not consistent across browsers ...
         c.frame_width = 100.0/numtexts - 4.0
-        c.texts = texts
+        c.textlist = textlist
+        c.texthtml = texthtml
         # set to not strip whitespace as o/w whitespace in pre tag gets removed
         return render('text/view', strip_whitespace=False)
 

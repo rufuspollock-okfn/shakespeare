@@ -81,6 +81,11 @@ class Material(object):
         """
         return shakespeare.cache.default.path(self.url, format)
 
+    def get_ftitle(self):
+        return self.title + ' (%s)' % self.name
+
+    ftitle = property(get_ftitle)
+
 
 class Statistic(object):
     pass

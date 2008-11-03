@@ -27,7 +27,7 @@ class TestTextController(TestController):
         url = url_for(controller='text', action='index', id=None)
         res = self.app.get(url)
         print res
-        assert "List of Works" in res
+        assert 'Texts - Index' in res
         assert 'The Tempest' in res
 
     def test_info(self):
@@ -45,7 +45,7 @@ class TestTextController(TestController):
         url = url_for(controller='text')
         res = self.app.get(url)
         res = res.click('The Tempest', index=0)
-        assert 'Work Info' in res
+        assert 'Text - Info -' in res
 
     def test_index_click_view(self):
         url = url_for(controller='text')

@@ -14,7 +14,7 @@ class TestSiteController(TestController):
     def test_guide(self):
         url = url_for(controller='site', action='guide')
         res = self.app.get(url)
-        assert 'guide to the features of the Open Shakespeare web' in res
+        assert 'guide to the features of the web interface' in res
 
     # 2008-04-26 rgrp: not working
     # seems to be issues inside the annotater stuff so leaving for the time

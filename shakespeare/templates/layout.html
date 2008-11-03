@@ -16,6 +16,7 @@
     /* mess with standard ckan theme to remove second submenu for time being */
     #subnav { background: transparent; height: 1px; }
     #subnav * { display: none; }
+    #main { margin-top: 5px; }
   </style>
 
   <py:if test="defined('page_specific_css')">
@@ -106,10 +107,11 @@
   </div><!-- /primary -->
 
   <div id="main">
-    <h2>${page_title()}</h2>
-    <content>
-      <p>Master content template placeholder &hellip; please replace me.</p>
-    </content>
+    <div id="content">
+      <content>
+        <p>Master content template placeholder &hellip; please replace me.</p>
+      </content>
+    </div>
     
     <div id="footer">
       <p>

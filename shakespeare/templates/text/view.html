@@ -1,7 +1,7 @@
 <html xmlns:py="http://genshi.edgewall.org/"
   xmlns:xi="http://www.w3.org/2001/XInclude">
 
-  <py:def function="page_title">View Works</py:def>
+  <py:def function="page_title">View Texts</py:def>
   <head>
     <style type="text/css" py:def="page_specific_css">
       body
@@ -10,12 +10,25 @@
         padding: 0;
       }
 
+      .sidebar
+      {
+        display: none;
+      }
+
+      #main
+      {
+        width: 98%;
+        height: 100%;
+      }
+
       div.frame
       {
-        height: 90%;
+        /* height: 90%; */
+        height: 500px;
         overflow: auto;
         float: left;
         padding: 1em;
+        background-color: white;
       }
 
       div.singleview
@@ -31,19 +44,20 @@
         width: 100%;
         height: 90%;
       }
+
     </style>
   </head>
 
-  
-
   <div py:match="content">
-    <div py:if="len(c.texts) == 1" class="singleview">
-			${c.texts[0]}
+    <div py:if="len(c.textlist) == 1" class="singleview">
+      <h2>${c.textlist[0].name}</h2>
+			${c.texthtml[c.textlist[0].name]}
     </div>
-    <div class="multiview" py:if="len(c.texts) > 1" >
-      <div py:for="text in c.texts" class="frame"
+    <div class="multiview" py:if="len(c.textlist) > 1" >
+      <div py:for="text in c.textlist" class="frame"
         style="width: ${c.frame_width}%;" >
-        ${text}
+        <h2>${text.name}</h2>
+        ${c.texthtml[text.name]}
       </div>
     </div>
   </div>

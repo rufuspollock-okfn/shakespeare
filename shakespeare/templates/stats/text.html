@@ -1,16 +1,18 @@
 <html xmlns:py="http://genshi.edgewall.org/"
   xmlns:xi="http://www.w3.org/2001/XInclude">
   
-  <py:def function="page_title">Stats for ${c.text.title}</py:def>
+  <py:def function="page_title">Stats - Text - ${c.text.title}</py:def>
 
   <div py:match="content">
+    <h2>Statistics: ${c.text.title}</h2>
+    <p py:if="not c.stats">
+      Sorry, no statistics are available for ${c.text.ftitle}. Note that, in general, we do not compute statistics for texts using non-standardized spelling.
+    </p>
+
     <img style="float: left;"
       src="${c.img_url}"
       alt="Word Statistics Bar Chart" />
 
-    <p py:if="not c.stats">
-      Sorry, no statistics are available for ${c.text.title} (name: ${c.text.name})
-    </p>
     <table>
     <thead>
       <tr>

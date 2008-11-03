@@ -4,9 +4,9 @@
   <py:def function="page_title">Guide to the Web Interface</py:def>
 
   <div py:match="content">
+    <h2>Guide to the Web Interface</h2>
     <p>
-      This page provides a guide to the features of the Open Shakespeare web
-      interface.
+      This page provides a guide to the features of the web interface.
     </p>
     <h2>
       The Index
@@ -20,8 +20,8 @@
     </h2>
     <p>
       You can view works by clicking on the link available from the index page.
-      If you know the 'id' of a text you can view it directly by visiting the
-      url: ${h.url_for(controller='text', action='view', name='id')} (you can work
+      If you know the 'name/id' of a text you can view it directly by visiting the
+      url: ${h.url_for(controller='text', action='view', id='name')} (you can work
       out id names by looking at the link urls on the index page).
     </p>
     
@@ -31,14 +31,16 @@
       argument in the url query string like so:
     </p>
     <pre>
-      ${h.url_for(controller='text', action='view', name='id', format='format_name')}
+      ${h.url_for(controller='text', action='view', id='name', format='format_name')}
     </pre>
     <p>
-      So to view Hamlet with line numbers shown you would visit:
+      So to view the text with name id 'hamlet_gut' with line numbers shown you
+      would visit (this link will only work if that text is indeed available on
+      your system!):
     </p>
     <blockquote><p>
-      <a href="${h.url_for(controller='text', action='view', name='hamlet_gut', format='lineno')}">
-        ${h.url_for(controller='text', action='view', name='hamlet_gut', format='lineno')}</a>
+      <a href="${h.url_for(controller='text', action='view', id='hamlet_gut', format='lineno')}">
+        ${h.url_for(controller='text', action='view', id='hamlet_gut', format='lineno')}</a>
     </p></blockquote>
     <p>
       Available formats are:
@@ -54,8 +56,8 @@
       You can view mutiple texts at once by concatenating the name-ids
       separated by '+'. For example to see the Gutenberg folio and non-folio
       Othello side-by-side you would visit: <a
-        href="${h.url_for(controller='text', action='view', name='othello_gut_f othello_gut')}">
-        ${h.url_for(controller='text', action='view', name='othello_gut_f othello_gut')}
+        href="${h.url_for(controller='text', action='view', id=None, name='othello_gut_f othello_gut')}">
+        ${h.url_for(controller='text', action='view', id=None, name='othello_gut_f othello_gut')}
       </a>
     </p>
 
