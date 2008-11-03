@@ -17,9 +17,10 @@
     <tbody>
       <tr py:for="item in c.works_index">
         <td>
-          <a href="${h.url_for(controller='text', action='view', id=None,
-            name=item.name, format='lineno')}">
+          <a href="${h.url_for(controller='text', action='info', id=item.name)}">
             ${item.title}</a>
+          (<a href="${h.url_for(controller='text', action='view', id=item.name,
+            format='lineno')}">view</a>)
         </td>
         <td>
           ${item.creator}
@@ -27,7 +28,7 @@
         <td>
           <a href="${h.url_for(controller='stats', action='text',
             id=item.name)}">
-            Text statistics link</a>. ${item.notes}
+            Text statistics</a>
         </td>
       </tr>
     </tbody>

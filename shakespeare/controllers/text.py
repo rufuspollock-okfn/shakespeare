@@ -21,8 +21,21 @@ class TextController(BaseController):
         c.works_index = model.Material.query.all()
         return render('text/index')
 
-    def view(self):
+    def info(self, id):
+        name = id
+        c.material = model.Material.by_name(name)
+        if c.material:
+            return render('text/info')
+        else:
+            abort(404)
+
+    def view(self, id=''):
+        # first check ?name param then do name in url
         name = request.params.get('name', '')
+        if not name:
+            name = id
+        if not name:
+            abort(404)
         format = request.params.get('format', 'plain')
         if format == 'annotate':
             return self.view_annotate(name)

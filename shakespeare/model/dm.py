@@ -58,8 +58,12 @@ class Material(object):
 
     # TODO: remove (just here for sqlobject bkwards compat)
     @classmethod
-    def byName(self, name):
+    def by_name(self, name):
         return self.query.filter_by(name=name).first()
+
+    @classmethod
+    def byName(self, name):
+        return self.by_name(name)
     
     def get_text(self, format=None):
         '''Get text (if any) associated with this material.

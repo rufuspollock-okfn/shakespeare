@@ -1,0 +1,29 @@
+<html xmlns:py="http://genshi.edgewall.org/"
+  xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+  <py:def function="page_title">Work Info: ${c.material.title}</py:def>
+
+  <div py:match="content">
+    <h2>Actions</h2>
+    <ul>
+      <li><a href="${h.url_for(controller='text', action='view',
+        id=c.material.name)}">View</a>
+      </li>
+      <li>
+        <a href="${h.url_for(controller='stats', action='text',
+          id=c.material.name)}">
+          Text statistics</a>
+      </li>
+    </ul>
+
+    <h2>Metadata</h2>
+    <ul>
+      <li py:for="attr in ['creator', 'name', 'format', 'notes']">
+        <strong>${attr.capitalize()}:</strong>
+        ${getattr(c.material, attr)}
+      </li>
+    </ul>
+  </div>
+
+  <xi:include href="../layout.html" />
+</html>

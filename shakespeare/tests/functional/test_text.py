@@ -6,7 +6,6 @@ import shakespeare.model as model
 class TestTextController(TestController):
     @classmethod
     def setup_class(cls):
-        assert len(model.Material.query.all()) == 0
         text = model.Material.byName('tempest_gut')
         if text is None:
             print 'Adding items'
@@ -31,17 +30,28 @@ class TestTextController(TestController):
         assert "List of Works" in res
         assert 'The Tempest' in res
 
+    def test_info(self):
+        url = url_for(controller='text', action='info', id='tempest_gut')
+        res = self.app.get(url)
+        assert 'tempest_gut' in res, res
+
     def test_view_1(self):
-        url = url_for(controller='text', action='view', name='tempest_gut',
+        url = url_for(controller='text', action='view', id='tempest_gut',
             format='plain')
         res = self.app.get(url)
         assert 'CALIBAN, a savage and deformed Slave' in res
 
-    def test_index_2(self):
+    def test_index_click(self):
         url = url_for(controller='text')
         res = self.app.get(url)
         res = res.click('The Tempest', index=0)
-        assert 'CALIBAN, a savage and deformed Slave' in res
+        assert 'Work Info' in res
+
+    def test_index_click_view(self):
+        url = url_for(controller='text')
+        res = self.app.get(url)
+        res = res.click('view', index=0)
+        assert "All's Well, that Ends Well" in res, res[:1000]
 
     def test_view_2(self):
         url = url_for(controller='text', action='view',
