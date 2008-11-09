@@ -1,5 +1,9 @@
-<html xmlns:py="http://genshi.edgewall.org/"
-  xmlns:xi="http://www.w3.org/2001/XInclude">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+                          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      lang="en">
 
   <py:def function="page_title">View Texts</py:def>
   <head>
@@ -49,14 +53,14 @@
   </head>
 
   <div py:match="content">
-    <div py:if="len(c.textlist) == 1" class="singleview">
-      <h2>${c.textlist[0].name}</h2>
+    <div py:if="len(c.textlist) == 1" class="singleview" xmlns:dc="http://purl.org/dc/elements/1.1/">
+      <h2 property="dc:title">${c.textlist[0].name}</h2>
 			${c.texthtml[c.textlist[0].name]}
     </div>
     <div class="multiview" py:if="len(c.textlist) > 1" >
       <div py:for="text in c.textlist" class="frame"
-        style="width: ${c.frame_width}%;" >
-        <h2>${text.name}</h2>
+        style="width: ${c.frame_width}%;" xmlns:dc="http://purl.org/dc/elements/1.1/">
+        <h2 property="dc:title">${text.name}</h2>
         ${c.texthtml[text.name]}
       </div>
     </div>

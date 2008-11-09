@@ -1,6 +1,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
   xmlns:py="http://genshi.edgewall.org/" 
-  xmlns:xi="http://www.w3.org/2001/XInclude">
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  xmlns:doap="http://usefulinc.com/ns/doap"
+  xmlns:foaf="http://xmlns.com/foaf/0.1/">
 
 <head>
   <title>${c.site_title} - ${page_title()}</title>
@@ -32,7 +34,7 @@
   <div id="top">
     <div id="top-inner">
       <div id="top-bar">
-        <topbar>
+        <!--<topbar>-->
         
         <py:choose>
         <py:when test="c.user">
@@ -48,7 +50,7 @@
           </p>
         </py:otherwise>
         </py:choose>
-        </topbar>
+        <!--</topbar>-->
       </div><!-- /top-bar -->
     <h1><a href="${h.url_for(controller='site', action='home')}" title="${c.site_title} Home">${c.site_title}</a></h1>
     
@@ -65,7 +67,7 @@
     </ul>
     <h3 class="hidden">In this section:</h3>
     <ul id="subnav">
-      <minornavigation>
+      <!--<minornavigation>-->
       <li><a href="${h.url_for(controller='site', action='index')}">Home</a></li>
       <py:choose>
       <py:when test="c.user">
@@ -77,7 +79,7 @@
       </py:otherwise>
       </py:choose>
       <li><a href="/package/new/">New Package</a></li>
-      </minornavigation>
+      <!--</minornavigation>-->
     </ul>
        
     <!--[if IE]>
@@ -93,12 +95,12 @@
       <h2>Further Assistance</h2>
       <p>For information on using ${c.site_title} check out the
       <a href="${h.url_for(action='guide')}">Guide</a>.
-      If you have a question or have found a bug please post to the <a href="http://lists.okfn.org/mailman/listinfo/okfn-help">okfn-help</a> mailing list.
+      If you have a question or have found a bug please post to the <a rel="doap:mailing-list" href="http://lists.okfn.org/mailman/listinfo/okfn-help">okfn-help</a> mailing list.
       </p>
     </div>
-    <primarysidebar>
-    <!-- Primary Side Bar Goes Here -->
-    </primarysidebar>
+    <!-- <primarysidebar>
+    Primary Side Bar Goes Here 
+    </primarysidebar>-->
     
     <!--[if IE]>
     <hr class="primary" />
@@ -117,15 +119,15 @@
       <p>
         <a href="http://validator.w3.org/check/referer" title="Valid XHTML 1.1">XHTML</a>
         | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
-        | <a href="http://www.okfn.org/shakespeare/">Project Home Page</a>
-        | <a href="mailto:info@okfn.org">Contact Us</a>
+        | <a rel="doap:homepage" href="http://www.okfn.org/shakespeare/">Project Home Page</a>
+        | <a rel="foaf:mbox" href="mailto:info@okfn.org">Contact Us</a>
       </p>
       <p>
         <img style="margin-bottom: -5px;" src="http://m.okfn.org/images/logo/okf_logo_white_and_green_tiny.png" /> An <a href="http://www.okfn.org/">Open Knowledge Foundation</a> Project
       </p>
       <p>
         (c) Open Knowledge Foundation
-        | All material available under an <a href="/license/">open license</a>
+        | All material available under an <a rel="license" href="/license/">open license</a>
         | <a href="http://www.opendefinition.org/1.0/"><img
             style="border: none; margin-bottom: -4px;"
             src="http://m.okfn.org/images/ok_buttons/ok_90x15_blue.png"
