@@ -87,7 +87,11 @@ Run::
 
 1. Search index. [TODO]
 
-2. You can start a web server to provide a easy-to-use web interface to the
+2. To load the author packages, change into the miltondata or shksprdata directories
+and run the command load-milton (or load-shakespeare) -c <path to your development.ini>
+This will load the metadata text into the database. 
+
+3. You can start a web server to provide a easy-to-use web interface to the
 shakespeare material and facilities by doing::
 
     $ paster serve {your-config.ini}
