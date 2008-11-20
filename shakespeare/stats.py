@@ -30,6 +30,7 @@ class Stats(object):
         stemmer = xapian.Stem('english')
         results = {}
         text = fileobj.read()
+        text = text.decode('utf8', 'ignore')
         text = text.encode('utf8')
         for term in WORD_RE.finditer(text):
             word = term.group()
