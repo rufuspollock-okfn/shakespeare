@@ -18,16 +18,21 @@ Session = orm.scoped_session(orm.sessionmaker(
 ))
 
 import shakespeare
-import shakespeare.cache
 
-
-material_table = Table('material', metadata,
+work_table = Table('work', metadata,
     Column('id', types.Integer, primary_key=True),
     Column('name', types.String(255)),
     Column('title', types.String(255)),
     Column('creator', types.String(255)),
-    # TODO: remove url
-    Column('url', types.String(255)),
+    Column('notes', types.Text),
+    )
+
+material_table = Table('material', metadata,
+    Column('id', types.Integer, primary_key=True),
+    Column('name', types.String(255)),
+    Column('work_id', types.Integer, ForeignKey('work.id')),
+    Column('title', types.String(255)),
+    Column('creator', types.String(255)),
     Column('notes', types.Text),
     Column('format', types.Text),
     # python package it lives in, if any
@@ -44,6 +49,12 @@ statistic_table = Table('statistic', metadata,
     Column('freq', types.Integer),
     )
 
+
+class Work(object):
+
+    @classmethod
+    def by_name(self, name):
+        return self.query.filter_by(name=name).first()
 
 class Material(object):
     """Material related to Shakespeare (usually text of works and ancillary
@@ -75,12 +86,6 @@ class Material(object):
         fileobj = pkg_resources.resource_stream(self.src_pkg, self.src_locator)
         return fileobj
 
-    def get_cache_path(self, format):
-        """Get path within cache to data file associated with this material.
-        @format: the version ('plain', original='' etc)
-        """
-        return shakespeare.cache.default.path(self.url, format)
-
     def get_ftitle(self):
         return self.title + ' (%s)' % self.name
 
@@ -92,9 +97,17 @@ class Statistic(object):
 
 # Map each domain model class to its corresponding relational table.
 mapper = Session.mapper
-mapper(Material, material_table,
-    order_by=material_table.c.name
+
+mapper(Work, work_table,
+    order_by=work_table.c.name
     )
+
+mapper(Material, material_table, properties={
+    'work':relation(Work, backref='materials')
+    },
+    order_by=material_table.c.id
+    )
+
 mapper(Statistic, statistic_table, properties={
     'text':relation(Material, backref='statistics')
     },
