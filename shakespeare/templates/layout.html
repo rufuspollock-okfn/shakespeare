@@ -62,10 +62,11 @@
     <h3 class="hidden">Sections:</h3>
     <ul id="navigation">
       <li><a href="${h.url_for('/')}">Home</a></li>
+      <li><a href="${h.url_for('/about/')}">About</a></li>
       <li><a href="${h.url_for(controller='text', action='index')}">Texts</a></li>
       <li><a href="${h.url_for(controller='search', action='index')}">Search</a></li>
       <li><a href="${h.url_for(controller='stats', action='index')}">Stats</a></li>
-      <li><a href="${h.url_for(controller='site', action='guide')}">Guide</a></li>
+      <li><a href="${h.url_for('/guide/')}">Guide</a></li>
       <li><a href="http://blog.openshakespeare.org">Blog</a></li>
     </ul>
     <h3 class="hidden">In this section:</h3>
@@ -130,7 +131,7 @@
       </p>
       <p>
         (c) Open Knowledge Foundation
-        | All material available under an <a rel="license" href="/license/">open license</a>
+        | All material available under an <a rel="license" href="/about/">open license</a>
         | <a href="http://www.opendefinition.org/1.0/"><img
             style="border: none; margin-bottom: -4px;"
             src="http://m.okfn.org/images/ok_buttons/ok_90x15_blue.png"

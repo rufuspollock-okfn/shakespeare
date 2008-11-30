@@ -1,4 +1,4 @@
-All code and text is copyright (c) 2005-6, the Open Knowledge Foundation.
+All code and text is copyright (c) 2005-9, the Open Knowledge Foundation.
 
 Licensing of code
 *****************

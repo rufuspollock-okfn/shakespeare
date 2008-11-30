@@ -20,6 +20,9 @@ class SiteController(BaseController):
     def index(self):
         return render('index')
 
+    def about(self):
+        return render('about')
+
     def guide(self):
         return render('guide')
 

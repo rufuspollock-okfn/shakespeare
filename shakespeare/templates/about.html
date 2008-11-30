@@ -1,0 +1,43 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      lang="en"
+      py:strip="">
+  
+  <py:def function="page_title">About ${c.site_title}</py:def>
+
+  <div py:match="content">
+    <h2>About ${c.site_title}</h2>
+
+    <h3>License</h3>
+    <p>All the material produced by the ${c.site_title} including all the
+    content on this site is available under <a
+      href="http://www.opendefinition.org/">open licenses</a>. Specifically all
+    code is licensed under the <a href="http://www.opensource.org/licenses/mit-license.php">MIT License</a> and all content and data is available under a <a href="http://creativecommons.org/licenses/by/2.5/">CC Attribution License</a>. More details, including some exceptions relating to public domain items, can be found in the <a href="http://knowledgeforge.net/shakespeare/svn/trunk/COPYING.txt">COPYING</a> and <a href="http://knowledgeforge.net/shakespeare/svn/trunk/AUTHORS.txt">AUTHORS</a> files.
+    </p>
+
+    <h3>Comments?</h3>
+    <p>
+      If you've got any comments on this site we'd love to hear from you. Just
+      drop us a line at info [at] okfn [dot] org. Even better why not
+      help fix things directly and get involved in the project yourself?
+    </p>
+
+    <h3>Get Involved</h3>
+    <p>Anyone can participate in the ${c.site_title} project &ndash; including you!
+    For example you could:</p>
+    <ul>
+      <li>Publicise the project to other communities, such as scholars and
+      educators, to whom it would be of benefit.</li>
+      <li>Proof-edit and format (mark-up) texts.</li>
+      <li>Find open material related to Shakespeare which we
+      can use. For example, texts of alternative editions,
+      images, etc.</li>
+      <li>Develop your own web application or open knowledge package using the
+      material and tools ${c.site_title} makes available.</li>
+    </ul>
+
+  </div>
+
+  <xi:include href="layout.html" />
+</html>
