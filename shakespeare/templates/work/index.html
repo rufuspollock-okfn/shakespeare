@@ -1,0 +1,36 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      py:strip="">
+  
+  <py:def function="page_title">Works - Index</py:def>
+
+  <div py:match="content">
+    <h2>Works Available</h2>
+    <table border="1">
+    <thead>
+      <tr>
+        <th>
+          Title
+        </th>
+        <th>Author</th>
+      </tr>
+    </thead>
+    <tbody>
+    <div xmlns:dc="http://purl.org/dc/elements/1.1/">
+      <tr py:for="item in c.works_index">
+        <td property="dc:title">
+          <a href="${h.url_for(controller='work', action='info', id=item.name)}">
+            ${item.title}</a>
+        </td>
+        <td property="dc:creator">
+          ${item.creator}
+        </td>
+      </tr>
+    </div>
+    </tbody>
+    </table>
+  </div>
+
+  <xi:include href="../layout.html" />
+</html>

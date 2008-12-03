@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      py:strip="">
+
+  <py:def function="page_title">Work - Info - ${c.work.title}</py:def>
+
+  <div py:match="content" xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <h2 property="dc:title">${c.work.title}</h2>
+    <ul>
+      <li py:for="attr in ['creator']">
+        <strong>${attr.capitalize()}:</strong>
+        ${getattr(c.work, attr)}
+      </li>
+    </ul>
+    <h3>Associated Material</h3>
+    <ul>
+      <li py:for="material in c.work.materials">
+      <a href="${h.url_for(controller='text', action='info',
+        id=material.name)}">${material.title}</a>
+      </li>
+    </ul>
+    <h3>Notes</h3>
+    <div>
+      ${h.markdown(c.work.notes or '')}
+    </div>
+  </div>
+
+  <xi:include href="../layout.html" />
+</html>

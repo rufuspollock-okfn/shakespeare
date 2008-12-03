@@ -95,7 +95,7 @@ For more information about the package run `info`.
 
     def help_db(self, line=None):
         usage = \
-'''db { create | init | clean }
+'''db { create | clean }
 '''
         print usage
     
@@ -261,7 +261,7 @@ For more general information run the about or info commands.'''
     parser.add_option('-v', '--verbose', dest='verbose', help='Be verbose',
             action='store_true', default=False) 
     parser.add_option('-c', '--config', dest='config',
-        help='Path to config file', default=None)
+        help='Path to config file', default='development.ini')
     options, args = parser.parse_args()
     
     if len(args) == 0:

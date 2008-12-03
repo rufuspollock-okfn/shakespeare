@@ -17,7 +17,8 @@ import paste.script.appinstall
 from paste.deploy import loadapp
 from routes import url_for
 
-__all__ = ['url_for', 'TestController', 'make_fixture', 'make_fixture2' ]
+__all__ = ['url_for',
+        'TestController', 'TestData', 'make_fixture', 'make_fixture2' ]
 
 here_dir = os.path.dirname(os.path.abspath(__file__))
 conf_dir = os.path.dirname(os.path.dirname(here_dir))
@@ -51,31 +52,62 @@ When in eternal lines to time thou grow'st,
   So long lives this, and this gives life to thee.
 '''
 
-# must use make_fixture rather than just create object as we need to be in
-# current db session
-def make_fixture():
-    import shakespeare.model as model
-    sonnet18_name = 'test_sonnet18'
-    sonnet18 = model.Material.byName(sonnet18_name)
-    if not sonnet18:
-        sonnet18 = model.Material(name=sonnet18_name,
-                title='Sonnet 18',
-                )
-        model.Session.flush()
-    sonnet18.content = sonnet18_text
-    return sonnet18
+class TestData:
+    name = 'test_sonnet18'
+    name2 = 'test_sonnet18_2'
 
-def make_fixture2():
-    import shakespeare.model as model
-    sonnet18_name = 'test_sonnet18_2'
-    sonnet18 = model.Material.byName(sonnet18_name)
-    if not sonnet18:
-        sonnet18 = model.Material(name=sonnet18_name,
-                title='Sonnet 18 Duplicate',
-                )
+    @classmethod
+    def make_fixture(self):
+        import shakespeare.model as model
+        sonnet18_work = model.Work.by_name(self.name)
+        if not sonnet18_work:
+            sonnet18_work = model.Work(name=self.name,
+                    title='Sonnet 18',
+                    creator='William Shakespeare'
+                    )
+        sonnet18 = model.Material.by_name(self.name)
+        if not sonnet18:
+            sonnet18 = model.Material(name=self.name,
+                    title='Sonnet 18 (First Edition)',
+                    work=sonnet18_work,
+                    )
+        assert len(sonnet18_work.materials)==1
         model.Session.flush()
-    sonnet18.content = sonnet18_text
-    return sonnet18
+        sonnet18.content = sonnet18_text
+        return sonnet18
+
+    @classmethod
+    def make_fixture2(self):
+        import shakespeare.model as model
+        # work should exist by now
+        sonnet18_work = model.Work.by_name(self.name)
+        sonnet18 = model.Material.by_name(self.name2)
+        if not sonnet18:
+            sonnet18 = model.Material(name=self.name2,
+                    title='Sonnet 18 Duplicate',
+                    work=sonnet18_work
+                    )
+            model.Session.flush()
+        sonnet18.content = sonnet18_text
+        return sonnet18
+
+    @classmethod
+    def remove_fixtures(self):
+        import shakespeare.model as model
+        # work should exist by now
+        for n in [ self.name, self.name2 ]:
+            m = model.Material.by_name(n)
+            if m:
+                model.Session.delete(m)
+        w = model.Work.by_name(self.name)
+        if w:
+            model.Session.delete(w)
+        model.Session.flush()
+
+
+make_fixture = TestData.make_fixture
+make_fixture2 = TestData.make_fixture2
+
 
 class TestController(object):
 
