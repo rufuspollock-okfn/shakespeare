@@ -105,7 +105,7 @@ mapper(Work, work_table,
 mapper(Material, material_table, properties={
     'work':relation(Work, backref='materials')
     },
-    order_by=material_table.c.id
+    order_by=material_table.c.name
     )
 
 mapper(Statistic, statistic_table, properties={

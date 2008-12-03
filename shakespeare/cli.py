@@ -77,9 +77,9 @@ For more information about the package run `info`.
     # =================
     # Commands
 
+    db_actions = [ 'create', 'clean', 'init_shksprdata', 'init_miltondata' ]
     def do_db(self, line=None):
-        actions = [ 'create', 'clean' ]
-        if line is None or line not in actions:
+        if line is None or line not in self.db_actions:
             self.help_db()
             return 1
         self._register_config()
@@ -90,13 +90,17 @@ For more information about the package run `info`.
             model.metadata.drop_all()
         elif line == 'create':
             model.metadata.create_all()
+        elif line.startswith('init_'):
+            modname = line.strip()[5:]
+            mod = __import__(modname+'.load', fromlist='load')
+            mod.LoadTexts.load_texts()
         else:
             print self.help_db()
 
     def help_db(self, line=None):
         usage = \
-'''db { create | clean }
-'''
+'''db { %s }
+''' % ' | '.join(self.db_actions)
         print usage
     
     def _init_index(self):

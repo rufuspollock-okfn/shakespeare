@@ -21,6 +21,7 @@ def make_map():
 
     map.connect('', controller='site', action='index')
     map.connect('marginalia/*url', controller='site', action='marginalia')
+    map.connect('material/:action/:id', controller='text')
     map.connect(':controller/:action/:id')
     map.connect(':action', controller='site')
     map.connect('*url', controller='template', action='view')
