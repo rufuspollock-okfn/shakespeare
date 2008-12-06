@@ -10,17 +10,7 @@ smtp_server = localhost
 error_email_from = paste@localhost
 
 # configure site title e.g. to Open Milton
-# site_title = Open Shakespeare
-
-# Cache directory where cached copies of downloaded materials can be stored
-# 
-# Needs to be semi-permanent so do *not* put under a location such as /tmp.
-# Should be different from the app's cache_dir
-cachedir = cache
-
-# Directory for Xapian search index
-search_index_dir = searchindex
-
+site_title = Open Shakespeare
 
 [server:main]
 use = egg:Paste#http
@@ -28,6 +18,9 @@ host = 0.0.0.0
 port = 5000
 
 [app:main]
+# ===========================
+# Pylons/Paste Standard Stuff
+# Can probably leave as is
 use = egg:shakespeare
 full_stack = true
 cache_dir = %(here)s/data
@@ -35,22 +28,37 @@ beaker.session.key = shakespeare
 beaker.session.secret = ${app_instance_secret}
 app_instance_uuid = ${app_instance_uuid}
 
+# WARNING: *THE LINE BELOW MUST BE UNCOMMENTED ON A PRODUCTION ENVIRONMENT*
+# Debug mode will enable the interactive debugging tool, allowing ANYONE to
+# execute malicious code after an exception is raised.
+set debug = false
+
 # If you'd like to fine-tune the individual locations of the cache data dirs
 # for the Cache data, or the Session saves, un-comment the desired settings
 # here:
 #beaker.cache.data_dir = %(here)s/data/cache
 #beaker.session.data_dir = %(here)s/data/sessions
 
-# WARNING: *THE LINE BELOW MUST BE UNCOMMENTED ON A PRODUCTION ENVIRONMENT*
-# Debug mode will enable the interactive debugging tool, allowing ANYONE to
-# execute malicious code after an exception is raised.
-set debug = false
+# ===========================
+# User configured variables
 
 # We use sqlalchemy to connect and work with databases.
 # This default config using sqlite.
 sqlalchemy.url = sqlite:///%(here)s/shkspr.db
 # This is for postgres (obviously change the values to those for your system)
 # sqlalchemy.url = postgres://<username>:<password>@localhost/<your-dbname>
+
+# Cache directory where cached copies of downloaded materials can be stored
+# 
+# Needs to be semi-permanent so do *not* put under a location such as /tmp.
+# Should be different from the app's cache_dir
+cachedir = material_cache
+
+# Directory for Xapian search index
+search_index_dir = searchindex
+
+# extra places to look for templates (comma separated list)
+# extra_template_paths = %(here)s/shksprdata/templates
 
 # Logging configuration
 [loggers]

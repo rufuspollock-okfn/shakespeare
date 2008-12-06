@@ -97,7 +97,7 @@
   
   <div id="primary" class="sidebar">
     <div class="box">
-      <h2>Further Assistance</h2>
+      <h2>Assistance</h2>
       <p>For information on using ${c.site_title} check out the
       <a href="${h.url_for(action='guide')}">Guide</a>.
       If you have a question or have found a bug please post to the <a rel="doap:mailing-list" href="http://lists.okfn.org/mailman/listinfo/okfn-help">okfn-help</a> mailing list.
@@ -111,6 +111,27 @@
     <hr class="primary" />
     <![endif]-->
     
+    <div class="box">
+      <h2>Comments and Contributions</h2>
+      <p>
+      This project was created by the <a
+        href="http://www.okfn.org">Open Knowledge
+        Foundation</a> with the help of some
+        <a href="${h.url_for(controller='site',
+        action='about', anchor='who')}">
+        dedicated volunteers</a>.
+      </p>
+      <p>
+      Let us know <a href="mailto:info@okfn.org">what you
+        think</a>, <a href="${h.url_for(controller='site',
+        action='about', anchor='getinvolved')}">get
+        involved</a> or <a
+        href="http://www.okfn.org/support/donate/">make a
+        donation</a> to help us pay hosting costs &ndash;
+      we're not-for-profit and all our projects are free for
+      anyone to use and improve.
+      </p>
+    </div>
   </div><!-- /primary -->
 
   <div id="main">
@@ -132,7 +153,7 @@
       </p>
       <p>
         (c) Open Knowledge Foundation
-        | All material available under an <a rel="license" href="/about/">open license</a>
+        | All material available under an <a rel="license" href="${h.url_for(controller='site', action='about', anchor='license')}">open license</a>
         | <a href="http://www.opendefinition.org/1.0/"><img
             style="border: none; margin-bottom: -4px;"
             src="http://m.okfn.org/images/ok_buttons/ok_90x15_blue.png"

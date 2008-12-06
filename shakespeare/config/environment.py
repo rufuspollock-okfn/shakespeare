@@ -40,10 +40,13 @@ def load_environment(global_conf, app_conf):
     config.add_template_engine('genshi', None)
 
     tmpl_options = config['buffet.template_options']
-    tmpl_options['genshi.search_path'] = paths['templates'][0]
-    # extra_template_paths = app_conf['extra_templates'].split(':')
-    # template_search_paths = paths['templates'][0] + extra_template_paths
-    # tmpl_options['genshi.search_path'] = ':'.join(template_search_paths)
+    # tmpl_options['genshi.search_path'] = paths['templates'][0]
+    template_paths = [paths['templates'][0]]
+    extra_template_paths = app_conf.get('extra_template_paths', '')
+    if extra_template_paths:
+        # must be first for them to override defaults
+        template_paths = extra_template_paths.split(',') + template_paths
+    tmpl_options['genshi.search_path'] = ':'.join(template_paths)
 
     # CONFIGURATION OPTIONS HERE (note: all config options will override
     # any Pylons config options)
