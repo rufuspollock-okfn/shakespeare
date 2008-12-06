@@ -18,11 +18,11 @@ log = logging.getLogger(__name__)
 class SiteController(BaseController):
 
     def index(self):
-        return render('index')
+        return render('index.html')
 
     def about(self):
-        return render('about')
+        return render('about.html')
 
     def guide(self):
-        return render('guide')
+        return render('guide.html')
 

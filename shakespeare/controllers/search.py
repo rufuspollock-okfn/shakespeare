@@ -16,7 +16,7 @@ class SearchController(BaseController):
             c.total = matches.get_matches_estimated()
         else:
             c.total = -1
-        return render('search/index')
+        return render('search/index.html')
     
     def _get_matches(self, query):
         index = shakespeare.search.SearchIndex.default_index()

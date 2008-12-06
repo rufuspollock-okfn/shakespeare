@@ -19,13 +19,13 @@ class TextController(BaseController):
 
     def index(self):
         c.works_index = model.Material.query.all()
-        return render('text/index')
+        return render('text/index.html')
 
     def info(self, id):
         name = id
         c.material = model.Material.by_name(name)
         if c.material:
-            return render('text/info')
+            return render('text/info.html')
         else:
             abort(404)
 
@@ -37,8 +37,6 @@ class TextController(BaseController):
         if not name:
             abort(404)
         format = request.params.get('format', 'plain')
-        if format == 'annotate':
-            return self.view_annotate(name)
         namelist = name.split()
         numtexts = len(namelist)
         textlist = [model.Material.byName(tname) for tname in namelist]
@@ -60,5 +58,5 @@ class TextController(BaseController):
         c.textlist = textlist
         c.texthtml = texthtml
         # set to not strip whitespace as o/w whitespace in pre tag gets removed
-        return render('text/view', strip_whitespace=False)
+        return render('text/view.html', strip_whitespace=False)
 
