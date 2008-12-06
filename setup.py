@@ -37,7 +37,7 @@ setup(
 
     [paste.paster_command]
     load-shkspr = shksprdata.load:LoadTexts
-    load-milton = miltondata.cli:LoadTexts
+    load-milton = miltondata.load:LoadTexts
 
     [console_scripts]
     shakespeare-admin=shakespeare.cli:main
