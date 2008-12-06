@@ -8,7 +8,7 @@ class TestWorkController(TestController):
         TestData.make_fixture()
     
     def tearDown(cls):
-        # TestData.remove_fixtures()
+        TestData.remove_fixtures()
         model.Session.remove()
 
     def test_index(self):
@@ -22,5 +22,6 @@ class TestWorkController(TestController):
         res = self.app.get(url)
         assert 'Work - Info - ' in res
         assert 'Sonnet 18 (First Edition)' in res
-        res = res.click('Sonnet 18 (First Edition)')
+        # escape brackets for regex ...
+        res = res.click('Sonnet 18 \(First Edition\)')
         

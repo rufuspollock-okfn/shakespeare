@@ -56,12 +56,15 @@ class TestTextController(TestController):
     def test_view_2(self):
         url = url_for(controller='text', action='view',
                 name=['tempest_gut','tempest_gut_f'], format='plain')
+        # check url as url_for sometimes does not process [...] stuff right
+        # assert 'tempest_gut+tempest_gut_f' in url, 'KNOWN ISSUE: url_for not working with multi args: %s' % url
         res = self.app.get(url)
         assert 'CALIBAN, a savage and deformed Slave' in res
 
     def test_view_3(self):
         url = url_for(controller='text', action='view',
                 name=['tempest_gut', 'tempest_gut_f'], format='raw')
+        # assert 'tempest_gut+tempest_gut_f' in url, 'KNOWN ISSUE: url_for not working with multi args: %s' % url
         res = self.app.get(url)
         assert 'CALIBAN, a savage and deformed Slave' in res
 

@@ -16,12 +16,13 @@ class TestStats:
 
     def setUp(self):
         self.stats = shakespeare.stats.Stats()
-        self.text = make_fixture()
-        self.text2 = make_fixture2()
+        self.text = TestData.make_fixture()
+        self.text2 = TestData.make_fixture2()
         model.Session.begin()
 
     def tearDown(self):
         model.Session.rollback()
+        TestData.remove_fixtures()
         model.Session.remove()
 
     def test_get_stats(self):

@@ -8,13 +8,14 @@ class TestSearchController(TestController):
 
     @classmethod
     def setup_class(self):
-        self.text = make_fixture()
+        self.text = TestData.make_fixture()
         self.sindex = shakespeare.search.SearchIndex.default_index()
         self.sindex.add_item(StringIO.StringIO(self.text.content), self.text.name)
 
     @classmethod
     def teardown_class(self):
         self.sindex.remove_item(self.text.name)
+        TestData.remove_fixtures()
 
     def test_index(self):
         url = url_for(controller='search')
