@@ -39,7 +39,7 @@ class TextController(BaseController):
         format = request.params.get('format', 'plain')
         namelist = name.split()
         numtexts = len(namelist)
-        textlist = [model.Material.byName(tname) for tname in namelist]
+        textlist = [model.Material.by_name(tname) for tname in namelist]
         # special case (only return the first text)
         if format == 'raw':
             result = textlist[0].get_text().read()
@@ -49,7 +49,11 @@ class TextController(BaseController):
         texthtml = {}
         for item in textlist:
             tfileobj = item.get_text()
-            ttext = shakespeare.format.format_text(tfileobj, format)
+            # hack for time being ...
+            if item.format == 'mkd':
+                ttext = h.markdown(tfileobj.read())
+            else:
+                ttext = shakespeare.format.format_text(tfileobj, format)
             texthtml[item.name] = genshi.HTML(ttext)
         # would have assumed this would be 100.0/numtexts but for some reason
         # you need to allow more room (maybe because of the scrollbars?)
