@@ -143,6 +143,10 @@ class HelperBase(object):
         self.verbose = verbose
         self.cache = cache
         self._index = works
+
+    def vprint(self, info, force=True):
+        if self.verbose or force:
+            print(info)
      
     def _filter_index(self, line):
         """Filter items in index return only those whose id (url) is in line.

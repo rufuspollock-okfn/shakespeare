@@ -3,12 +3,10 @@ Introduction
 ************
 
 The Open Shakespeare package provides a full open set of shakespeare's works
-(often in multiple versions) along with ancillary material, a variety of tools
-and a python API.
-
-Specifically in addition to the works themselves (often in multiple versions)
-there is an introduction, a chronology, explanatory notes, a concordance and
-search facilities.
+(often in multiple versions) along with ancillary material, a variety of tools,
+a python API and a web interface that provides access to many (but not all) of
+these facilities from the comfort of your web browser (see
+http://www.openshakespeare.org/ for a demo).
 
 All material is open source/open knowledge so that anyone can use, redistribute
 and reuse these materials freely. For exact details of the license under which
@@ -88,15 +86,15 @@ Run::
 1. Search index. [TODO]
 
 2. To load the author packages, change into the miltondata or shksprdata directories
-and run the command load-milton (or load-shakespeare) -c <path to your development.ini>
-This will load the metadata text into the database. 
+   and run the command load-milton (or load-shakespeare) -c <path to your
+   development.ini> This will load the metadata text into the database. 
 
 3. You can start a web server to provide a easy-to-use web interface to the
-shakespeare material and facilities by doing::
+   shakespeare material and facilities by doing::
 
-    $ paster serve {your-config.ini}
+        $ paster serve {your-config.ini}
 
-NB: {your-config.ini} should be replaced with the name of the config file you
+   NB: {your-config.ini} should be replaced with the name of the config file you
 created earlier.
 
 
@@ -106,7 +104,7 @@ As a developer:
 0. Setup
 --------
 
-Follow the basic steps above put with an ini file named: development.ini
+Follow the basic steps above but with an ini file named: development.ini
 
 NB: you'll probably want to change log levels to debug.
 
@@ -120,7 +118,7 @@ NB: you'll probably want to change log levels to debug.
 
     $ nosetests shakespeare
 '''
-__version__ = '0.6a'
+__version__ = '0.7a'
 __application_name__ = 'shakespeare'
 
 def register_config(config_path):

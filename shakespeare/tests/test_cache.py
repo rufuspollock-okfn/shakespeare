@@ -20,13 +20,18 @@ class TestCache(object):
     def test_path(self):
         exp = os.path.join(self.cache_path, self.url[7:])
         out = self.cache.path(self.url)
-        assert out == exp
+        assert out == exp, (out, exp)
 
     def test_path_2(self):
         exp = os.path.join(self.cache_path,
                 'www.gutenberg.org/dirs/cleanedGUTINDEX.ALL')
         out = self.cache.path(self.url, 'cleaned')
         assert exp == out
+
+    def test_path_without_fullpath(self):
+        cache2 = shakespeare.cache.Cache('', fullpath=False)
+        out = cache2.path(self.url)
+        assert out == 'GUTINDEX.ALL'
 
     def test_download_url(self):
         exp = os.path.join(self.cache_path, self.url2[7:])

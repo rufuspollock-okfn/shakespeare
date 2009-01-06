@@ -1,27 +1,40 @@
 import os
+import urlparse
 import urllib
-
-import shakespeare
-conf = shakespeare.conf()
 
 class Cache(object):
     """Provide a local filesystem cache for material.
     """
 
-    def __init__(self, cache_path):
+    def __init__(self, cache_path, fullpath=True):
+        '''
+        @param fullpath: save to local path corresponding to full url path
+            (creating directories as necessary) when retrieving.
+        '''
         self.cache_path = cache_path
+        self.fullpath = fullpath
 
     def path(self, remote_url, version=''):
         """Get local path to text of remote url.
         @type: string giving version of text (''|'cleaned')
         """
-        protocolEnd = remote_url.index(':') + 3  # add 3 for ://
-        path = remote_url[protocolEnd:]
-        base, name = os.path.split(path)
+        urlparts = urlparse.urlparse(remote_url)
+        base = urlparts[1]
+        pathparts = urlparts[2].split('/')
+        if len(pathparts) > 1:
+            base = os.path.join(base, *pathparts[:-1])
+        name = pathparts[-1]
         name = version + name
-        offset = os.path.join(base, name)
-        localPath = self.path_from_offset(offset)
-        return localPath
+        if self.fullpath:
+            offset = os.path.join(base, name)
+        else:
+            offset = name
+        local_path = self.path_from_offset(offset)
+        return local_path
+
+    def path_from_offset(self, offset):
+        "Get full path of file in cache given by offset."
+        return os.path.join(self.cache_path, offset)
 
     def download_url(self, url, overwrite=False):
         """Download a url to the local cache
@@ -41,11 +54,13 @@ class Cache(object):
             # os.system(cmd)
             urllib.urlretrieve(url, localPath)
 
-    def path_from_offset(self, offset):
-        "Get full path of file in cache given by offset."
-        return os.path.join(self.cache_path, offset)
 
+try:
+    import shakespeare
+    conf = shakespeare.conf()
 
-default_path = shakespeare.conf()['cachedir']
-default = Cache(default_path)
+    default_path = shakespeare.conf()['cachedir']
+    default = Cache(default_path)
+except:
+    pass
 
