@@ -77,7 +77,7 @@ For more information about the package run `info`.
     # =================
     # Commands
 
-    db_actions = [ 'create', 'clean', 'init_shksprdata', 'init_miltondata' ]
+    db_actions = [ 'clean', 'create', 'rebuild', 'init_shksprdata', 'init_miltondata' ]
     def do_db(self, line=None):
         if line is None or line not in self.db_actions:
             self.help_db()
@@ -86,13 +86,15 @@ For more information about the package run `info`.
         import shakespeare.model as model
         import shakespeare
         if line == 'clean':
-            config = shakespeare.conf()
             model.metadata.drop_all()
         elif line == 'create':
             model.metadata.create_all()
+        elif line == 'rebuild':
+            model.metadata.drop_all()
+            model.metadata.create_all()
         elif line.startswith('init_'):
             modname = line.strip()[5:]
-            mod = __import__(modname+'.load', fromlist='load')
+            mod = __import__(modname+'.cli', fromlist='cli')
             mod.LoadTexts.load_texts()
         else:
             print self.help_db()
