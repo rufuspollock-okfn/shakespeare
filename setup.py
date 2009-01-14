@@ -36,8 +36,11 @@ setup(
     main = pylons.util:PylonsInstaller
 
     [paste.paster_command]
-    load-shkspr = shksprdata.load:LoadTexts
-    load-milton = miltondata.load:LoadTexts
+    load-shkspr = shksprdata.cli:LoadTexts
+    load-milton = miltondata.cli:LoadTexts
+    moby-download = shksprdata.cli:MobyDownload
+    moby-html = shksprdata.cli:MobyHtml
+    moby-latex = shksprdata.cli:MobyLatex
 
     [console_scripts]
     shakespeare-admin=shakespeare.cli:main

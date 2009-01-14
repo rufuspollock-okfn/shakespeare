@@ -13,7 +13,7 @@ class TestWorkAndMaterial(object):
             title=self.title,
             work=work,
             src_pkg='shksprdata',
-            src_locator='/texts/phoenix_and_the_turtle_gut.txt'
+            src_locator='/gutenberg/phoenix_and_the_turtle_gut.txt'
             )
 
         model.Session.flush()
