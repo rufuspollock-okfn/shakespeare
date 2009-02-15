@@ -139,4 +139,7 @@ def conf():
     from pylons import config
     conf = config
     return conf
-     
+
+def get_config():
+    return conf()
+
