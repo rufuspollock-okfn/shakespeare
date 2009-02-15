@@ -28,7 +28,7 @@ class TestFormat:
         out = regex.search(inStr)
         assert out.group() == outStr
     
-    def test_makeReFromPhrase2(self):
+    def test_make_re_from_phrase_2(self):
         outStr = """blah
             joe
             hello
@@ -39,7 +39,19 @@ class TestFormat:
         regex = G.GutenbergCleaner.make_re_from_phrase('blah')
         out = regex.search(inStr)
         assert out.group() == outStr
+    
+    def test_make_re_from_phrase_3(self):
+        tomatch = 'Produced by '
+        instr = '''Produced by Dianne Bean
 
+
+CAMILLE (LA DAME AUX CAMILIAS)
+'''
+        regex = G.GutenbergCleaner.make_re_from_phrase(tomatch)
+        out = regex.search(instr).group()
+        assert not 'CAMILLE' in out, out
+        assert 'Produced by Dianne' in out, out
+        
 
 class TestGutenbergCleaner:
     # As you like it in Folio and normal

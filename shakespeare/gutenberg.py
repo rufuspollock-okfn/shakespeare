@@ -33,16 +33,25 @@ class GutenbergIndexBase(object):
         raise NotImplementedError
 
 import re
-headerEndPhrases = ["Project Gutenberg's Etext of", 'This etext was prepared by']
+headerEndPhrases = [
+        "Project Gutenberg's Etext of",
+        'This etext was prepared by',
+        'END.*THE SMALL PRINT',
+        'START OF THIS PROJECT GUTENBERG',
+        ]
 notesStartPhrases = ["Executive Director's Notes:"]
 notesEndPhrases = ['David Reed']
 footerStartPhrases = ['End of Project Gutenberg', 'End of The Project Gutenberg'
     ]
 
 class GutenbergCleaner(object):
-    """
-    Clean up Gutenberg texts by removing all the header and footer bumpf
-    """
+    '''Clean up Gutenberg texts by removing all the header and footer bumpf.
+
+    Usage: init and then run extract_text.
+
+    TODO: deal with 'Produced by ' which occurs in both header and footer (and
+    so cannot be dealt with by the usual methods).
+    '''
     
     def __init__(self, etext):
         """
@@ -70,7 +79,7 @@ class GutenbergCleaner(object):
         [blank]
         [blank]+
         """
-        paragraphText = '(.+\S.+\n)*' # need \S to ensure not just whitespace
+        paragraphText = '(^.+\w.+\n)*' # need \S to ensure not just whitespace
         # [[TODO: check slowdown due to inclusion of '^.*' at start
         tmp = '^.*' + phrase + '.*\n' + paragraphText + '\s+'
         return re.compile(tmp, re.I | re.M)  # make it case insensitive
