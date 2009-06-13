@@ -11,6 +11,7 @@
   <title>${c.site_title} - ${page_title()}</title>
 
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="shortcut icon" href="/img/shkspr.ico" type="image/x-icon" />
   <link rel="stylesheet" href="/css/master.css" type="text/css" media="screen, print" title="Master stylesheet" charset="utf-8" />
   <script type="text/javascript" src="/scripts/prototype.js"></script>
   <script type="text/javascript" src="/scripts/behaviour.js"></script>
@@ -55,7 +56,9 @@
         </py:choose>
         <!--</topbar>-->
       </div><!-- /top-bar -->
-    <h1><a href="${h.url_for(controller='site', action='home')}" title="${c.site_title} Home">${c.site_title}</a></h1>
+    <h1>
+      <a href="${h.url_for(controller='site', action='home')}" title="${c.site_title} Home">${c.site_title}</a>
+    </h1>
     
     </div><!-- /top-inner -->
      
