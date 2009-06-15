@@ -7,13 +7,16 @@
 
   <div py:match="content">
     <h2>Statistics for '${c.word}'</h2>
+    <div py:if="not c.stats">
+      <p>Sorry, no statistics are available for ${c.word}.</p>
+      <p>NB: words are stemmed for stats purposes, so loved becomes love, bloody becomes blood etc.</p>
+    </div>
+
+    <py:if test="c.stats">
     <img style="float: left;"
       src="${c.img_url}"
-      alt="Word Statistics Bar Chart" />
+      alt="" />
 
-    <p py:if="not c.stats">
-      Sorry, no statistics are available for ${c.word} (NB: words are stemmed for stats purposes, so loved becomes love, bloody becomes blood etc).
-    </p>
 		<table>
     <thead>
       <tr>
@@ -40,6 +43,7 @@
       </tr>
     </tbody>
     </table>
+    </py:if> <!-- end if for stats existence! -->
   </div>
 
   <xi:include href="../layout.html" />

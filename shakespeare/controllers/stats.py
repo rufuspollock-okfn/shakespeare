@@ -29,11 +29,19 @@ class StatsController(BaseController):
         c.stats = stats.text_stats(text)
         # 40 seems limit for google
         data = [ (s.word, s.freq) for s in c.stats[:40] ]
-        c.img_url = self.vertical_bar_chart(data)
+        try:
+            c.img_url = self.vertical_bar_chart(data)
+        except:
+            # TODO: log error message
+            c.img_url = ''
         return render('stats/text.html')
 
     def word_index(self):
-        return ''
+        import sqlalchemy.sql as sql
+        st = model.statistic_table
+        q = sql.select([st.c.word], distinct=True)
+        c.words = [ w[0] for w in q.execute().fetchall() ]
+        return render('stats/word_index.html')
     
     def word(self, id):
         if id is None:
@@ -44,7 +52,11 @@ class StatsController(BaseController):
         c.stats = stats.word_stats(word)
         # will not have that many texts so do not need to limit c.stats
         data = [ (s.text.title[:min(len(s.text.title), 10)], s.freq) for s in c.stats ]
-        c.img_url = self.vertical_bar_chart(data)
+        try:
+            c.img_url = self.vertical_bar_chart(data)
+        except:
+            # TODO: log error message
+            c.img_url = ''
         return render('stats/word.html')
 
     # TODO: factor this out to its module (?)

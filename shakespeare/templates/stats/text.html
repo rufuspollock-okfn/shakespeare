@@ -7,13 +7,16 @@
 
   <div py:match="content">
     <h2>Statistics: ${c.text.title}</h2>
-    <p py:if="not c.stats">
-      Sorry, no statistics are available for ${c.text.ftitle}. Note that, in general, we do not compute statistics for texts using non-standardized spelling.
-    </p>
+    <div py:if="not c.stats">
+      <p><strong>Sorry</strong>, no statistics are available for ${c.text.ftitle}.</p>
+      <p>NB: in general, we do <strong>not</strong> compute statistics for texts using <strong>non-standardized spelling</strong>, for example Folio editions of Shakespeare.
+      </p>
+    </div>
 
+    <py:if test="c.stats">
     <img style="float: left;"
       src="${c.img_url}"
-      alt="Word Statistics Bar Chart" />
+      alt="" />
 
     <table>
     <thead>
@@ -42,6 +45,7 @@
       </tr>
     </tbody>
     </table>
+    </py:if><!-- end py:if for table -->
   </div>
 
   <xi:include href="../layout.html" />
