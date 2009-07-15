@@ -1,0 +1,14 @@
+/* remove login info at top-right */
+#top-bar { display: none; }
+#top { margin-top: 0.4em; }
+/* mess with standard ckan theme to remove second submenu for time being */
+#subnav { background: transparent; height: 1px; }
+#subnav * { display: none; }
+#main { margin-top: 0.5em; }
+#primary { margin-top: 1.2em; }
+
+p.error {
+  color: red;
+  font-weight: bold;
+}
+
