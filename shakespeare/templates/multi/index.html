@@ -1,0 +1,33 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      py:strip="">
+  
+  <py:def function="page_title">Multiview - Index</py:def>
+
+  <style type="text/css" py:def="page_specific_css()">
+    label {
+      display: inline;
+      font-weight: bold;
+    }
+
+    select {
+      margin-bottom: 0.5em;
+    }
+  </style>
+
+  <div py:match="content">
+    <h2>Multiview Home</h2>
+    <p>
+      You can use the "multiview" facility to view multiple texts side-by-side.
+      Choose which texts you want to view:</p>
+    <form action="${h.url_for(controller='multi', action='view')}" method="GET">
+      <label>Text 1:</label> ${h.select('text_1',c.text_options, multiple=False)}<br />
+      <label>Text 2:</label> ${h.select('text_2',c.text_options, multiple=False)}<br />
+      
+      ${h.submit('View &raquo;', 'submit')}
+    </form>
+  </div>
+
+  <xi:include href="../layout.html" />
+</html>
