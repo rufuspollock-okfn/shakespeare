@@ -8,6 +8,7 @@ from pylons import config
 import shakespeare.lib.app_globals as app_globals
 import shakespeare.lib.helpers
 from shakespeare.config.routing import make_map
+from shakespeare.model import init_model
 
 def load_environment(global_conf, app_conf):
     """Configure the Pylons environment via the ``pylons.config``
@@ -50,4 +51,8 @@ def load_environment(global_conf, app_conf):
 
     # CONFIGURATION OPTIONS HERE (note: all config options will override
     # any Pylons config options)
-    config['pylons.g'].sa_engine = engine_from_config(config, 'sqlalchemy.')
+
+    # Setup the SQLAlchemy database engine
+    engine = engine_from_config(config, 'sqlalchemy.')
+    init_model(engine)
+

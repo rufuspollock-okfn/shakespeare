@@ -1,21 +1,11 @@
 """
 Domain model
 """
-from pylons import config
 from sqlalchemy import Column, MetaData, Table, types, ForeignKey
 from sqlalchemy import orm
 from sqlalchemy.orm import relation, backref
 
-# make sure config is registered
-import shakespeare
-shakespeare.conf()
-
-metadata = MetaData(bind=config['pylons.g'].sa_engine)
-Session = orm.scoped_session(orm.sessionmaker(
-    autoflush=True,
-    transactional=False,
-    bind=config['pylons.g'].sa_engine
-))
+from meta import *
 
 import shakespeare
 
