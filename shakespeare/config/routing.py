@@ -6,6 +6,7 @@ refer to the routes manual at http://routes.groovie.org/docs/
 """
 from pylons import config
 from routes import Mapper
+from formalchemy.ext.pylons import maps # routes generator
 
 def make_map():
     """Create, configure and return the routes Mapper"""
@@ -18,12 +19,15 @@ def make_map():
 
     # CUSTOM ROUTES HERE
 
-
+    # Map the /admin url to FA's AdminController
+    maps.admin_map(map, controller='admin', url='/admin')
+    # now main shakespeare routes
     map.connect('', controller='site', action='index')
     map.connect('marginalia/*url', controller='site', action='marginalia')
     map.connect('material/:action/:id', controller='text')
     map.connect(':controller/:action/:id')
     map.connect(':action', controller='site')
+
     map.connect('*url', controller='template', action='view')
 
     return map

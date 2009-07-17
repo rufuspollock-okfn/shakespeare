@@ -9,7 +9,6 @@ class TestSiteController(TestController):
         res = self.app.get(url)
         print res
         assert "Home" in res
-        assert 'Welcome to the Open Shakespeare web interface' in res
 
     def test_guide(self):
         url = url_for(controller='site', action='guide')

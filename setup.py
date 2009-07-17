@@ -17,10 +17,11 @@ setup(
     include_package_data=True,
 
     install_requires=[
-        'Pylons>=0.9.6.1',
+        'Pylons>=0.9.6.1,<0.9.6.99',
         'SQLAlchemy>=0.4,<0.4.99',
-        'Genshi>=0.3',
+        'Genshi>=0.4',
         'pygooglechart>=0.2,<0.3',
+        'FormAlchemy>=1.0',
         # 'annotater>=0.1',
         ],
     test_suite='nose.collector',
