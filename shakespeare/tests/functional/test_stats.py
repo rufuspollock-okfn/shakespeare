@@ -36,7 +36,7 @@ class TestStatsController(TestController):
     def test_text_no_stats(self):
         url = url_for(controller='stats', action='text', id=self.text2.name)
         res = self.app.get(url)
-        assert 'Sorry, no statistics' in res
+        assert 'Sorry</strong>, no statistics' in res, res
 
     def test_word_stats(self):
         shakespeare.tests.test_stats.stats_fixture(self.text2)
