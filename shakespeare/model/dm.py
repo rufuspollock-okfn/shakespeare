@@ -1,8 +1,8 @@
 """
 Domain model
 """
-from sqlalchemy import Column, MetaData, Table, types, ForeignKey
-from sqlalchemy import orm
+from sqlalchemy import Column, Table, ForeignKey
+from sqlalchemy.types import *
 from sqlalchemy.orm import relation, backref
 
 from meta import *
@@ -10,33 +10,33 @@ from meta import *
 import shakespeare
 
 work_table = Table('work', metadata,
-    Column('id', types.Integer, primary_key=True),
-    Column('name', types.String(255)),
-    Column('title', types.String(255)),
-    Column('creator', types.String(255)),
-    Column('notes', types.Text),
+    Column('id', Integer, primary_key=True),
+    Column('name', Unicode(255)),
+    Column('title', Unicode(255)),
+    Column('creator', Unicode(255)),
+    Column('notes', UnicodeText),
     )
 
 material_table = Table('material', metadata,
-    Column('id', types.Integer, primary_key=True),
-    Column('name', types.String(255)),
-    Column('work_id', types.Integer, ForeignKey('work.id')),
-    Column('title', types.String(255)),
-    Column('creator', types.String(255)),
-    Column('notes', types.Text),
-    Column('format', types.Text),
+    Column('id', Integer, primary_key=True),
+    Column('name', Unicode(255)),
+    Column('work_id', Integer, ForeignKey('work.id')),
+    Column('title', Unicode(255)),
+    Column('creator', Unicode(255)),
+    Column('notes', UnicodeText),
+    Column('format', UnicodeText),
     # python package it lives in, if any
-    Column('src_pkg', types.Text),
+    Column('src_pkg', UnicodeText),
     # url (file or web) or standard (unix) file path
-    Column('src_locator', types.Text),
+    Column('src_locator', UnicodeText),
     )
 
 # TODO: indices on word and occurences
 statistic_table = Table('statistic', metadata,
-    Column('id', types.Integer, primary_key=True),
-    Column('material_id', types.Integer, ForeignKey('material.id')),
-    Column('word', types.String(50)),
-    Column('freq', types.Integer),
+    Column('id', Integer, primary_key=True),
+    Column('material_id', Integer, ForeignKey('material.id')),
+    Column('word', Unicode(50)),
+    Column('freq', Integer),
     )
 
 

@@ -33,14 +33,14 @@ class TestSearch:
         out = self.index.search('summer')
         assert len(out) == 2
         mset1 = out[0]
-        exp = "Shall I compare thee to a summer's day"
+        exp = u"Shall I compare thee to a summer's day"
         assert mset1.document.get_data().startswith(exp)
     
     def test_search_2(self):
         out = self.index.search('summer')
         mset1 = out[1]
         # 'But thy eternal summer ...
-        exp = "But thy eternal summer shall not fade,\nNor lose possession of that fair thou ow'st,"
+        exp = u"But thy eternal summer shall not fade,\nNor lose possession of that fair thou ow'st,"
         assert mset1.document.get_data().startswith(exp)
     
     def test_search_3(self):

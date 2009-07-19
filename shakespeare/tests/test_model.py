@@ -4,16 +4,16 @@ class TestWorkAndMaterial(object):
 
     @classmethod
     def setup_class(self):
-        self.name = 'test-123'
-        self.title = 'Hamlet'
+        self.name = u'test-123'
+        self.title = u'Hamlet'
         work = model.Work(
             name=self.name,
             title=self.title)
         text = model.Material(
             title=self.title,
             work=work,
-            src_pkg='shksprdata',
-            src_locator='/gutenberg/phoenix_and_the_turtle_gut.txt'
+            src_pkg=u'shksprdata',
+            src_locator=u'/gutenberg/phoenix_and_the_turtle_gut.txt'
             )
 
         model.Session.flush()
@@ -54,10 +54,10 @@ class TestStatistic:
 
     @classmethod
     def setup_class(self):
-        self.name = 'test-123'
-        self.title = 'Hamlet'
+        self.name = u'test-123'
+        self.title = u'Hamlet'
         self.text = model.Material(name=self.name, title=self.title)
-        self.word = 'jones'
+        self.word = u'jones'
         self.freq = 5
         self.cc1 = model.Statistic(
                 text=self.text,

@@ -46,7 +46,7 @@ class Stats(object):
         stats = self.analyze(fileobj)
         for k in stats:
             model.Statistic(text=material,
-                    word=k,
+                    word=unicode(k, 'utf8', 'ignore'),
                     freq=stats[k]
                     )
         model.Session.flush()

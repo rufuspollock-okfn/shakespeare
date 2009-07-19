@@ -26,7 +26,7 @@ class TestStats:
         model.Session.remove()
 
     def test_get_stats(self):
-        simpletext = 'Death death dead love loved loving'
+        simpletext = u'Death death dead love loved loving'
         out = self.stats.analyze(StringIO.StringIO(simpletext))
         assert len(out) == 3
         assert out['love'] == 3
@@ -34,13 +34,13 @@ class TestStats:
         assert out['dead'] == 1
 
     def test_freq_nonexistent(self):
-        nonexistent_word = 'abdfakfjadf'
+        nonexistent_word = u'abdfakfjadf'
         freq = self.stats.freq(self.text, nonexistent_word)
         assert freq == 0
     
     def test_statsify(self):
         stats_fixture(self.text)
-        word = 'summer'
+        word = u'summer'
         freq = self.stats.freq(self.text, word)
         assert freq == 3
 
@@ -61,7 +61,7 @@ class TestStats:
     def test_word_stats(self):
         stats_fixture(self.text)
         stats_fixture(self.text2)
-        stats = self.stats.word_stats('summer')
+        stats = self.stats.word_stats(u'summer')
         assert len(stats) == 2
         assert stats[0].text.name == self.text.name
         assert stats[0].freq == 3

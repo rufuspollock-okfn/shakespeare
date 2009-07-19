@@ -29,11 +29,15 @@ pkg_resources.require('Paste')
 pkg_resources.require('PasteScript')
 
 test_file = os.path.join(conf_dir, 'test.ini')
-cmd = paste.script.appinstall.SetupCommand('setup-app')
-cmd.run([test_file])
+# cmd = paste.script.appinstall.SetupCommand('setup-app')
+# cmd.run([test_file])
+import shakespeare
+shakespeare.register_config(test_file)
+import shakespeare.model as model
+model.repo.rebuild_db()
 
 sonnet18_text = \
-'''Shall I compare thee to a summer's day?
+u'''Shall I compare thee to a summer's day?
 Thou art more lovely and more temperate:
 Rough winds do shake the darling buds of May,
 And summer's lease hath all too short a date:
@@ -53,8 +57,8 @@ When in eternal lines to time thou grow'st,
 '''
 
 class TestData:
-    name = 'test_sonnet18'
-    name2 = 'test_sonnet18_2'
+    name = u'test_sonnet18'
+    name2 = u'test_sonnet18_2'
 
     @classmethod
     def make_fixture(self):
@@ -62,13 +66,13 @@ class TestData:
         sonnet18_work = model.Work.by_name(self.name)
         if not sonnet18_work:
             sonnet18_work = model.Work(name=self.name,
-                    title='Sonnet 18',
-                    creator='William Shakespeare'
+                    title=u'Sonnet 18',
+                    creator=u'William Shakespeare'
                     )
         sonnet18 = model.Material.by_name(self.name)
         if not sonnet18:
             sonnet18 = model.Material(name=self.name,
-                    title='Sonnet 18 (First Edition)',
+                    title=u'Sonnet 18 (First Edition)',
                     work=sonnet18_work,
                     )
         assert len(sonnet18_work.materials)==1
@@ -84,7 +88,7 @@ class TestData:
         sonnet18 = model.Material.by_name(self.name2)
         if not sonnet18:
             sonnet18 = model.Material(name=self.name2,
-                    title='Sonnet 18 Duplicate',
+                    title=u'Sonnet 18 Duplicate',
                     work=sonnet18_work
                     )
             model.Session.flush()

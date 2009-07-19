@@ -6,11 +6,11 @@ import shakespeare.model as model
 class TestTextController(TestController):
     @classmethod
     def setup_class(cls):
-        text = model.Material.byName('tempest_gut')
+        text = model.Material.byName(u'tempest_gut')
         if text is None:
             print 'Adding items'
-            import shksprdata.load
-            shksprdata.load.LoadTexts.load_texts()
+            import shksprdata.cli
+            shksprdata.cli.LoadTexts.load_texts()
             model.Session.flush()
             model.Session.remove()
         assert len(model.Material.query.all()) > 20
