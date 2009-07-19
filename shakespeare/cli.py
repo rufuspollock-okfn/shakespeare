@@ -86,12 +86,11 @@ For more information about the package run `info`.
         import shakespeare.model as model
         import shakespeare
         if line == 'clean':
-            model.metadata.drop_all(bind=model.meta.engine)
+            model.repo.clean_db()
         elif line == 'create':
-            model.metadata.create_all(bind=model.meta.engine)
+            model.repo.create_db()
         elif line == 'rebuild':
-            model.metadata.drop_all()
-            model.metadata.create_all()
+            model.repo.rebuild_db()
         elif line.startswith('init_'):
             modname = line.strip()[5:]
             mod = __import__(modname+'.cli', fromlist='cli')

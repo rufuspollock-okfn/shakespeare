@@ -14,6 +14,6 @@ def setup_config(command, filename, section, vars):
     load_environment(conf.global_conf, conf.local_conf)
     from shakespeare import model
     log.info('Creating tables')
-    model.metadata.create_all(bind=model.meta.engine)
+    model.repo.create_db()
     log.info('Creating tables: SUCCESS')
 
