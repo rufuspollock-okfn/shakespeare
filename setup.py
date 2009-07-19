@@ -22,6 +22,8 @@ setup(
         'Genshi>=0.4',
         'pygooglechart>=0.2,<0.3',
         'FormAlchemy>=1.0',
+        # last version to work with SQLA < 0.5
+        'SQLAlchemy-migrate==0.4.5',
         # 'annotater>=0.1',
         ],
     test_suite='nose.collector',

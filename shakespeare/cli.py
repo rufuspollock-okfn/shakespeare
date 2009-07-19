@@ -77,7 +77,7 @@ For more information about the package run `info`.
     # =================
     # Commands
 
-    db_actions = [ 'clean', 'create', 'rebuild', 'init_shksprdata', 'init_miltondata' ]
+    db_actions = [ 'create', 'upgrade', 'clean', 'rebuild', 'init_shksprdata', 'init_miltondata' ]
     def do_db(self, line=None):
         if line is None or line not in self.db_actions:
             self.help_db()
@@ -85,12 +85,21 @@ For more information about the package run `info`.
         self._register_config()
         import shakespeare.model as model
         import shakespeare
-        if line == 'clean':
-            model.repo.clean_db()
-        elif line == 'create':
+        migrate_repository = 'shakespeare/migration/'
+        if line == 'create':
             model.repo.create_db()
+        elif line == 'clean':
+            model.repo.clean_db()
         elif line == 'rebuild':
             model.repo.rebuild_db()
+        elif line == 'upgrade':
+            import migrate.versioning.api
+            import migrate.versioning.api as mig
+            mig.upgrade(model.meta.engine.url, migrate_repository,
+                    version=None)
+        elif line == 'downgrade':
+            # TODO (need a version argument ...)
+            raise NotImplementedError()
         elif line.startswith('init_'):
             modname = line.strip()[5:]
             mod = __import__(modname+'.cli', fromlist='cli')
@@ -101,7 +110,9 @@ For more information about the package run `info`.
     def help_db(self, line=None):
         usage = \
 '''db { %s }
+
 ''' % ' | '.join(self.db_actions)
+        usage += '   upgrade: upgrade db to latest version using sqlalchemy migrate'
         print usage
     
     def _init_index(self):
