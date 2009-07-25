@@ -50,7 +50,7 @@ class TextController(BaseController):
         for item in textlist:
             tfileobj = item.get_text()
             # hack for time being ...
-            if item.format == 'mkd':
+            if item.resources and item.resources[0].format == 'mkd':
                 ttext = h.markdown(tfileobj.read())
             else:
                 ttext = shakespeare.format.format_text(tfileobj, format)

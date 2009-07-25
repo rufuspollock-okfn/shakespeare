@@ -12,23 +12,23 @@ class TestWorkAndMaterial(object):
         text = model.Material(
             title=self.title,
             work=work,
-            src_pkg=u'shksprdata',
-            src_locator=u'/gutenberg/phoenix_and_the_turtle_gut.txt'
+            )
+        resource = model.Resource(
+            material=text,
+            locator_type=u'package',
+            locator=u'shksprdata::/gutenberg/phoenix_and_the_turtle_gut.txt',
+            format=u'txt',
             )
 
         model.Session.flush()
         self.workid = work.id
         self.textid = text.id
+        self.resourceid = resource.id
         model.Session.clear()
 
     @classmethod
     def teardown_class(self):
-        text = model.Material.query.get(self.textid)
-        work = model.Material.query.get(self.workid)
-        model.Session.delete(text)
-        if work:
-            model.Session.delete(work)
-        model.Session.flush()
+        model.repo.rebuild_db()
     
     def test_work(self):
         work = model.Work.query.get(self.workid)
@@ -41,6 +41,7 @@ class TestWorkAndMaterial(object):
         txt2 = model.Material.query.get(self.textid)
         assert txt2.title == self.title
         assert txt2.work.id == self.workid
+        assert txt2.resources
     
     def test_get_text(self):
         text = model.Material.query.get(self.textid)
@@ -48,6 +49,10 @@ class TestWorkAndMaterial(object):
         out = out.read()
         assert len(out) > 0
         assert out[:26] == 'THE PHOENIX AND THE TURTLE'
+
+    def test_resource(self):
+        res = model.Resource.query.get(self.resourceid)
+        assert res.format == u'txt'
 
 
 class TestStatistic:

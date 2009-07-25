@@ -24,11 +24,16 @@ material_table = Table('material', metadata,
     Column('title', Unicode(255)),
     Column('creator', Unicode(255)),
     Column('notes', UnicodeText),
+    )
+
+resource_table = Table('resource', metadata,
+    Column('id', Integer, primary_key=True),
+    Column('material_id', Integer, ForeignKey('material.id')),
     Column('format', UnicodeText),
-    # python package it lives in, if any
-    Column('src_pkg', UnicodeText),
-    # url (file or web) or standard (unix) file path
-    Column('src_locator', UnicodeText),
+    # url or path
+    Column('locator', UnicodeText),
+    # types: url, cache, package, disk
+    Column('locator_type', UnicodeText, default=u'url'),
     )
 
 # TODO: indices on word and occurences
@@ -71,15 +76,28 @@ class Material(object):
 
         # ignore format for time being
         '''
-        import pkg_resources
-        # default to plain txt format (TODO: generalise this)
-        fileobj = pkg_resources.resource_stream(self.src_pkg, self.src_locator)
-        return fileobj
+        if self.resources:
+            return self.resources[0].get_stream()
 
     def get_ftitle(self):
         return self.title + ' (%s)' % self.name
 
     ftitle = property(get_ftitle)
+
+
+class Resource(object):
+    def get_stream(self):
+        '''Get text (if any) associated with this material.
+
+        # ignore format for time being
+        '''
+        if self.locator_type == u'package':
+            package, path = self.locator.split('::')
+            import pkg_resources
+            fileobj = pkg_resources.resource_stream(package, path)
+            return fileobj
+        else:
+            raise NotImplementedError
 
 
 class Statistic(object):
@@ -96,6 +114,12 @@ mapper(Material, material_table, properties={
     'work':relation(Work, backref='materials')
     },
     order_by=material_table.c.name
+    )
+
+mapper(Resource, resource_table, properties={
+    'material':relation(Material, backref='resources')
+    },
+    order_by=resource_table.c.id
     )
 
 mapper(Statistic, statistic_table, properties={

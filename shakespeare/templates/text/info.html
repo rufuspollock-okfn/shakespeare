@@ -21,7 +21,7 @@
 
     <h3>Metadata</h3>
     <ul>
-      <li py:for="attr in ['creator', 'name', 'format', 'notes']">
+      <li py:for="attr in ['creator', 'name', 'notes']">
         <strong>${attr.capitalize()}:</strong>
         ${getattr(c.material, attr)}
       </li>

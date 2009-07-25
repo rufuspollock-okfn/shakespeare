@@ -77,31 +77,47 @@ For more information about the package run `info`.
     # =================
     # Commands
 
-    db_actions = [ 'create', 'upgrade', 'clean', 'rebuild', 'init_shksprdata', 'init_miltondata' ]
-    def do_db(self, line=None):
-        if line is None or line not in self.db_actions:
+    db_actions = [ 'create', 'upgrade', 'downgrade', 'clean', 'rebuild', 'init_shksprdata', 'init_miltondata' ]
+    def do_db(self, line=''):
+        args = line.split()
+        action = args[0]
+        if not action in self.db_actions:
             self.help_db()
             return 1
         self._register_config()
         import shakespeare.model as model
         import shakespeare
         migrate_repository = 'shakespeare/migration/'
-        if line == 'create':
+        if action == 'create':
             model.repo.create_db()
-        elif line == 'clean':
+        elif action == 'clean':
             model.repo.clean_db()
-        elif line == 'rebuild':
+        elif action == 'rebuild':
             model.repo.rebuild_db()
-        elif line == 'upgrade':
+        elif action == 'upgrade':
+            version = None
+            if len(args) > 1:
+                version = args[1]
+            import migrate.versioning.exceptions
             import migrate.versioning.api
             import migrate.versioning.api as mig
+            try:
+                mig.version_control(model.meta.engine.url, migrate_repository)
+            except migrate.versioning.exceptions.DatabaseAlreadyControlledError:
+                pass
             mig.upgrade(model.meta.engine.url, migrate_repository,
-                    version=None)
-        elif line == 'downgrade':
-            # TODO (need a version argument ...)
-            raise NotImplementedError()
-        elif line.startswith('init_'):
-            modname = line.strip()[5:]
+                    version=version)
+        elif action == 'downgrade':
+            if len(args) < 2:
+                print 'You need to supply a version to downgrade to'
+                return 1
+            version = args[1]
+            import migrate.versioning.api
+            import migrate.versioning.api as mig
+            mig.downgrade(model.meta.engine.url, migrate_repository,
+                    version=version)
+        elif action.startswith('init_'):
+            modname = action.strip()[5:]
             mod = __import__(modname+'.cli', fromlist='cli')
             mod.LoadTexts.load_texts()
         else:

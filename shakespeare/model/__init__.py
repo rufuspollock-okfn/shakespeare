@@ -36,7 +36,8 @@ class Repository(object):
         try:
             version_table = Table('migrate_version', self.metadata, autoload=True) 
             version_table.drop()
-        except sqlalchemy.exceptions.NoSuchTableError:
+        except: # seem to occasionally get other sqlalchemy errors ...
+        # except sqlalchemy.exceptions.NoSuchTableError:
             pass
 
     def rebuild_db(self):
