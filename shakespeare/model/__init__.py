@@ -46,3 +46,35 @@ class Repository(object):
 
 repo = Repository(metadata, Session)
 
+
+from ConfigParser import SafeConfigParser
+def load_texts(fileobj, locator, norm_work_name=None):
+    if not norm_work_name:
+        norm_work_name = lambda x: x
+    cfgp = SafeConfigParser()
+    cfgp.readfp(fileobj)
+    for section in cfgp.sections():
+        work_name = unicode(norm_work_name(section))
+        work = Work.by_name(work_name)
+        if work is None:
+            work = Work(name=work_name)
+
+        item = Material.by_name(unicode(section))
+        if item is None:
+            item = Material(name=unicode(section))
+        assert item is not None
+        for key, val in cfgp.items(section):
+            val = unicode(val, 'utf8')
+            if key in ['title', 'creator']:
+                setattr(work, key, val)
+            setattr(item, key, val)
+        item.work = work
+        if not item.resources:
+            res = Resource(
+                locator_type=u'package',
+                locator=locator(section),
+                # TODO: use format correctly
+                format=u'txt',
+                material=item,
+                )
+        Session.flush()
