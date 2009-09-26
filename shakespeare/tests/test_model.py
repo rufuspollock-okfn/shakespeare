@@ -62,6 +62,16 @@ class TestResource:
         out = res.get_stream()
         assert out.read() == sometext
 
+    def test_get_stream_cache(self):
+        import shakespeare.cache
+        cache = shakespeare.cache.default
+        sometext = u'baa baa'
+        path = 'testcache.txt'
+        cache.save(path, sometext)
+        res = model.Resource(locator=path, locator_type=u'cache')
+        out = res.get_stream()
+        assert out.read() == sometext
+
 
 class TestStatistic:
 

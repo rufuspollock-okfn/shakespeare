@@ -61,16 +61,16 @@ def load_works(fileobj):
             setattr(work, key, val)
     Session.flush()
 
-def load_texts(fileobj, locator, norm_work_name=None):
+def load_material(fileobj, norm_work_name=None):
     if not norm_work_name:
         norm_work_name = lambda x: x
     cfgp = SafeConfigParser()
     cfgp.readfp(fileobj)
+    results = []
     for section in cfgp.sections():
         work_name = unicode(norm_work_name(section))
         work = Work.by_name(work_name)
-        if work is None:
-            work = Work(name=work_name)
+        assert work is not None, work_name
 
         item = Material.by_name(unicode(section))
         if item is None:
@@ -80,12 +80,7 @@ def load_texts(fileobj, locator, norm_work_name=None):
             val = unicode(val, 'utf8')
             setattr(item, key, val)
         item.work = work
-        if not item.resources:
-            res = Resource(
-                locator_type=u'package',
-                locator=locator(section),
-                # TODO: use format correctly
-                format=u'txt',
-                material=item,
-                )
+        results.append(item)
         Session.flush()
+    return results
+

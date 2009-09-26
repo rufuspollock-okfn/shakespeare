@@ -34,7 +34,15 @@ class Cache(object):
 
     def path_from_offset(self, offset):
         "Get full path of file in cache given by offset."
+        if offset.startswith('/'):
+            offset = offset[1:]
         return os.path.join(self.cache_path, offset)
+
+    def save(self, path, data):
+        fp = self.path_from_offset(path)
+        fo = open(fp, 'w')
+        fo.write(data)
+        fo.close()
 
     def download_url(self, url, overwrite=False):
         """Download a url to the local cache

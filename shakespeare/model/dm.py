@@ -99,6 +99,11 @@ class Resource(object):
         elif self.locator_type == u'inline':
             from StringIO import StringIO
             return StringIO(self.locator)
+        elif self.locator_type == u'cache':
+            import shakespeare.cache
+            cache = shakespeare.cache.default
+            fp = cache.path_from_offset(self.locator)
+            return open(fp)
         else:
             raise NotImplementedError
 
