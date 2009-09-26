@@ -18,8 +18,9 @@ class WorkController(BaseController):
     def info(self, id):
         name = id
         c.work = model.Work.by_name(name)
-        if c.work:
-            return render('work/info.html')
-        else:
+        if not c.work:
             abort(404)
+        
+        # TODO: stats link
+        return render('work/info.html')
 

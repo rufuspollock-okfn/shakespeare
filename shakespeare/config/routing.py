@@ -22,8 +22,10 @@ def make_map():
     # Map the /admin url to FA's AdminController
     maps.admin_map(map, controller='admin', url='/admin')
     # now main shakespeare routes
+    map.connect('pdf', 'pdf/*url')
     map.connect('', controller='site', action='index')
     map.connect('marginalia/*url', controller='site', action='marginalia')
+    map.connect('resource/:action/:id', controller='our_resource')
     map.connect('material/:action/:id', controller='text')
     map.connect(':controller/:action/:id')
     map.connect(':action', controller='site')

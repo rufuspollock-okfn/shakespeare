@@ -16,8 +16,13 @@
     <h3>Associated Material</h3>
     <ul>
       <li py:for="material in c.work.materials">
-      <a href="${h.url_for(controller='text', action='info',
-        id=material.name)}">${material.title}</a>
+        <a href="${h.url_for(controller='text', action='info',
+          id=material.name)}">${material.title}</a>
+        <ul>
+          <li py:for="res in material.resources">
+            <a href="${h.url_for(controller='our_resource', action='view', id=res.id)}">Text (${res.format})</a>
+          </li>
+        </ul>
       </li>
     </ul>
     <h3>Notes</h3>

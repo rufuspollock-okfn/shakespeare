@@ -77,7 +77,8 @@ class TestData:
                     )
         if not sonnet18.resources:
             res = model.Resource(locator_type=u'inline',
-                locator=sonnet18_text)
+                locator=sonnet18_text,
+                format=u'txt')
             sonnet18.resources.append(res)
         assert len(sonnet18_work.materials)==1
         model.Session.flush()

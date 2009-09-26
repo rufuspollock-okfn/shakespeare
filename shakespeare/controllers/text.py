@@ -1,7 +1,5 @@
 import logging
 
-import genshi
-
 from shakespeare.lib.base import *
 
 import shakespeare
@@ -30,37 +28,13 @@ class TextController(BaseController):
             abort(404)
 
     def view(self, id=''):
-        # first check ?name param then do name in url
-        name = request.params.get('name', '')
-        if not name:
-            name = id
-        if not name:
+        name = id
+        m = model.Material.by_name(name)
+        if not m:
             abort(404)
-        format = request.params.get('format', 'plain')
-        namelist = name.split()
-        numtexts = len(namelist)
-        textlist = [model.Material.by_name(tname) for tname in namelist]
-        # special case (only return the first text)
-        if format == 'raw':
-            result = textlist[0].get_text().read()
-            status = '200 OK'
-            response.headers['Content-Type'] = 'text/plain'
-            return result
-        texthtml = {}
-        for item in textlist:
-            tfileobj = item.get_text()
-            # hack for time being ...
-            if item.resources and item.resources[0].format == 'mkd':
-                ttext = h.markdown(tfileobj.read())
-            else:
-                ttext = shakespeare.format.format_text(tfileobj, format)
-            texthtml[item.name] = genshi.HTML(ttext)
-        # would have assumed this would be 100.0/numtexts but for some reason
-        # you need to allow more room (maybe because of the scrollbars?)
-        # result is not consistent across browsers ...
-        c.frame_width = 100.0/numtexts - 4.0
-        c.textlist = textlist
-        c.texthtml = texthtml
-        # set to not strip whitespace as o/w whitespace in pre tag gets removed
-        return render('text/view.html', strip_whitespace=False)
+        if m.resources:
+            h.redirect_to(controller='resource', action='view',
+                    id=m.resources[0].id)
+        else:
+            return 'No resource to view for this material'
 

@@ -10,20 +10,20 @@
     <h3>Actions</h3>
     <ul>
       <li><a href="${h.url_for(controller='text', action='view',
-        id=c.material.name)}">View</a>
+        id=c.material.name)}">Read Text</a>
       </li>
       <li>
         <a href="${h.url_for(controller='stats', action='text',
           id=c.material.name)}">
-          Statistics</a>
+          View Statistics</a>
       </li>
     </ul>
 
     <h3>Metadata</h3>
     <ul>
-      <li py:for="attr in ['creator', 'name', 'notes']">
-        <strong>${attr.capitalize()}:</strong>
-        ${getattr(c.material, attr)}
+      <li py:for="attrn in ['creator', 'name', 'notes']">
+        <strong>${attrn.capitalize()}:</strong>
+        ${getattr(c.material, attrn)}
       </li>
     </ul>
   </div>

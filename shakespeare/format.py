@@ -35,6 +35,7 @@ class TextFormatter(object):
 
     def escape_chars(self, text):
         return text.replace('&', '&amp;').replace('<', '&lt;')
+    
 
 class TextFormatterPlain(TextFormatter):
     """Format the text as plain text (in an html <pre> tag).
@@ -53,6 +54,7 @@ u'''
 </pre>''' % out
         return out
 
+
 class TextFormatterLineno(TextFormatter):
     """Format the text to have line numbers.
     """
@@ -63,7 +65,10 @@ class TextFormatterLineno(TextFormatter):
         count = 0
         for line in self.file.readlines():
             tlineno = unicode(count).ljust(4) # assume line no < 10000
-            tline = unicode(line, 'utf-8').rstrip() 
+            tline = line
+            if not isinstance(tline, unicode):
+                tline = unicode(tline, 'utf-8')
+            tline = tline.rstrip() 
             tline = self.escape_chars(tline)
             result += u'<pre id="%s">%s %s</pre>\n' % (count, tlineno, tline)
             count += 1
