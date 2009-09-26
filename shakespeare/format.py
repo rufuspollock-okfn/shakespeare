@@ -42,7 +42,9 @@ class TextFormatterPlain(TextFormatter):
 
     def format(self, file):
         self.file = file
-        out = unicode(self.file.read(), 'utf-8')
+        out = self.file.read()
+        if not isinstance(out, unicode):
+            out = unicode(out, 'utf-8')
         out = self.escape_chars(out)
         out = \
 u'''

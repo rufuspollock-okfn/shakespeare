@@ -32,7 +32,7 @@ resource_table = Table('resource', metadata,
     Column('format', UnicodeText),
     # url or path
     Column('locator', UnicodeText),
-    # types: url, cache, package, disk
+    # types: url, cache, package, disk, inline
     Column('locator_type', UnicodeText, default=u'url'),
     )
 
@@ -96,6 +96,9 @@ class Resource(object):
             import pkg_resources
             fileobj = pkg_resources.resource_stream(package, path)
             return fileobj
+        elif self.locator_type == u'inline':
+            from StringIO import StringIO
+            return StringIO(self.locator)
         else:
             raise NotImplementedError
 

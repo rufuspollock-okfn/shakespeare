@@ -75,6 +75,10 @@ class TestData:
                     title=u'Sonnet 18 (First Edition)',
                     work=sonnet18_work,
                     )
+        if not sonnet18.resources:
+            res = model.Resource(locator_type=u'inline',
+                locator=sonnet18_text)
+            sonnet18.resources.append(res)
         assert len(sonnet18_work.materials)==1
         model.Session.flush()
         sonnet18.content = sonnet18_text

@@ -55,6 +55,14 @@ class TestWorkAndMaterial(object):
         assert res.format == u'txt'
 
 
+class TestResource:
+    def test_get_stream_inline(self):
+        sometext = u'aaaaaaaaaaaaa'
+        res = model.Resource(locator=sometext, locator_type=u'inline')
+        out = res.get_stream()
+        assert out.read() == sometext
+
+
 class TestStatistic:
 
     @classmethod

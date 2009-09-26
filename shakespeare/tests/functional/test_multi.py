@@ -29,7 +29,7 @@ class TestMultiController(TestController):
         assert 'Multiview - View' in res
         # TODO: 2009-07-16 this should be uncommented
         # however form setting does not seem to work (don't know why!)
-        # assert not 'Error' in res, res
+        assert not 'Error' in res, res
    
     def test_view(self):
         url = url_for(controller='multi', action='index',
