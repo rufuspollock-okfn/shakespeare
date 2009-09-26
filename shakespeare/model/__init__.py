@@ -48,6 +48,19 @@ repo = Repository(metadata, Session)
 
 
 from ConfigParser import SafeConfigParser
+def load_works(fileobj):
+    cfgp = SafeConfigParser()
+    cfgp.readfp(fileobj)
+    for section in cfgp.sections():
+        work_name = unicode(section)
+        work = Work.by_name(work_name)
+        if work is None:
+            work = Work(name=work_name)
+        for key, val in cfgp.items(section):
+            val = unicode(val, 'utf8')
+            setattr(work, key, val)
+    Session.flush()
+
 def load_texts(fileobj, locator, norm_work_name=None):
     if not norm_work_name:
         norm_work_name = lambda x: x
@@ -65,8 +78,6 @@ def load_texts(fileobj, locator, norm_work_name=None):
         assert item is not None
         for key, val in cfgp.items(section):
             val = unicode(val, 'utf8')
-            if key in ['title', 'creator']:
-                setattr(work, key, val)
             setattr(item, key, val)
         item.work = work
         if not item.resources:

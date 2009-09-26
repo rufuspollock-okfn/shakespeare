@@ -39,6 +39,7 @@ setup(
     main = pylons.util:PylonsInstaller
 
     [paste.paster_command]
+    shkspr-site-test = shksprdata.cli:TestSite
     load-shkspr = shksprdata.cli:LoadTexts
     load-milton = miltondata.cli:LoadTexts
     moby-download = shksprdata.cli:MobyDownload
