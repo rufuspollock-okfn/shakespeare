@@ -12,3 +12,30 @@ p.error {
   font-weight: bold;
 }
 
+/**
+  * HTML transformed from Moby texts
+  * these classes get applied in shksprdata/moby_html.xsl
+  */
+
+.shkspr-act-title {
+  margin-top: 2em;
+}
+
+.shkspr-scene-title {
+  margin-top: 1.5em;
+}
+
+.shkspr-speech-speaker {
+}
+ 
+p.shkspr-speech-body {
+  margin-left: 1em;
+}
+
+.shkspr-stagedir {
+  font-style: italic;  
+}
+
+.shkspr-stagedir-inline {
+  font-style: italic;  
+}
