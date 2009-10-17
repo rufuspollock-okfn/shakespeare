@@ -1,0 +1,12 @@
+# To use this requirements file: (assumes you want virtualenv at ../pyenv)
+#
+#     pip -E ../pyenv install -r pip-requirements.txt
+#
+# NB: if you to use site-packages you should create a virtualenv
+# environment first (pip automatically does --no-site-packages)
+
+# Can also check these out locally
+# You would then replace with local checkout path e.g.
+# -e local-install-path
+-e svn+https://knowledgeforge.net/shakespeare/svn/trunk#egg=shakespeare
+
