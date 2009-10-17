@@ -22,17 +22,24 @@ class OurResourceController(BaseController):
         c.texthtml = genshi.HTML(render_resource(res))
         return render('text/view.html', strip_whitespace=False)
 
+import os
 import shakespeare.format
 def render_resource(res):
-    tfileobj = res.get_stream()
     if res.format == 'mkd':
+        tfileobj = res.get_stream()
         ttext = h.markdown(tfileobj.read())
     elif res.format == 'txt':
+        tfileobj = res.get_stream()
         ttext = shakespeare.format.format_text(tfileobj, 'lineno')
     elif res.format == 'pdf':
         # can't render pdfs!
-        ttext = '<a href="%s">Link to PDF</a>' % h.url_for('pdf', url=res.material.name+'.pdf')
+        # TODO: should probably use name but pdf generation goes on original
+        # name
+        # ttext = '<a href="%s">Link to PDF</a>' % h.url_for('pdf', url=res.material.name+'.pdf')
+        ttext = '<a href="%s">Link to PDF</a>' % h.url_for('pdf',
+                url=os.path.basename(res.locator))
     elif res.format == 'html':
+        tfileobj = res.get_stream()
         ttext = tfileobj.read()
     else:
         raise Exception('Unknown resource format')
