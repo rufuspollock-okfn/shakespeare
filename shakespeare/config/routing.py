@@ -24,6 +24,7 @@ def make_map():
     # now main shakespeare routes
     map.connect('pdf', 'pdf/*url')
     map.connect('', controller='site', action='index')
+    map.connect('guide', 'guide', controller='site', action='guide')
     map.connect('marginalia/*url', controller='site', action='marginalia')
     map.connect('resource/:action/:id', controller='our_resource')
     map.connect('material/:action/:id', controller='text')
