@@ -44,7 +44,6 @@ setup(
     load-milton = miltondata.cli:LoadTexts
     moby-download = shksprdata.cli:MobyDownload
     moby = shksprdata.cli:Moby
-    latex-pdf = shksprdata.cli:LatexPdf
 
     [console_scripts]
     shakespeare-admin=shakespeare.cli:main
