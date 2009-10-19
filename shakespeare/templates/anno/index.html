@@ -1,0 +1,19 @@
+<html
+  xmlns:py="http://genshi.edgewall.org/"
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  py:strip="">
+  
+  <py:def function="page_title">Home</py:def>
+
+  <div py:match="content">
+    <h2>Choose a text to annotate:</h2>
+
+    <form action="${h.url_for(controller='anno', action='annotate')}" method="GET">
+      ${h.select('text', c.text_options, multiple=False)}<br />
+      <br />
+      ${h.submit('Go &raquo;', 'Go')}
+    </form>
+	</div>
+
+  <xi:include href="../layout.html" />
+</html>

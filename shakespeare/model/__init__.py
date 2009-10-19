@@ -6,6 +6,8 @@ from sqlalchemy import orm
 import meta
 from dm import *
 
+from annotation import *
+
 log = logging.getLogger(__name__)
 
 def init_model(engine):
