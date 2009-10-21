@@ -9,4 +9,5 @@
 # You would then replace with local checkout path e.g.
 # -e local-install-path
 -e svn+https://knowledgeforge.net/shakespeare/svn/trunk#egg=shakespeare
+-e hg+https://knowledgeforge.net/okfn/annotator#egg=annotator
 

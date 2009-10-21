@@ -24,7 +24,7 @@ setup(
         'FormAlchemy>=1.0',
         # last version to work with SQLA < 0.5
         'SQLAlchemy-migrate==0.4.5',
-        # 'annotater>=0.1',
+        'annotator>=0.3a',
         ],
     test_suite='nose.collector',
     package_data={'shakespeare': ['i18n/*/LC_MESSAGES/*.mo']},
