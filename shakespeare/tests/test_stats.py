@@ -18,11 +18,9 @@ class TestStats:
         self.stats = shakespeare.stats.Stats()
         self.text = TestData.make_fixture()
         self.text2 = TestData.make_fixture2()
-        model.Session.begin()
 
     def tearDown(self):
-        model.Session.rollback()
-        TestData.remove_fixtures()
+        model.repo.rebuild_db()
         model.Session.remove()
 
     def test_get_stats(self):
@@ -62,7 +60,7 @@ class TestStats:
         stats_fixture(self.text)
         stats_fixture(self.text2)
         stats = self.stats.word_stats(u'summer')
-        assert len(stats) == 2
+        assert len(stats) == 2, len(stats)
         assert stats[0].text.name == self.text.name
         assert stats[0].freq == 3
         # same text so should be the same!

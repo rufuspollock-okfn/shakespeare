@@ -81,7 +81,7 @@ class TestData:
                 format=u'txt')
             sonnet18.resources.append(res)
         assert len(sonnet18_work.materials)==1
-        model.Session.flush()
+        model.Session.commit()
         sonnet18.content = sonnet18_text
         return sonnet18
 
@@ -96,7 +96,7 @@ class TestData:
                     title=u'Sonnet 18 Duplicate',
                     work=sonnet18_work
                     )
-            model.Session.flush()
+            model.Session.commit()
         sonnet18.content = sonnet18_text
         return sonnet18
 
@@ -111,7 +111,7 @@ class TestData:
         w = model.Work.by_name(self.name)
         if w:
             model.Session.delete(w)
-        model.Session.flush()
+        model.Session.commit()
 
 
 make_fixture = TestData.make_fixture

@@ -49,7 +49,7 @@ class Stats(object):
                     word=unicode(k, 'utf8', 'ignore'),
                     freq=stats[k]
                     )
-        model.Session.flush()
+        model.Session.commit()
 
     def freq(self, text, word):
         stat = model.Statistic.query.filter_by(

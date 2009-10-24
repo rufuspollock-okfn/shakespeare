@@ -61,7 +61,7 @@ def load_works(fileobj):
         for key, val in cfgp.items(section):
             val = unicode(val, 'utf8')
             setattr(work, key, val)
-    Session.flush()
+    Session.commit()
 
 def load_material(fileobj, norm_work_name=None):
     if not norm_work_name:
@@ -83,6 +83,6 @@ def load_material(fileobj, norm_work_name=None):
             setattr(item, key, val)
         item.work = work
         results.append(item)
-        Session.flush()
+        Session.commit()
     return results
 

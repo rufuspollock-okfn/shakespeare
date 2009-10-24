@@ -10,7 +10,7 @@ engine = None
 # SQLAlchemy session manager. Updated by model.init_model()
 Session = scoped_session(sessionmaker(
     autoflush=True,
-    transactional=False,
+    transactional=True,
 ))
 
 # Global metadata. If you have multiple databases with overlapping table

@@ -20,11 +20,11 @@ class TestWorkAndMaterial(object):
             format=u'txt',
             )
 
-        model.Session.flush()
+        model.Session.commit()
         self.workid = work.id
         self.textid = text.id
         self.resourceid = resource.id
-        model.Session.clear()
+        model.Session.remove()
 
     @classmethod
     def teardown_class(self):
@@ -87,16 +87,16 @@ class TestStatistic:
                 word=self.word,
                 freq=self.freq
                 )
-        model.Session.flush()
+        model.Session.commit()
         self.statid = self.cc1.id
-        model.Session.clear()
+        model.Session.remove()
 
     @classmethod
     def teardown_class(self):
         stat = model.Statistic.query.get(self.statid)
         model.Session.delete(stat)
         model.Session.delete(stat.text)
-        model.Session.flush()
+        model.Session.commit()
         model.Session.remove()
 
     def test1(self):
