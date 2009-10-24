@@ -22,8 +22,8 @@
       You can use the "multiview" facility to view multiple texts side-by-side.
       Choose which texts you want to view:</p>
     <form action="${h.url_for(controller='multi', action='view')}" method="GET">
-      <label>Text 1:</label> ${h.select('text_1',c.text_options, multiple=False)}<br />
-      <label>Text 2:</label> ${h.select('text_2',c.text_options, multiple=False)}<br />
+      <label>Text 1:</label> ${h.select('text_1', None, c.options, multiple=False)}<br />
+      <label>Text 2:</label> ${h.select('text_2', None, c.options, multiple=False)}<br />
       
       ${h.submit('View &raquo;', 'submit')}
     </form>

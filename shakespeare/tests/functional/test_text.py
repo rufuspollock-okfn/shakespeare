@@ -5,60 +5,35 @@ import shakespeare.model as model
 
 class TestTextController(TestController):
     @classmethod
-    def setup_class(cls):
-        text = model.Material.byName(u'tempest_gut')
-        if text is None:
-            print 'Adding items'
-            import shksprdata.cli
-            shksprdata.cli.LoadTexts.load_texts()
-            model.Session.flush()
-            model.Session.remove()
-        assert len(model.Material.query.all()) > 20
-    
+    def setup_class(self):
+        self.text = TestData.make_fixture()
+
     @classmethod
-    def teardown_class(cls):
-        all = model.Material.query.all()
-        for m in all:
-            model.Session.delete(m)
-        model.Session.flush()
-        model.Session.remove()
+    def teardown_class(self):
+        TestData.remove_fixtures()
 
     def test_index(self):
         url = url_for(controller='text', action='index', id=None)
         res = self.app.get(url)
         print res
         assert 'Texts - Index' in res
-        assert 'The Tempest' in res
+        assert 'Sonnet 18' in res
 
     def test_info(self):
-        url = url_for(controller='text', action='info', id='tempest_gut')
+        url = url_for(controller='text', action='info', id='test_sonnet18')
         res = self.app.get(url)
-        assert 'tempest_gut' in res, res
+        assert 'Sonnet 18' in res, res
 
     def test_view_1(self):
-        url = url_for(controller='text', action='view', id='tempest_gut',
+        url = url_for(controller='text', action='view', id='test_sonnet18',
             format='plain')
         res = self.app.get(url)
         res = res.follow()
-        assert 'CALIBAN, a savage and deformed Slave' in res
+        assert 'Shall I compare thee' in res, str(res)[:5000]
 
     def test_index_click(self):
         url = url_for(controller='text')
         res = self.app.get(url)
-        res = res.click('The Tempest', index=0)
+        res = res.click('Sonnet 18', index=0)
         assert 'Text - Info -' in res
-
-    def test_index_click_view(self):
-        url = url_for(controller='text')
-        res = self.app.get(url)
-        res = res.click('view', index=0)
-        res = res.follow()
-        assert "All's Well, that Ends Well" in res, res[:1000]
-
-    def test_view_with_unicode_source(self):
-        url = url_for(controller='text', action='view',
-                id='all_is_well_that_ends_well_gut_f')
-        res = self.app.get(url)
-        res = res.follow()
-        assert "All's Well, that Ends Well" in res
 

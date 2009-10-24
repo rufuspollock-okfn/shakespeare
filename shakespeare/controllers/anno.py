@@ -14,10 +14,7 @@ class AnnoController(BaseController):
             media_mount_path, server_api)
 
     def index(self):
-        options = [ (m.title, m.name) for m in model.Material.query.all() ]
-        c.text_options = h.options_for_select(
-                options
-                )
+        c.options = [ (m.name, m.title) for m in model.Material.query.all() ]
         return render('anno/index.html')
 
     def annotate(self, id=None):

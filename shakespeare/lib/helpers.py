@@ -3,9 +3,9 @@
 Consists of functions to typically be used within templates, but also
 available to Controllers. This module is available to both as 'h'.
 """
-from webhelpers import *
-try:
-    from webhelpers.rails.wrapped import *
-except:
-    pass
-from routes import url_for
+from webhelpers.html import escape, HTML, literal, url_escape
+from webhelpers.html.tags import *
+from webhelpers.markdown import markdown
+
+from routes import url_for, redirect_to
+

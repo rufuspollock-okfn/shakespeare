@@ -23,13 +23,12 @@ def make_map():
     maps.admin_map(map, controller='admin', url='/admin')
     # now main shakespeare routes
     map.connect('pdf', 'pdf/*url')
-    map.connect('', controller='site', action='index')
+    map.connect('home', '', controller='site', action='index')
     map.connect('guide', 'guide', controller='site', action='guide')
-    map.connect('marginalia/*url', controller='site', action='marginalia')
     map.connect('resource/{action}/{id}{url:.*}', controller='our_resource')
-    map.connect('material/:action/:id', controller='text')
-    map.connect(':controller/:action/:id')
-    map.connect(':action', controller='site')
+    map.connect('material/{action}/{id}', controller='text')
+    map.connect('{controller}/{action}/{id}')
+    map.connect('{action}', controller='site')
 
     map.connect('*url', controller='template', action='view')
 

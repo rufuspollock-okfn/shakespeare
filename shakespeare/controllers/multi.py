@@ -13,10 +13,7 @@ log = logging.getLogger(__name__)
 class MultiController(BaseController):
 
     def index(self):
-        options = [ (m.title, m.name) for m in model.Material.query.all() ]
-        c.text_options = h.options_for_select(
-                options
-                )
+        c.options = [ (m.name, m.title) for m in model.Material.query.all() ]
         return render('multi/index.html')
 
     def view(self, id=None):
