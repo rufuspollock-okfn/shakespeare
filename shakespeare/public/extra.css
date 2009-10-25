@@ -13,21 +13,6 @@ p.error {
 }
 
 /**
-  * Shakespeare title stuff
-  */
-#page-title .subtitle {
-  font-size: 0.4em;
-  margin-top: 15px;
-  padding: 0;
-/*
-  background: url("/img/marriage_of_text_and_technology.png") no-repeat;
-  height: 100px;
-  margin-top: -25px;
-  text-indent: -9999px;
-*/
-}
-
-/**
   * HTML transformed from Moby texts
   * these classes get applied in shksprdata/moby_html.xsl
   */
