@@ -83,13 +83,6 @@
   <p class="hidden"><a href="#main" title="Skip to page content">[ Skip to main content ]</a></p> 
   
   <div id="primary" class="sidebar">
-    <div class="box">
-      <h2>Assistance</h2>
-      <p>For information on using ${c.site_title} check out the
-      <a href="${h.url_for('guide')}">Guide</a>.
-      If you have a question or have found a bug please post to the <a rel="doap:mailing-list" href="http://lists.okfn.org/mailman/listinfo/okfn-help">okfn-help</a> mailing list.
-      </p>
-    </div>
     <!-- <primarysidebar>
     Primary Side Bar Goes Here 
     </primarysidebar>-->
@@ -97,7 +90,19 @@
     <!--[if IE]>
     <hr class="primary" />
     <![endif]-->
-    
+
+    <py:if test="defined('primary_sidebar_extras')">
+      ${primary_sidebar_extras()}
+    </py:if>
+
+    <div class="box">
+      <h2>Assistance</h2>
+      <p>For information on using ${c.site_title} check out the
+      <a href="${h.url_for('guide')}">Guide</a>.
+      If you have a question or have found a bug please post to the <a rel="doap:mailing-list" href="http://lists.okfn.org/mailman/listinfo/okfn-help">okfn-help</a> mailing list.
+      </p>
+    </div>
+
     <div class="box">
       <h2>Comments and Contributions</h2>
       <p>
