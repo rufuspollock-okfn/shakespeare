@@ -11,14 +11,6 @@
     <div id='text-to-annotate'>
     ${c.content}
     </div>
-
-    <script>
-        jQuery(function() {
-          var prefix = '${c.server_api}/annotation';
-          $('#text-to-annotate').annotator();
-          $('#text-to-annotate').annotationStore({'prefix': prefix});
-        });
-    </script>
 	</div>
 
   <xi:include href="../layout.html" />
