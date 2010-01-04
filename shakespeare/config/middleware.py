@@ -6,8 +6,7 @@ from paste.deploy.converters import asbool
 
 from pylons import config
 from pylons.error import error_template
-from pylons.middleware import error_mapper, ErrorDocuments, ErrorHandler, \
-    StaticJavascripts
+from pylons.middleware import error_mapper, ErrorDocuments, ErrorHandler
 from pylons.wsgiapp import PylonsApp
 
 from shakespeare.config.environment import load_environment
@@ -51,7 +50,6 @@ def make_app(global_conf, full_stack=True, **app_conf):
     app = RegistryManager(app)
 
     # Static files
-    javascripts_app = StaticJavascripts()
     static_app = StaticURLParser(config['pylons.paths']['static_files'])
-    app = Cascade([static_app, javascripts_app, app])
+    app = Cascade([static_app, app])
     return app
