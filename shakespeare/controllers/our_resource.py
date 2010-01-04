@@ -20,7 +20,8 @@ class OurResourceController(BaseController):
         else:
             c.title = ''
         c.texthtml = genshi.HTML(render_resource(res))
-        return render('text/view.html', strip_whitespace=False)
+        # strip_whitespace does not work with pylons 0.9.7
+        return render('text/view.html')
 
 import os
 import shakespeare.format

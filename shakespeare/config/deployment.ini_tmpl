@@ -23,15 +23,12 @@ port = 5000
 # Can probably leave as is
 use = egg:shakespeare
 full_stack = true
-cache_dir = %(here)s/data
+static_files = true
+
+cache_dir = %(here)s/pylons_data
 beaker.session.key = shakespeare
 beaker.session.secret = ${app_instance_secret}
 app_instance_uuid = ${app_instance_uuid}
-
-# WARNING: *THE LINE BELOW MUST BE UNCOMMENTED ON A PRODUCTION ENVIRONMENT*
-# Debug mode will enable the interactive debugging tool, allowing ANYONE to
-# execute malicious code after an exception is raised.
-set debug = false
 
 # If you'd like to fine-tune the individual locations of the cache data dirs
 # for the Cache data, or the Session saves, un-comment the desired settings
@@ -52,13 +49,19 @@ sqlalchemy.url = sqlite:///%(here)s/shkspr.db
 # 
 # Needs to be semi-permanent so do *not* put under a location such as /tmp.
 # Should be different from the app's cache_dir
-cachedir = material_cache
+cachedir = %(here)s/material_cache
 
 # Directory for Xapian search index
-search_index_dir = searchindex
+search_index_dir = %(here)s/searchindex
 
 # extra places to look for templates (comma separated list)
 # extra_template_paths = %(here)s/shksprdata/templates
+
+# WARNING: *THE LINE BELOW MUST BE UNCOMMENTED ON A PRODUCTION ENVIRONMENT*
+# Debug mode will enable the interactive debugging tool, allowing ANYONE to
+# execute malicious code after an exception is raised.
+set debug = false
+
 
 # Logging configuration
 [loggers]
@@ -82,4 +85,3 @@ formatter = generic
 
 [formatter_generic]
 format = %(asctime)s %(levelname)-5.5s [%(name)s] %(message)s
-

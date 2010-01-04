@@ -1,7 +1,3 @@
+include shakespeare/config/deployment.ini_tmpl
 recursive-include shakespeare/public *
 recursive-include shakespeare/templates *
-# seem to be automatically included ...
-# recursive-include shksprdata *.txt
-# recursive-include shksprdata *.xml
-# recursive-include miltondata *.txt
-# recursive-include miltondata *.xml

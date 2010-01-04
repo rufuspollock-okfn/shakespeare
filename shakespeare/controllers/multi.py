@@ -37,5 +37,7 @@ class MultiController(BaseController):
         c.textlist = textlist
         c.texthtml = texthtml
         # set to not strip whitespace as o/w whitespace in pre tag gets removed
-        return render('multi/view.html', strip_whitespace=False)
+        # strip_whitespace does not work with pylons 0.9.7
+        # return render('multi/view.html', strip_whitespace=False)
+        return render('multi/view.html')
 

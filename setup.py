@@ -17,7 +17,7 @@ setup(
     include_package_data=True,
 
     install_requires=[
-        'Pylons>=0.9.6.1,<0.9.6.99',
+        'Pylons>=0.9.7,<0.9.7.99',
         'SQLAlchemy>=0.4,<0.4.99',
         'Genshi>=0.4',
         'pygooglechart>=0.2,<0.3',
