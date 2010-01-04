@@ -1,0 +1,23 @@
+syntax: glob
+# generic
+*.pyc
+.DS_Store
+shakespeare.egg-info/*
+build/*
+tmp/*
+sandbox/*
+
+# pylons
+development.ini*
+sstore/*
+data/*
+pylons_data/*
+docs/*
+
+# local sqlite dbs
+*.db
+
+# other
+pip-requirements-local.txt
+searchindex/*
+cache/*
