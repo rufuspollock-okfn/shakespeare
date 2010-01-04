@@ -5,6 +5,7 @@ from sqlalchemy import orm
 
 import meta
 from dm import *
+from user import user_table, User
 
 from annotation import *
 

@@ -110,3 +110,16 @@ class TestStatistic:
         num = tresults.count()
         assert num == 1
 
+
+class TestUser:
+    def test_1(self):
+        name = u'testname'
+        u = model.User(name=name)
+        model.Session.commit()
+        uid = u.id
+        model.Session.remove()
+
+        outu = model.User.query.get(uid)
+        assert outu.name == name
+        assert outu.created.year >= 2010
+
