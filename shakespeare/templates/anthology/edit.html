@@ -1,0 +1,24 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      py:strip="">
+  
+  <py:def function="page_title">Anthologies - Edit</py:def>
+
+  <div py:match="content">
+    <h2>
+      Edit Anthology:
+      <py:if test="not c.title"><em>No title yet ...</em></py:if>
+      ${c.title}
+    </h2>
+    <h3>Table of Contents</h3>
+    <ul>
+      <li py:for="item in c.selected_items">
+      ${h.link_to(item.title, h.url_for(controller='work', action='info', id=item.name))}
+      - <a href="?delete=...">Delete from anthology</a>
+      </li>
+    </ul>
+  </div>
+
+  <xi:include href="../layout.html" />
+</html>
