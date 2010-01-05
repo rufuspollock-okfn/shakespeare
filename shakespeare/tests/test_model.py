@@ -114,7 +114,7 @@ class TestStatistic:
 class TestUser:
     def test_1(self):
         name = u'testname'
-        u = model.User(name=name)
+        u = model.User(openid=name)
         model.Session.commit()
         uid = u.id
         model.Session.remove()

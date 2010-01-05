@@ -1,12 +1,13 @@
 from datetime import datetime
 import uuid
 
-from sqlalchemy import Table, Column
-from sqlalchemy.types import *
+from sqlalchemy import *
+from migrate import *
 
-from meta import *
-from base import DomainObject
+from shakespeare.migration.util import wrap_in_transaction
 
+
+metadata = MetaData(migrate_engine)
 make_uuid = lambda: unicode(uuid.uuid4())
 
 user_table = Table('user', metadata,
@@ -19,12 +20,11 @@ user_table = Table('user', metadata,
         Column('about', UnicodeText),
         )
 
-class User(DomainObject):
-    @property
-    def name(self):
-        return self.nickname if self.nickname else self.openid
+@wrap_in_transaction
+def upgrade():
+    user_table.create()
 
-
-mapper(User, user_table,
-    order_by=user_table.c.id)
+@wrap_in_transaction
+def downgrade():
+    user_table.drop()
 
