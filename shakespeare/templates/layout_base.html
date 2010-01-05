@@ -33,18 +33,17 @@
     <div id="top-inner">
       <div id="top-bar">
         <!--<topbar>-->
-        
         <py:choose>
         <py:when test="c.user">
         <p>
-          Logged in as <strong>${c.user}</strong> 
-          | <a href="/account/logout/">Logout</a>
+          Logged in as <strong>${c.user.name}</strong> |
+          <a href="${h.url_for(controller='user',action='read',id=c.user.id)}">My Account</a>
+          | <a href="${h.url_for('/logout_openid')}">Logout</a>
         </p>
         </py:when>
         <py:otherwise>
           <p>
-          <a href="/account/">Register</a> or
-          <a href="/account/login/">Login</a>
+          <a href="${h.url_for(controller='user',action='login', id=None)}">Login via OpenID</a>
           </p>
         </py:otherwise>
         </py:choose>
@@ -60,7 +59,6 @@
     <ul id="navigation">
       <li><a href="${h.url_for('/')}">Home</a></li>
       <li><a href="${h.url_for(controller='work', action='index', id=None)}">Works</a></li>
-      <li><a href="${h.url_for(controller='material', action='index', id=None)}">Material</a></li>
       <li><a href="${h.url_for(controller='search', action='index', id=None)}">Search</a></li>
       <li><a href="${h.url_for(controller='stats', action='index', id=None)}">Stats</a></li>
       <li><a href="${h.url_for('/guide/')}">Guide</a></li>

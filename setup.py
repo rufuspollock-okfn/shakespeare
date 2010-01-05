@@ -25,6 +25,8 @@ setup(
         # last version to work with SQLA < 0.5
         'SQLAlchemy-migrate==0.4.5',
         'annotator>=0.3a',
+        'repoze.who>=1.0.0,<1.0.99',
+        'repoze.who.plugins.openid>=0.5,<0.5.99',
         ],
     test_suite='nose.collector',
     package_data={'shakespeare': ['i18n/*/LC_MESSAGES/*.mo']},
@@ -37,13 +39,6 @@ setup(
 
     [paste.app_install]
     main = pylons.util:PylonsInstaller
-
-    [paste.paster_command]
-    shkspr-site-test = shksprdata.cli:TestSite
-    load-shkspr = shksprdata.cli:LoadTexts
-    load-milton = miltondata.cli:LoadTexts
-    moby-download = shksprdata.cli:MobyDownload
-    moby = shksprdata.cli:Moby
 
     [console_scripts]
     shakespeare-admin=shakespeare.cli:main

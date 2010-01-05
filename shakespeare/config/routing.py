@@ -25,12 +25,12 @@ def make_map():
     # now main shakespeare routes
     map.connect('/pdf', 'pdf/*url')
     map.connect('/home', '/', controller='site', action='index')
+    map.connect('/about', '/about', controller='site', action='about')
     map.connect('/guide', '/guide', controller='site', action='guide')
     map.connect('/resource/{action}/{id}{url:.*}', controller='our_resource')
     map.connect('/material/{action}/{id}', controller='text')
     map.connect('/{controller}/{action}')
     map.connect('/{controller}/{action}/{id}')
-    map.connect('/{action}', controller='site')
     map.connect('/*url', controller='template', action='view')
 
     return map
