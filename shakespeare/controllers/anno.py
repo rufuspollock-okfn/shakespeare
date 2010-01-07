@@ -36,8 +36,6 @@ class AnnoController(BaseController):
         out = render('anno/annotate.html')
         # out is a webhelpers.html.builder.literal
         # we want to work with raw html ...
-        out = self.anno_middleware.modify_html(unicode(out, encoding='utf8'),
-                include_jquery=False
-                )
+        out = self.anno_middleware.modify_html(out, include_jquery=False)
         return out
 
