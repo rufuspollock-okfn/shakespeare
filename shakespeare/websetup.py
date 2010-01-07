@@ -2,7 +2,7 @@
 import logging
 
 from shakespeare.config.environment import load_environment
-import shakespeare.model import model
+import shakespeare.model as model
 
 log = logging.getLogger(__name__)
 

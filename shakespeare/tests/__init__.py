@@ -1,38 +1,32 @@
 """Pylons application test package
 
-When the test runner finds and executes tests within this directory,
-this file will be loaded to setup the test environment.
+This package assumes the Pylons environment is already loaded, such as
+when this script is imported from the `nosetests --with-pylons=test.ini`
+command.
 
-It registers the root directory of the project in sys.path and
-pkg_resources, in case the project hasn't been installed with
-setuptools. It also initializes the application via websetup (paster
-setup-app) with the project's test.ini configuration file.
+This module initializes the application via ``websetup`` (`paster
+setup-app`) and provides the base testing objects.
 """
-import os
-import sys
-
-import pkg_resources
-import paste.fixture
-import paste.script.appinstall
 from paste.deploy import loadapp
-from routes import url_for
+from paste.script.appinstall import SetupCommand
+from pylons import config, url
+from routes.util import URLGenerator
+from webtest import TestApp
 
-__all__ = ['url_for',
-        'TestController', 'TestData', 'make_fixture', 'make_fixture2' ]
+import pylons.test
 
-here_dir = os.path.dirname(os.path.abspath(__file__))
-conf_dir = os.path.dirname(os.path.dirname(here_dir))
+__all__ = ['environ', 'url', 'url_for', 'TestController', 'TestData',
+        'make_fixture', 'make_fixture2' ]
 
-sys.path.insert(0, conf_dir)
-pkg_resources.working_set.add_entry(conf_dir)
-pkg_resources.require('Paste')
-pkg_resources.require('PasteScript')
+environ = {}
+# rgrp: for backwards compatibility (pre pylons 0.9.7) alias url_for to url
+url_for = url
 
-test_file = os.path.join(conf_dir, 'test.ini')
-# cmd = paste.script.appinstall.SetupCommand('setup-app')
-# cmd.run([test_file])
-import shakespeare
-shakespeare.register_config(test_file)
+# rgrp: rather than set up with websetup rebuild the db
+# Invoke websetup with the current config file
+# SetupCommand('setup-app').run([config['__file__']])
+# import shakespeare
+# shakespeare.register_config(test_file)
 import shakespeare.model as model
 model.repo.rebuild_db()
 
@@ -121,5 +115,10 @@ make_fixture2 = TestData.make_fixture2
 class TestController(object):
 
     def __init__(self, *args, **kwargs):
-        wsgiapp = loadapp('config:test.ini', relative_to=conf_dir)
-        self.app = paste.fixture.TestApp(wsgiapp)
+        if pylons.test.pylonsapp:
+            wsgiapp = pylons.test.pylonsapp
+        else:
+            wsgiapp = loadapp('config:%s' % config['__file__'])
+        self.app = TestApp(wsgiapp)
+        url._push_object(URLGenerator(config['routes.map'], environ))
+
