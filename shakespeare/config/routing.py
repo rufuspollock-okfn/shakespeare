@@ -29,6 +29,9 @@ def make_map():
     map.connect('/guide', '/guide', controller='site', action='guide')
     map.connect('/resource/{action}/{id}{url:.*}', controller='our_resource')
     map.connect('/material/{action}/{id}', controller='text')
+    # Annotation store requires requests at /anno_store/annotation/
+    map.connect('/anno_store/{action}/{url:.*}', controller='anno_store')
+    map.connect('/{controller}/', action='index')
     map.connect('/{controller}/{action}')
     map.connect('/{controller}/{action}/{id}')
     map.connect('/*url', controller='template', action='view')
