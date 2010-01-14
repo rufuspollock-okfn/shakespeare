@@ -11,7 +11,7 @@ class AnnoController(BaseController):
     media_mount_path = '/jsannotate'
     server_api = h.url_for(controller='anno_store')
     anno_middleware = annotator.middleware.JsAnnotateMiddleware(None,
-            media_mount_path, server_api + '/')
+            media_mount_path, server_api)
 
     def index(self):
         c.options = [ (m.name, m.title) for m in model.Material.query.all() ]
@@ -36,6 +36,7 @@ class AnnoController(BaseController):
         out = render('anno/annotate.html')
         # out is a webhelpers.html.builder.literal
         # we want to work with raw html ...
-        out = self.anno_middleware.modify_html(out, include_jquery=False)
+        # out = unicode(out)
+        # out = self.anno_middleware.modify_html(out, include_jquery=False)
         return out
 

@@ -5,12 +5,35 @@
   
   <py:def function="page_title">Annotate</py:def>
 
+  <py:def function="page_specific_css">
+  <!--
+  <script src="/jsannotate/annotator.min.js"></script>
+  <link href="/jsannotate/annotator.min.css" type="text/css" rel="stylesheet" />
+  -->
+    <script src="/jsannotate-lib/vendor/jquery.json.js"></script>
+    <script src="/jsannotate-lib/vendor/jquery.pluginfactory.js"></script>
+    <script src="/jsannotate-lib/vendor/jquery.sji.js"></script>
+    <script src="/jsannotate-lib/extensions.js"></script>
+    <script src="/jsannotate-lib/annotator.js"></script>
+    <link rel="stylesheet" type="text/css" href="/jsannotate-lib/annotator.css" />
+  </py:def>
+
   <div py:match="content">
     <p py:if="c.error" class="error">${c.error}</p>
 
     <div id='text-to-annotate'>
     ${c.content}
     </div>
+    <script>
+        jQuery(function($) {
+          var annotator_prefix = '/anno_store/annotation';
+          // an identifier for the document
+          var annotator_doc_uri = 'xxx';
+          $('#text-to-annotate').annotator();
+          $('#text-to-annotate').annotationStore({'prefix': annotator_prefix});
+          // 'uri': annotator_doc_uri});
+        });
+    </script>
 	</div>
 
   <xi:include href="../layout.html" />
