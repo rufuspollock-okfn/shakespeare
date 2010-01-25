@@ -39,6 +39,11 @@ app_instance_uuid = ${app_instance_uuid}
 # ===========================
 # User configured variables
 
+# WARNING: *THE LINE BELOW MUST BE UNCOMMENTED ON A PRODUCTION ENVIRONMENT*
+# Debug mode will enable the interactive debugging tool, allowing ANYONE to
+# execute malicious code after an exception is raised.
+set debug = false
+
 # We use sqlalchemy to connect and work with databases.
 # This default config using sqlite.
 sqlalchemy.url = sqlite:///%(here)s/shkspr.db
@@ -57,11 +62,11 @@ search_index_dir = %(here)s/searchindex
 # extra places to look for templates (comma separated list)
 # extra_template_paths = %(here)s/shksprdata/templates
 
-# WARNING: *THE LINE BELOW MUST BE UNCOMMENTED ON A PRODUCTION ENVIRONMENT*
-# Debug mode will enable the interactive debugging tool, allowing ANYONE to
-# execute malicious code after an exception is raised.
-set debug = false
-
+# repoze.who authentication
+# you should not have to change this
+who.config_file = %(here)s/who.ini
+who.log_level = error
+who.log_file = stdout
 
 # Logging configuration
 [loggers]
