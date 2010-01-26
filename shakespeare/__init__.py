@@ -32,25 +32,27 @@ Installation and Setup
 1.1: (EITHER) Install using setup.py (preferred)
 ------------------------------------------------
 
-Install ``shakespeare`` using easy_install::
+Install ``shakespeare`` using easy_install (or pip)::
 
     easy_install shakespeare
+    # or
+    pip install shakespeare
 
 NB: If you don't have easy_install you can get from here:
 
 <http://peak.telecommunity.com/DevCenter/EasyInstall#installation-instructions>
 
 
-1.2 (OR) Get the code straight from subversion
-------------------------------------------------
+1.2 (OR) Get the code straight from the repository
+--------------------------------------------------
 
-1. Check out the subversion trunk::
+1. Check out the mercurial repo::
 
-    svn co https://knowledgeforge.net/shakespeare/svn/trunk
+    hg clone https://knowledgeforge.net/shakespeare/hg
 
 2. Do::
 
-    sudo python setup.py develop
+    python setup.py develop
 
 
 Getting Started
