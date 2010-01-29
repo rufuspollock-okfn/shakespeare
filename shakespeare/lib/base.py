@@ -49,7 +49,7 @@ class BaseController(WSGIController):
         c.author = unicode(c.author)
 
     def __before__(self, action, **params):
-        c.site_title = config.get('site_title', 'Open Shakespeare')
+        c.site_title = config.get('site_title', 'site_title not set in config ...')
         c.__version__ = shakespeare.__version__
         self._set_user()
 
