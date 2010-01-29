@@ -1,0 +1,15 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      py:strip="">
+  
+  <py:def function="page_title">Home</py:def>
+
+  <div py:match="content">
+    <h2>Welcome to the Open Literature Platform</h2>
+    <p>This platform was originally developed for running <a
+      href="http://www.openshakespeare.org/">http://www.openshakespeare.org/</a></p>
+  </div>
+
+  <xi:include href="layout.html" />
+</html>
