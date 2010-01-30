@@ -18,9 +18,9 @@ class StatsController(BaseController):
         ctrl = shakespeare.controllers.text.TextController()
         return ctrl.index()
 
-    def text(self, id):
+    def text(self, id=None):
         text_name = id
-        text = model.Material.byName(text_name)
+        text = model.Material.by_name(text_name)
         # no id or no text by that id
         if not text:
             return self.text_index()
