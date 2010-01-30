@@ -31,7 +31,7 @@ class AnnoController(BaseController):
             mat = model.Material.by_name(text)
             content = mat.get_text().read()
             # HACK: limit size for present
-            content = content[:500]
+            # content = content[:500]
             c.content = genshi.HTML('<pre>%s</pre>' % content)
         out = render('anno/annotate.html')
         # out is a webhelpers.html.builder.literal
