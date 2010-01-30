@@ -16,7 +16,6 @@ class TestAnnoController(TestController):
     def test_annotate(self):
         res = self.app.get(url_for(controller='anno', action='annotate'))
         assert 'Annotate' in res
-        assert 'annotator.min.css' in res
         assert 'No text to annotate' in res
     
     def test_choose_text(self):
