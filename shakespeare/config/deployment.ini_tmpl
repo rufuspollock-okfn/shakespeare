@@ -36,6 +36,13 @@ app_instance_uuid = ${app_instance_uuid}
 #beaker.cache.data_dir = %(here)s/data/cache
 #beaker.session.data_dir = %(here)s/data/sessions
 
+# repoze.who authentication
+# you should not have to change this though you will need to symlink provided
+# who.ini into same directory as this config file
+who.config_file = %(here)s/who.ini
+who.log_level = error
+who.log_file = stdout
+
 # ===========================
 # User configured variables
 
@@ -43,6 +50,11 @@ app_instance_uuid = ${app_instance_uuid}
 # Debug mode will enable the interactive debugging tool, allowing ANYONE to
 # execute malicious code after an exception is raised.
 set debug = false
+
+# site_title for use around the site
+# for more serious customization suggest making your own templates (e.g.
+# layout.html) and using extra_template_paths option
+# site_title = Your Site Title
 
 # We use sqlalchemy to connect and work with databases.
 # This default config using sqlite.
@@ -62,11 +74,12 @@ search_index_dir = %(here)s/searchindex
 # extra places to look for templates (comma separated list)
 # extra_template_paths = %(here)s/shksprdata/templates
 
-# repoze.who authentication
-# you should not have to change this
-who.config_file = %(here)s/who.ini
-who.log_level = error
-who.log_file = stdout
+## deliverance/proxying stuff
+# set to any value to enable
+deliverance.enable = 
+# destination to proxy from
+deliverance.dest = http://blog.openshakespeare.org/
+
 
 # Logging configuration
 [loggers]
