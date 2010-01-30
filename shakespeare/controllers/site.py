@@ -17,7 +17,6 @@ import shakespeare.model as model
 log = logging.getLogger(__name__)
 
 DELIVERANCE_ENABLE = bool(config.get('deliverance.enable', ''))
-print DELIVERANCE_ENABLE
 
 
 # based on http://rufuspollock.org/code/deliverance
