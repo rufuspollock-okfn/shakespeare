@@ -72,6 +72,8 @@ You can make a config file as follows::
 
     paster make-config shakespeare {your-config.ini}
 
+You should also symlink who.ini into same directory as your config file.
+
 Tweak the config file as appropriate and then setup the application::
 
     paster setup-app config.ini
