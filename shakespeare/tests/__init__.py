@@ -61,7 +61,11 @@ class TestData:
         if not sonnet18_work:
             sonnet18_work = model.Work(name=self.name,
                     title=u'Sonnet 18',
-                    creator=u'William Shakespeare'
+                    creator=u'William Shakespeare',
+                    notes=u'''### Some Notes
+
+This is a paragraph about *sonnet 18*.
+                    '''
                     )
         sonnet18 = model.Material.by_name(self.name)
         if not sonnet18:

@@ -22,6 +22,7 @@ class TestWorkController(TestController):
         res = self.app.get(url)
         assert 'Work - Info - ' in res
         assert 'Sonnet 18 (First Edition)' in res
+        assert '<h3>Some Notes</h3>' in res, res
         # escape brackets for regex ...
         res = res.click('Sonnet 18 \(First Edition\)')
         
