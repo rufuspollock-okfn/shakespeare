@@ -36,6 +36,7 @@ class StatsController(BaseController):
             c.img_url = ''
         return render('stats/text.html')
 
+    # TODO: implement caching! -- this is massive (every word in shakespeare)
     def word_index(self):
         import sqlalchemy.sql as sql
         st = model.statistic_table
@@ -43,7 +44,7 @@ class StatsController(BaseController):
         c.words = [ w[0] for w in q.execute().fetchall() ]
         return render('stats/word_index.html')
     
-    def word(self, id):
+    def word(self, id=None):
         if id is None:
             return self.word_index()
         word = id
