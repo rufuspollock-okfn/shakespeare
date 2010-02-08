@@ -3,7 +3,7 @@ Domain model
 """
 from sqlalchemy import Column, Table, ForeignKey
 from sqlalchemy.types import *
-from sqlalchemy.orm import relation, backref
+from sqlalchemy.orm import relation, backref, class_mapper
 
 from meta import *
 
@@ -44,14 +44,27 @@ statistic_table = Table('statistic', metadata,
     Column('freq', Integer),
     )
 
+class DomainObject(object):
+    def __unicode__(self):
+        repr = u'<%s' % self.__class__.__name__
+        table = class_mapper(self.__class__).mapped_table
+        for col in table.c:
+            repr += u' %s=%s' % (col.name, getattr(self, col.name))
+        repr += '>'
+        return repr
 
-class Work(object):
+    def __repr__(self):
+        return self.__str__()
+
+
+class Work(DomainObject):
 
     @classmethod
     def by_name(self, name):
         return self.query.filter_by(name=name).first()
 
-class Material(object):
+
+class Material(DomainObject):
     """Material related to Shakespeare (usually text of works and ancillary
     matter such as introductions).
 
@@ -85,7 +98,7 @@ class Material(object):
     ftitle = property(get_ftitle)
 
 
-class Resource(object):
+class Resource(DomainObject):
     def get_stream(self):
         '''Get text (if any) associated with this material.
 
@@ -108,7 +121,7 @@ class Resource(object):
             raise NotImplementedError
 
 
-class Statistic(object):
+class Statistic(DomainObject):
     pass
 
 # Map each domain model class to its corresponding relational table.
