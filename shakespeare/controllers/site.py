@@ -45,7 +45,9 @@ def create_deliverance_proxy():
   <!-- These are the default rules for anything with class="default" or no class: -->
   <rule>
     <replace content="children:#content" theme="children:#content" />
+    <!--
     <append content="children:#sidebar" theme="children:#primary" />
+    -->
   </rule>
 </ruleset>
 '''
@@ -77,14 +79,14 @@ class SiteController(BaseController):
     def index(self):
         return render('index.html')
 
+    def guide(self):
+        return render('guide.html')
+
     def about(self):
         if DELIVERANCE_ENABLE:
             return self.deliverance(request.environ, self.start_response)
         else:
             return render('about.html')
-
-    def guide(self):
-        return render('guide.html')
 
     def news(self):
         if DELIVERANCE_ENABLE:
@@ -93,7 +95,16 @@ class SiteController(BaseController):
             request.environ['PATH_INFO'] = currentpath[5:]
             return self.deliverance(request.environ, self.start_response)
         else:
-            return ''
+            return render('index.html')
+
+    def wotw(self):
+        if DELIVERANCE_ENABLE:
+            # modify path for proxy to strip out /news/
+            currentpath = request.environ['PATH_INFO']
+            request.environ['PATH_INFO'] = '/category' + request.environ['PATH_INFO']
+            return self.deliverance(request.environ, self.start_response)
+        else:
+            return render('index.html')
 
     @property
     def deliverance(self):
