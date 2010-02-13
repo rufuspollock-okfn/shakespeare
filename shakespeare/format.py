@@ -12,8 +12,6 @@ def format_text(fileobj, format):
         formatter = TextFormatterPlain()
     elif format == 'lineno':
         formatter = TextFormatterLineno()
-    elif format == 'annotate':
-        formatter = TextFormatterAnnotate()
     else:
         raise ValueError('Unknown format: %s' % format)
     return formatter.format(fileobj)

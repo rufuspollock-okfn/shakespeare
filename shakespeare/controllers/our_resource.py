@@ -31,7 +31,7 @@ def render_resource(res):
         ttext = h.markdown(tfileobj.read())
     elif res.format == 'txt':
         tfileobj = res.get_stream()
-        ttext = shakespeare.format.format_text(tfileobj, 'lineno')
+        ttext = shakespeare.format.format_text(tfileobj, format='plain')
     elif res.format == 'pdf':
         # can't render pdfs!
         # TODO: should probably use name but pdf generation goes on original
