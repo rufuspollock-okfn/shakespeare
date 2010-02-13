@@ -6,7 +6,7 @@ The Open Shakespeare package provides a full open set of shakespeare's works
 (often in multiple versions) along with ancillary material, a variety of tools,
 a python API and a web interface that provides access to many (but not all) of
 these facilities from the comfort of your web browser (see
-http://www.openshakespeare.org/ for a demo).
+http://www.openshakespeare.org/).
 
 All material is open source/open knowledge so that anyone can use, redistribute
 and reuse these materials freely. For exact details of the license under which
@@ -18,9 +18,9 @@ Foundation (http://www.okfn.org/).
 Contact the Project
 *******************
 
-Please mail info@okfn.org or join the okfn-discuss mailing list:
+Please mail open-shakespeare@okfn.org or join the open-literature mailing list:
 
-  http://lists.okfn.org/listinfo/okfn-discuss
+  http://lists.okfn.org/listinfo/open-literature
 
 
 Installation and Setup
@@ -87,11 +87,16 @@ Run::
 2. Extras
 ---------
 
-1. Search index. [TODO]
+1. To load the data packages, make sure you have downloaded and installed the
+   relevant data package (e.g. shksprdata or miltondata) and then do::
 
-2. To load the author packages, change into the miltondata or shksprdata directories
-   and run the command load-milton (or load-shakespeare) -c <path to your
-   development.ini> This will load the metadata text into the database. 
+    shakespeare-admin --config {your-ini-file} db init_shksprdata
+
+2. Search index. To run the search index you will need xapian and the python
+   xapian bindings installed. (On Debian/Ubuntu this is xapian and python-xapian).
+   Then take a look at::
+
+      shakespeare-admin search 
 
 3. You can start a web server to provide a easy-to-use web interface to the
    shakespeare material and facilities by doing::
@@ -100,6 +105,11 @@ Run::
 
    NB: {your-config.ini} should be replaced with the name of the config file you
 created earlier.
+
+4. In addition to shakespeare-admin commands there are also some paster
+   commands. To see what is available::
+
+    paster -h
 
 
 As a developer:

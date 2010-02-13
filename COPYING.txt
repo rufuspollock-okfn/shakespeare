@@ -1,11 +1,9 @@
-All code and text is copyright (c) 2005-9, the Open Knowledge Foundation.
+All code and text is copyright (c) 2005-2010, the Open Knowledge Foundation.
 
 Licensing of code
 *****************
 
 All code is license under the MIT License:
-
-Copyright (c) 2005-08, Open Knowledge Foundation
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
