@@ -6,20 +6,18 @@
   <py:def function="page_title">Annotate</py:def>
 
   <py:def function="page_specific_css">
+    <!--
     <script src="http://github.com/nickstenning/annotator/raw/0.5/pkg/annotator.min.js"></script>
     <link href="http://github.com/nickstenning/annotator/raw/0.5/pkg/annotator.min.css" type="text/css" rel="stylesheet" />
-  <!--
-  <script src="/jsannotate/annotator.min.js"></script>
-  <link href="/jsannotate/annotator.min.css" type="text/css" rel="stylesheet" />
-  -->
-  <!--
-    <script src="/jsannotate-lib/vendor/jquery.json.js"></script>
+    -->
+
     <script src="/jsannotate-lib/vendor/jquery.pluginfactory.js"></script>
     <script src="/jsannotate-lib/vendor/jquery.sji.js"></script>
+    <script src="/jsannotate-lib/vendor/jquery.json.js"></script>
     <script src="/jsannotate-lib/extensions.js"></script>
     <script src="/jsannotate-lib/annotator.js"></script>
+    <script src="/jsannotate-lib/annotation_store.js"></script>
     <link rel="stylesheet" type="text/css" href="/jsannotate-lib/annotator.css" />
-    -->
   </py:def>
 
   <div py:match="content">
@@ -32,9 +30,15 @@
         jQuery(function($) {
           var annotator_prefix = '/anno_store/annotation';
           // an identifier for the document
-          var annotator_doc_uri = 'xxx';
+          var annotator_doc_uri = '${c.text}';
           $('#text-to-annotate').annotator();
-          $('#text-to-annotate').annotationStore({'prefix': annotator_prefix});
+          $('#text-to-annotate').annotationStore({
+            'prefix': annotator_prefix,
+            'annotationData': {
+              'uri': '${c.uri}',
+              'user': '${c.userid}', 
+            }
+          });
           // 'uri': annotator_doc_uri});
         });
     </script>

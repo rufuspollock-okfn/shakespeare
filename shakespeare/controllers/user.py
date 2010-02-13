@@ -28,7 +28,11 @@ class UserController(BaseController):
             form = form.replace('FORM_ACTION', '/login_openid')
             return form
         else:
-            h.redirect_to(controller='user', action='read', id=c.user.id)
+            came_from = request.params.get('came_from', None)
+            if came_from:
+                h.redirect_to(str(came_from))
+            else:
+                h.redirect_to(controller='user', action='read', id=c.user.id)
 
     def logout(self):
         c.user = None
