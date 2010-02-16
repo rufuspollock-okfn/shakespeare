@@ -24,16 +24,16 @@ class AnnoController(BaseController):
         c.server_api = self.server_api
         text = id if id else request.params.get('text', '')
 
-        if not c.user:
-            h.redirect_to(controller='user', action='login',
-                    came_from=request.url)
+        # TODO: warning in page (via javascript?) if not logged in
+        # if not c.user:
+        #    h.redirect_to(controller='user', action='login',
+        #            came_from=request.url)
 
         if not text:
             c.error = 'No text to annotate!' 
         else:
             c.uri = text
-            # allow for possibility in future of not having logged in users
-            c.userid = c.user.id
+            c.userid = c.user.id if c.user else c.author
             mat = model.Material.by_name(text)
             # get first resource that isn't pdf
             res = filter(lambda x: x.format != 'pdf', mat.resources)[0]
