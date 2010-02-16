@@ -54,7 +54,7 @@ class DomainObject(object):
         return repr
 
     def __repr__(self):
-        return self.__str__()
+        return self.__unicode__()
 
 
 class Work(DomainObject):
