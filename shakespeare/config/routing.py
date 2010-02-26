@@ -28,6 +28,7 @@ def make_map():
     map.connect('about', '/about/', controller='site', action='about')
     map.connect('news', '/news/', controller='site', action='news')
     map.connect('get-involved', '/get-involved/', controller='site', action='about')
+    map.connect('team', '/team/', controller='site', action='about')
     map.connect('wotw', '/wotw/{url:.*}', controller='site', action='wotw')
     map.connect('guide', '/guide/', controller='site', action='guide')
     map.connect('/resource/{action}/{id}{url:.*}', controller='our_resource')
