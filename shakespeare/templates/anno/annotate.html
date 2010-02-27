@@ -6,8 +6,8 @@
   <py:def function="page_title">Annotate</py:def>
 
   <py:def function="page_specific_css">
-    <script src="http://github.com/nickstenning/annotator/raw/0.6/pkg/annotator.min.js"></script>
-    <link href="http://github.com/nickstenning/annotator/raw/0.6/pkg/annotator.min.css" type="text/css" rel="stylesheet" />
+    <script src="http://github.com/nickstenning/annotator/raw/0.7/pkg/annotator.min.js"></script>
+    <link href="http://github.com/nickstenning/annotator/raw/0.7/pkg/annotator.min.css" type="text/css" rel="stylesheet" />
 
     <!--
     <script src="/jsannotate-lib/vendor/jquery.pluginfactory.js"></script>
@@ -28,12 +28,14 @@
     </div>
     <script>
         jQuery(function($) {
-          var annotator_prefix = '/anno_store/annotation';
-          // an identifier for the document
-          var annotator_doc_uri = '${c.text}';
-          $('#text-to-annotate').annotator();
+          var annotator_prefix = '/anno_store';
           $('#text-to-annotate').annotationStore({
             'prefix': annotator_prefix,
+            'loadFromSearch': {
+              'limit': -1,
+              'all_fields': 1,
+              'uri': '${c.uri}'
+            },
             'annotationData': {
               'uri': '${c.uri}',
               'user': '${c.userid}', 
