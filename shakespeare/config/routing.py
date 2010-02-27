@@ -31,7 +31,6 @@ def make_map():
     map.connect('team', '/team/', controller='site', action='about')
     map.connect('wotw', '/wotw/{url:.*}', controller='site', action='wotw')
     map.connect('guide', '/guide/', controller='site', action='guide')
-    map.connect('/resource/{action}/{id}{url:.*}', controller='our_resource')
     map.connect('/resource/{action}/{id}', controller='our_resource')
     map.connect('/material/{action}/{id}', controller='text')
     # Annotation store requires requests at /anno_store/annotation/
