@@ -3,11 +3,13 @@ Domain model
 """
 from sqlalchemy import Column, Table, ForeignKey
 from sqlalchemy.types import *
-from sqlalchemy.orm import relation, backref, class_mapper
+from sqlalchemy.orm import relation, backref
 
 from meta import *
+from base import DomainObject
 
 import shakespeare
+
 
 work_table = Table('work', metadata,
     Column('id', Integer, primary_key=True),
@@ -43,19 +45,6 @@ statistic_table = Table('statistic', metadata,
     Column('word', Unicode(50)),
     Column('freq', Integer),
     )
-
-class DomainObject(object):
-    def __unicode__(self):
-        repr = u'<%s' % self.__class__.__name__
-        table = class_mapper(self.__class__).mapped_table
-        for col in table.c:
-            repr += u' %s=%s' % (col.name, getattr(self, col.name))
-        repr += '>'
-        return repr
-
-    def __repr__(self):
-        return self.__unicode__()
-
 
 class Work(DomainObject):
 

@@ -123,3 +123,16 @@ class TestUser:
         assert outu.name == name
         assert outu.created.year >= 2010
 
+class TestKeyValue:
+    def test_01(self):
+        value = u'jones'
+        objid = u'incardine'
+        key = u'notes'
+        kv = model.KeyValue(ns=u'', object_id=objid, key=key, value=value)
+        model.Session.commit()
+        model.Session.remove()
+
+        print model.KeyValue.query.all()
+        out = model.KeyValue.query.get([u'', objid, key])
+        assert out.value == value
+
