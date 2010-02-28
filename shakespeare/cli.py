@@ -277,6 +277,16 @@ stats init
     - Prepare statistics for all texts in DB.
 '''
         print info
+    
+    def do_word_of_the_day(self, line=None):
+        self._register_config()
+        import shakespeare.model.word as word
+        # use feed url from config
+        word.load_word_info_from_feed()
+
+    def help_word_of_the_day(self, line=None):
+        import shakespeare.model.word as word
+        print word.load_word_info_from_feed.__doc__
 
 
 def main():

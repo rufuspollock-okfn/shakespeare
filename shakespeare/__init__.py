@@ -84,7 +84,35 @@ Run::
 
     $ shakespeare-admin db init
 
-2. Extras
+
+2. Web Interface
+----------------
+
+The graphical user interface is a web interface.
+
+You can start a web server to provide a easy-to-use web interface to the
+shakespeare material and facilities by doing::
+
+    $ paster serve {your-config.ini}
+
+NB: {your-config.ini} should be replaced with the name of the config file you
+created earlier.
+
+
+3. Commands and Command Line Interface
+--------------------------------------
+
+Main command line interface is via shakespeare-admin. Check it out by doing::
+
+    shakespeare-admin help
+
+In addition to shakespeare-admin commands there are also some paster commands.
+To see what is available::
+
+    paster -h
+
+
+4. Extras
 ---------
 
 1. To load the data packages, make sure you have downloaded and installed the
@@ -98,18 +126,8 @@ Run::
 
       shakespeare-admin search 
 
-3. You can start a web server to provide a easy-to-use web interface to the
-   shakespeare material and facilities by doing::
-
-        $ paster serve {your-config.ini}
-
-   NB: {your-config.ini} should be replaced with the name of the config file you
-created earlier.
-
-4. In addition to shakespeare-admin commands there are also some paster
-   commands. To see what is available::
-
-    paster -h
+3. Word of the day. Enable this in your config file and then run
+word_of_the_day command to pull the data.
 
 
 As a developer:

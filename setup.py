@@ -27,10 +27,12 @@ setup(
         'annotator>=0.3a',
         'repoze.who>=1.0.0,<1.0.99',
         'repoze.who.plugins.openid>=0.5,<0.5.99',
-        # Needed if you are doing deliverance/proxying stuff
+        ## Needed if you are doing deliverance/proxying stuff
         # you should install python-lxml first directly
         # (has lots of c extensions ...)
         # 'deliverance>=0.3a'
+        ## Needed for word_of_the_day syncing ...
+        # feedparser 
         ],
     test_suite='nose.collector',
     package_data={'shakespeare': ['i18n/*/LC_MESSAGES/*.mo']},

@@ -78,7 +78,13 @@ search_index_dir = %(here)s/searchindex
 # set to any value to enable
 deliverance.enable = 
 # destination to proxy from
-deliverance.dest = http://blog.openshakespeare.org/
+# deliverance.dest = http://blog.openshakespeare.org/
+
+## word of the day
+# set to any value to enable
+word_of_the_day.enable =
+# feed from which to pull entries
+# word_of_the_day.feed = http://blog.openshakespeare.org/category/wordoftheday/?feed=atom
 
 
 # Logging configuration

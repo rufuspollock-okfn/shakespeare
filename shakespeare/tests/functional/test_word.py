@@ -30,5 +30,5 @@ xxxxxxxxxxxxxxx'''
         # notes
         assert '<h3>About' in res, res
         assert 'Statistics for %s' % self.word in res, res
-        assert 'Search works for %s' % self.word in res, res
+        assert 'Search for %s' % self.word in res, res
 
