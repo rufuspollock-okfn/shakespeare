@@ -1,0 +1,23 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      py:strip="">
+  
+  <py:def function="page_title">Words - ${c.word.name}</py:def>
+
+  <div py:match="content">
+    <h2>${c.word.name.capitalize()}</h2>
+    <ul>
+      <li><a href="${h.url_for(controller='stats', action='word',
+        id=c.word.name)}">Statistics for ${c.word.name}</a></li>
+      <li><a href="${h.url_for(controller='search', action='index',
+        query=c.word.name)}">Search works for ${c.word.name}</a></li>
+    </ul>
+
+    <div class="notes">
+      ${h.HTML(h.markdown(c.word.notes))}
+    </div>
+  </div>
+
+  <xi:include href="../layout.html" />
+</html>

@@ -124,6 +124,13 @@ class TestUser:
         assert outu.created.year >= 2010
 
 class TestKeyValue:
+    @classmethod
+    def teardown_class(self):
+        for kv in model.Session.query(model.KeyValue):
+            model.Session.delete(kv)
+        model.Session.commit()
+        model.Session.remove()
+
     def test_01(self):
         value = u'jones'
         objid = u'incardine'
@@ -135,4 +142,34 @@ class TestKeyValue:
         print model.KeyValue.query.all()
         out = model.KeyValue.query.get([u'', objid, key])
         assert out.value == value
+
+class TestWord:
+    @classmethod
+    def teardown_class(self):
+        for kv in model.Session.query(model.KeyValue):
+            model.Session.delete(kv)
+        model.Session.commit()
+        model.Session.remove()
+
+    def test_01(self):
+        name = u'xyz'
+        notes = u'notes'
+        word = model.Word(name, notes=notes, x=u'x')
+        assert word.name == name
+        assert word.x == u'x'
+
+    def test_02(self):
+        ns = u'word'
+        objid = u'incardine'
+        key = u'notes'
+        value = u'jones'
+        kv = model.KeyValue(ns=ns, object_id=objid, key=key, value=value)
+        model.Session.commit()
+        model.Session.remove()
+
+        word = model.Word.by_name(u'random_string')
+        assert word.notes == u''
+        word = model.Word.by_name(objid)
+        assert word.name == objid
+        assert word.notes == value
 

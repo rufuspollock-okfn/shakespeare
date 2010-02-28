@@ -7,6 +7,7 @@ import meta
 from dm import *
 from user import user_table, User
 from keyvalue import key_value_table, KeyValue
+from word import Word
 
 from annotation import *
 
