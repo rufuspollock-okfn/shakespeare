@@ -51,6 +51,10 @@ class BaseController(WSGIController):
     def __before__(self, action, **params):
         c.site_title = config.get('site_title', 'site_title not set in config ...')
         c.__version__ = shakespeare.__version__
+        c.word_of_the_day_enable = bool(config.get('word_of_the_day.enable',
+            False))
+        if c.word_of_the_day_enable:
+            c.word_of_the_day = model.Word.word_of_the_day()
         self._set_user()
 
 

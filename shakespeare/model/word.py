@@ -15,6 +15,16 @@ class Word(object):
         kwargs = dict([ (kv.key.encode('utf8'),kv.value) for kv in kvs ])
         return Word(name, **kwargs)
 
+    @classmethod
+    def word_of_the_day(self):
+        '''Get the current word of the day.'''
+        wotd = KeyValue.query.get([u'config',u'word_of_the_day',u'current'])
+        name = wotd.value if wotd else u'No words yet!'
+        return self.by_name(name)
+
+    def __str__(self):
+        return '<Word name=%s notes=%s>' % (self.name, self.notes)
+
 def load_entry(entry):
     '''Load a feedparser entry into KeyValue objects.
     
@@ -29,10 +39,11 @@ def load_entry(entry):
     notes = entry.content[0]['value']
     key=u'notes'
     # upsert ...
-    kv = KeyValue(ns=ns, object_id=objid, key=key, value=notes)
-    merged = Session.merge(kv)
+    # does not work ...
+    # kv = KeyValue(ns=ns, object_id=objid, key=key, value=notes)
+    kv = KeyValue.upsert([ns,objid,key], value=notes)
     Session.commit()
-    return [merged]
+    return [kv]
 
 def load_word_info_from_feed(feed_url=None):
     '''Load word information (e.g. notes) from a set of entries supplied via an
@@ -54,10 +65,8 @@ def load_word_info_from_feed(feed_url=None):
     for idx, entry in enumerate(feed.entries):
         out = load_entry(entry)
         if idx == 0:
-            word = out[0].key
+            word = out[0].object_id
             # update current wotd to latest entry (first one)
-            setting = KeyValue(ns=u'settings', object_id=u'word_of_the_day',
-                    key=u'current', value=word)
-            merged = Session.merge(setting)
+            setting = KeyValue.upsert([u'config',u'word_of_the_day',u'current'], value=word)
             Session.commit()
 

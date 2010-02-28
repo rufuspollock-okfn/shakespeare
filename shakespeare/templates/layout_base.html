@@ -128,6 +128,14 @@
       ${primary_sidebar_extras()}
     </py:if>
 
+    <py:if test="c.word_of_the_day_enable">
+    <div class="box">
+      <div id="word-of-the-day">
+        <p><a href="${h.url_for(controller='word', action='read', id=c.word_of_the_day.name)}">${c.word_of_the_day.name.capitalize()}</a></p>
+      </div>
+    </div>
+    </py:if>
+
     <div class="box">
       <h2>Assistance</h2>
       <p>For information on using ${c.site_title} check out the

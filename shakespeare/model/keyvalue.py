@@ -14,8 +14,17 @@ key_value_table = Table('key_value', metadata,
         Column('_created', DateTime, default=datetime.datetime.now),
         )
 
+
 class KeyValue(DomainObject):
-    pass
+    @classmethod
+    def upsert(self, pkey, **kwargs):
+        kv = self.query.get(pkey)
+        if kv is None:
+            kv = self(ns=pkey[0], object_id=pkey[1], key=pkey[2])
+        for k,v in kwargs.items():
+            setattr(kv, k, v)
+        return kv
+
 
 mapper(KeyValue, key_value_table,
     order_by=[key_value_table.c.ns, key_value_table.c.object_id,

@@ -28,6 +28,11 @@ class TestWord:
     def test_02_load_info_from_feed(self):
         feed_url = 'http://blog.openshakespeare.org/category/wordoftheday/?feed=atom'
         wordm.load_word_info_from_feed(feed_url)
-        current = model.KeyValue.query.get([u'settings',u'word_of_the_day',u'current'])
-        assert current.value
+        model.Session.remove()
+        # load twice to ensure we can deal with duplicates
+        wordm.load_word_info_from_feed(feed_url)
+        model.Session.remove()
+        current = model.Word.word_of_the_day()
+        assert current.name
+        assert current.notes, current
 

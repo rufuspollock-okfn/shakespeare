@@ -34,6 +34,23 @@ p.error {
 }
 
 /**
+  * Word of the day
+  */
+
+div#word-of-the-day {
+  background: transparent url(/img/shkspr/word_of_the_day.png) no-repeat top center;
+  height: 150px;
+}
+
+div#word-of-the-day p {
+  position:absolute;
+  left:5px;
+  top:114px;
+  font-size: 1.3em;
+}
+
+
+/**
   * HTML transformed from Moby texts
   * these classes get applied in shksprdata/moby_html.xsl
   */
