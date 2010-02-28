@@ -14,6 +14,9 @@ class TestAnnoController(TestController):
     def test_index(self):
         res = self.app.get(url_for(controller='anno', action='index'))
         assert 'Choose a text to annotate' in res
+        res = res.click(self.text.work.title)
+        assert 'Annotate' in res 
+        assert self.text.content.split()[0] in res, res
 
     def test_annotate_no_text(self):
         res = self.app.get(url_for(controller='anno', action='annotate'),
@@ -22,15 +25,6 @@ class TestAnnoController(TestController):
         assert 'Annotate' in res
         assert 'No text to annotate' in res
     
-    def test_choose_text(self):
-        res = self.app.get(url_for(controller='anno', action='index'))
-        form = res.forms[0]
-        form['text'] = self.text.name
-        res = form.submit(extra_environ={'REMOTE_USER': str(self.username)})
-        assert 'Annotate' in res 
-        assert self.text.content.split()[0] in res, res
-        assert '<pre' in res
-
     def test_annotate(self):
         res = self.app.get(
             url_for(controller='anno', action='annotate', id=self.text.name),
@@ -42,7 +36,7 @@ class TestAnnoController(TestController):
 
     # run this last
     def test_z_annotation(self):
-        res = self.app.get(url_for(controller='anno_store', action='annotation'))
+        res = self.app.get(url_for(controller='anno_store', action='annotations'))
         # no annotations so []
         assert [] in res, res
 

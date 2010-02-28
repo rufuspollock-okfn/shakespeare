@@ -8,11 +8,12 @@
   <div py:match="content">
     <h2>Choose a text to annotate:</h2>
 
-    <form action="${h.url_for(controller='anno', action='annotate')}" method="GET">
-      ${h.select('text', None, c.options, multiple=False)}<br />
-      <br />
-      ${h.submit('Go &raquo;', 'Go')}
-    </form>
+    <ul>
+      <li py:for="work in c.works">
+        ${h.link_to(work.title, h.url_for(controller='anno', action='annotate',
+        id=work.name))}
+      </li>
+    </ul>
 	</div>
 
   <xi:include href="../layout.html" />

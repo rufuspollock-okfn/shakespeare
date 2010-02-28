@@ -63,6 +63,13 @@ class Work(DomainObject):
     def by_name(self, name):
         return self.query.filter_by(name=name).first()
 
+    @property
+    def default_resource(self):
+        if self.materials and self.materials[0].resources:
+            return self.materials[0].resources[0]
+        else:
+            return None
+
 
 class Material(DomainObject):
     """Material related to Shakespeare (usually text of works and ancillary
