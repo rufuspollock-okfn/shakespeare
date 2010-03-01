@@ -4,6 +4,7 @@ import nltk
 Several different scripts to analyze the
 xml versions of Shakespeare plays
 by Jon Bosak
+http://www.cafeconleche.org/examples/shakespeare/
 '''
 
 

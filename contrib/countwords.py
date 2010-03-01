@@ -3,8 +3,15 @@ import string,nltk
 from nltk.corpus import wordnet as wn
 import operator
 
-print 'please run \nfrom nltk.book import  *\n '
+'''
+Several different scripts to analyze the
+xml versions of Shakespeare plays
+by Jon Bosak
+http://www.cafeconleche.org/examples/shakespeare/
+'''
 
+
+print 'please run \nfrom nltk.book import  *\n '
 
 lines = open('text.txt','rU').readlines()
 austenpersuasion = nltk.corpus.gutenberg.words('austen-persuasion.txt')
