@@ -50,7 +50,7 @@
         <!--</topbar>-->
       </div><!-- /top-bar -->
     <h1>
-      <a href="${h.url_for(controller='site')}" title="${c.site_title} Home">${c.site_title}</a>
+      <a href="${h.url_for('home')}" title="${c.site_title} Home">${c.site_title}</a>
     </h1>
     
     </div><!-- /top-inner -->
@@ -61,7 +61,6 @@
       <li><a href="${h.url_for(controller='work', action='index', id=None)}">Works</a></li>
       <li><a href="${h.url_for(controller='search', action='index', id=None)}">Search</a></li>
       <li><a href="${h.url_for(controller='stats', action='index', id=None)}">Stats</a></li>
-      <li><a href="${h.url_for(controller='anno', action='index', id=None)}">Annotate</a></li>
       <li><a href="${h.url_for('about')}">About</a></li>
       <li><a href="${h.url_for('news')}">News</a></li>
       <li><a href="${h.url_for('get-involved')}">Get Involved</a></li>

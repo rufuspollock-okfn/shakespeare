@@ -40,6 +40,28 @@ blockquote {
   padding-left: 20px;
 }
 
+table.index {
+  background-color: transparent; 
+  border: none;
+  margin: 0;
+}
+
+table.index th {
+  text-align: center;
+  background-color: transparent;
+}
+
+table.index td {
+  background: transparent;
+  border: none;
+  vertical-align: top;
+}
+
+table.index p.work-actions {
+  font-size: 0.9em;
+  margin-left: 1.5em;
+}
+
 /**
   * Word of the day
   */

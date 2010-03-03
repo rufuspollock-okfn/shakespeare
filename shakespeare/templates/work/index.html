@@ -7,13 +7,14 @@
 
   <div py:match="content">
     <h2>Works Available</h2>
-    <table border="1">
+    <table class="index">
     <thead>
       <tr>
         <th>
           Title
         </th>
         <th>Author</th>
+        <th>Notes</th>
       </tr>
     </thead>
     <tbody>
@@ -22,9 +23,19 @@
         <td property="dc:title">
           <a href="${h.url_for(controller='work', action='info', id=item.name)}">
             ${item.title}</a>
+          <p class="work-actions">
+            <a href="${h.url_for(controller='resource', action='view', id=item.default_resource.id)}">View &raquo;</a>
+
+            <a href=" ${h.url_for(controller='work', action='annotate', id=item.name)}">Annotate &raquo;</a>
+          </p>
         </td>
         <td property="dc:creator">
           ${item.creator}
+        </td>
+        <td>
+          <py:if test="item.notes">
+          ${h.markdown(item.notes[:80] + '...')}
+          </py:if>
         </td>
       </tr>
     </div>

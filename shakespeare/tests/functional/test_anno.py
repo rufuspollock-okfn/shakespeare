@@ -11,15 +11,8 @@ class TestAnnoController(TestController):
     def teardown_class(self):
         model.repo.rebuild_db()
 
-    def test_index(self):
-        res = self.app.get(url_for(controller='anno', action='index'))
-        assert 'Choose a text to annotate' in res
-        res = res.click(self.text.work.title)
-        assert 'Annotate' in res 
-        assert self.text.content.split()[0] in res, res
-
     def test_annotate_no_text(self):
-        res = self.app.get(url_for(controller='anno', action='annotate'),
+        res = self.app.get(url_for(controller='work', action='annotate'),
             extra_environ={'REMOTE_USER': str(self.username)}
             )
         assert 'Annotate' in res
@@ -27,7 +20,7 @@ class TestAnnoController(TestController):
     
     def test_annotate(self):
         res = self.app.get(
-            url_for(controller='anno', action='annotate', id=self.text.name),
+            url_for(controller='work', action='annotate', id=self.text.name),
             extra_environ={'REMOTE_USER': str(self.username)}
             )
         assert "'uri': '%s'" % self.text.name
