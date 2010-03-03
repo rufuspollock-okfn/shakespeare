@@ -24,17 +24,19 @@
           <a href="${h.url_for(controller='work', action='info', id=item.name)}">
             ${item.title}</a>
           <p class="work-actions">
+						<py:if test="item.default_resource">
             <a href="${h.url_for(controller='resource', action='view', id=item.default_resource.id)}">View &raquo;</a>
 
             <a href=" ${h.url_for(controller='work', action='annotate', id=item.name)}">Annotate &raquo;</a>
+						</py:if>
           </p>
         </td>
         <td property="dc:creator">
           ${item.creator}
         </td>
-        <td>
+        <td style="width: 60%">
           <py:if test="item.notes">
-          ${h.markdown(item.notes[:80] + '...')}
+          ${h.markdown(item.notes[:200] + '...')}
           </py:if>
         </td>
       </tr>
