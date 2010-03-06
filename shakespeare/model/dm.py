@@ -67,6 +67,14 @@ class Work(DomainObject):
         else:
             return None
 
+    @property
+    def notes_snippet(self):
+        if self.notes:
+            # first 40 words
+            return u' '.join(self.notes.split()[:40]) + u' ...'
+        else:
+            return ''
+
 
 class Material(DomainObject):
     """Material related to Shakespeare (usually text of works and ancillary

@@ -25,9 +25,9 @@
             ${item.title}</a>
           <p class="work-actions">
 						<py:if test="item.default_resource">
-            <a href="${h.url_for(controller='resource', action='view', id=item.default_resource.id)}">View &raquo;</a>
+            <a href="${h.url_for(controller='resource', action='view', id=item.default_resource.id)}">View&raquo;</a>
 
-            <a href=" ${h.url_for(controller='work', action='annotate', id=item.name)}">Annotate &raquo;</a>
+            <a href=" ${h.url_for(controller='work', action='annotate', id=item.name)}">Annotate&raquo;</a>
 						</py:if>
           </p>
         </td>
@@ -35,9 +35,9 @@
           ${item.creator}
         </td>
         <td style="width: 60%">
-          <py:if test="item.notes">
-          ${h.markdown(item.notes[:200] + '...')}
-          </py:if>
+					<py:if test="item.notes">
+          ${h.markdown(item.notes_snippet + ' [read more&raquo;](%s)' % h.url_for(controller='work', action='info', id=item.name))}
+					</py:if>
         </td>
       </tr>
     </div>
