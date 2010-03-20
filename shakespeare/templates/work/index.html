@@ -36,7 +36,8 @@
         </td>
         <td style="width: 60%">
 					<py:if test="item.notes">
-          ${h.markdown(item.notes_snippet + ' [read more&raquo;](%s)' % h.url_for(controller='work', action='info', id=item.name))}
+          ${h.markdown(item.notes_snippet)}
+          <a href="${h.url_for(controller='work', action='info', id=item.name)}">read more&raquo;</a>
 					</py:if>
         </td>
       </tr>
