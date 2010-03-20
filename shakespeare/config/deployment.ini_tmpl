@@ -87,6 +87,9 @@ word_of_the_day.enable =
 # word_of_the_day.feed = http://blog.openshakespeare.org/category/wordoftheday/?feed=atom
 
 
+# feed from which to pull work introductions
+feed.work_introductions = http://blog.openshakespeare.org/category/introduction/?feed=atom
+
 # Logging configuration
 [loggers]
 keys = root
