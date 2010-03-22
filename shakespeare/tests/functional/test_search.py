@@ -28,8 +28,8 @@ class TestSearchController(TestController):
         form = res.forms[0]
         form['query'] = 'summer'
         res = form.submit()
-        assert 'There were 2 results' in res
         assert 'Search Results' in res
+        assert '2 matches found' in res, res
         assert 'Sonnet 18' in res
         assert 'Shall I compare thee' in res
 

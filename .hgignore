@@ -19,5 +19,5 @@ docs/*
 
 # other
 pip-requirements-local.txt
-searchindex/*
+*searchindex/*
 cache/*
