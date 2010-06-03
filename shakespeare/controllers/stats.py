@@ -1,6 +1,7 @@
 import logging
 
 import pygooglechart
+from pylons.decorators.cache import beaker_cache
 
 from shakespeare.lib.base import *
 log = logging.getLogger(__name__)
@@ -36,7 +37,9 @@ class StatsController(BaseController):
             c.img_url = ''
         return render('stats/text.html')
 
-    # TODO: implement caching! -- this is massive (every word in shakespeare)
+    @beaker_cache(type='dbm',
+        invalidate_on_startup=True, # So we can still develop.
+    )
     def word_index(self):
         import sqlalchemy.sql as sql
         st = model.statistic_table
