@@ -7,6 +7,12 @@
 
   <div py:match="content">
     <h2>Words</h2>
+    <ul>
+      <li py:for="word in c.words">
+      <a href="url(controller='word', action='read', id=word)">
+        ${word.name.capitalize()}</a>
+      </li>
+    </ul>
 
   </div>
 

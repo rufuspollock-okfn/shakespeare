@@ -23,6 +23,7 @@ xxxxxxxxxxxxxxx'''
     def test_index(self):
         res = self.app.get(url(controller='word', action='index'))
         assert 'Words - Index' in res
+        assert self.word.capitalize() in res, res
 
     def test_read(self):
         res = self.app.get(url(controller='word', action='read', id=self.word))
