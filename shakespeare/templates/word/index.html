@@ -9,7 +9,7 @@
     <h2>Words</h2>
     <ul>
       <li py:for="word in c.words">
-      <a href="url(controller='word', action='read', id=word)">
+			<a href="${url(controller='word', action='read', id=word.name)}">
         ${word.name.capitalize()}</a>
       </li>
     </ul>
