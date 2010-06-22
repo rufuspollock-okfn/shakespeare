@@ -11,6 +11,7 @@ log = logging.getLogger(__name__)
 class WordController(BaseController):
 
     def index(self):
+        c.words = model.Word.all()
         return render('word/index.html')
 
     def read(self, id):

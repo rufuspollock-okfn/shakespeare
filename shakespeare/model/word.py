@@ -9,11 +9,26 @@ class Word(object):
             setattr(self, k, v)
 
     @classmethod
+    def all(self):
+        '''List of all word objects sorted by name.'''
+        # TODO: ? inefficient
+        info_by_name = {}
+        for kv in  KeyValue.query.filter_by(ns=u'word').all():
+            info_by_name[kv.object_id] = info_by_name.get(kv.object_id, []) + [kv]
+        out = [ self.word_from_keyvalues(name, info_by_name[name]) for name in
+                sorted(info_by_name.keys()) ]
+        return out
+
+    @classmethod
+    def word_from_keyvalues(self, name, keyvalues):
+        # encode as keywords in kwargs must be strings ...
+        kwargs = dict([ (kv.key.encode('utf8'),kv.value) for kv in keyvalues ])
+        return Word(name, **kwargs)
+    
+    @classmethod
     def by_name(self, name):
         kvs = KeyValue.query.filter_by(ns=u'word').filter_by(object_id=name).all()
-        # encode as keywords in kwargs must be strings ...
-        kwargs = dict([ (kv.key.encode('utf8'),kv.value) for kv in kvs ])
-        return Word(name, **kwargs)
+        return self.word_from_keyvalues(name, kvs)
 
     @classmethod
     def word_of_the_day(self):
