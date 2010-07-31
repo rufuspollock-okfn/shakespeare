@@ -84,6 +84,8 @@ class SiteController(BaseController):
 
     def about(self):
         if DELIVERANCE_ENABLE:
+            # add trailing slash for wordpress
+            request.environ['PATH_INFO'] = request.environ['PATH_INFO'] + '/'
             return self.deliverance(request.environ, self.start_response)
         else:
             return render('about.html')
@@ -91,8 +93,7 @@ class SiteController(BaseController):
     def news(self):
         if DELIVERANCE_ENABLE:
             # modify path for proxy to strip out /news/
-            currentpath = request.environ['PATH_INFO']
-            request.environ['PATH_INFO'] = currentpath[5:]
+            request.environ['PATH_INFO'] = '/'
             return self.deliverance(request.environ, self.start_response)
         else:
             return render('index.html')

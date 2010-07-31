@@ -25,10 +25,10 @@ def make_map():
     # now main shakespeare routes
     map.connect('pdf', 'pdf/*url')
     map.connect('home', '/', controller='site', action='index')
-    map.connect('about', '/about/', controller='site', action='about')
-    map.connect('news', '/news/', controller='site', action='news')
-    map.connect('get-involved', '/get-involved/', controller='site', action='about')
-    map.connect('team', '/team/', controller='site', action='about')
+    map.connect('about', '/about', controller='site', action='about')
+    map.connect('news', '/news', controller='site', action='news')
+    map.connect('get-involved', '/get-involved', controller='site', action='about')
+    map.connect('team', '/team', controller='site', action='about')
     map.connect('wotw', '/wotw/{url:.*}', controller='site', action='wotw')
     map.connect('guide', '/guide/', controller='site', action='guide')
     map.connect('/resource/{action}/{id}', controller='our_resource')
@@ -37,12 +37,14 @@ def make_map():
     map.connect('/anno_store/{action}/{url:.*}', controller='anno_store')
 
     map.redirect("/word/read/{id}", "/word/{id}")
-    map.connect('/word/', controller='word', action='index')
+    map.connect('/word', controller='word', action='index')
     map.connect('/word/{id}', controller='word', action='read')
 
-    map.connect('/{controller}/', action='index')
+    map.connect('/{controller}', action='index')
     map.connect('/{controller}/{action}')
     map.connect('/{controller}/{action}/{id}')
+    map.redirect('/*(url)/', '/{url}',
+                 _redirect_code='301 Moved Permanently')
     map.connect('/*url', controller='template', action='view')
 
     return map
