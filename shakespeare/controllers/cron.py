@@ -6,6 +6,7 @@ import shakespeare.lib.helpers as h
 
 from shakespeare.lib.base import BaseController, render
 import shakespeare.lib.feed as feed
+import shakespeare.model.word as word
 
 log = logging.getLogger(__name__)
 
@@ -16,9 +17,13 @@ class CronController(BaseController):
 Cron Jobs - for sysadmin use
 
 work_introductions: %s
+word_of_the_day: %s
 </pre>
     '''
-        out = out % feed.WorkIntroductionLoader.__doc__
+        out = out % (
+            feed.WorkIntroductionLoader.__doc__,
+            word.load_word_info_from_feed.__doc__
+            )
         return out
 
     def work_introductions(self):
@@ -28,3 +33,8 @@ work_introductions: %s
         out = u'<pre>%s</pre>' % h.escape('\n'.join(stringified))
         return out
 
+    def word_of_the_day(self):
+        import shakespeare.model.word as word
+        word.load_word_info_from_feed()
+        return 'Processed all entries ok'
+        
