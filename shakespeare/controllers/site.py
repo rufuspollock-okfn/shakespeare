@@ -98,15 +98,6 @@ class SiteController(BaseController):
         else:
             return render('index.html')
 
-    def wotw(self):
-        if DELIVERANCE_ENABLE:
-            # modify path for proxy to strip out /news/
-            currentpath = request.environ['PATH_INFO']
-            request.environ['PATH_INFO'] = '/category' + request.environ['PATH_INFO']
-            return self.deliverance(request.environ, self.start_response)
-        else:
-            return render('index.html')
-
     @property
     def deliverance(self):
         if not hasattr(self, '_deliverance'):
