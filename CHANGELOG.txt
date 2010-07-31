@@ -1,5 +1,13 @@
-v0.9: 2009-??-??
+v0.10: 2010-01-31
 ================
+
+  * 'cron' controller in wui for syncing introductions and word of the day
+  * sync introductions automatically from wordpress
+
+v0.9: 2010-01-31
+================
+
+See trac: http://knowledgeforge.net/shakespeare/trac/milestone/0.9
 
 v0.8: 2009-09-26
 ================
