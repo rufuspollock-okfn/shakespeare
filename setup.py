@@ -30,6 +30,7 @@ setup(
         ## Needed if you are doing deliverance/proxying stuff
         # you should install python-lxml first directly
         # (has lots of c extensions ...)
+        # 'swiss>=0.3',
         # 'deliverance>=0.3a'
         ## Needed for word_of_the_day syncing ...
         # feedparser 

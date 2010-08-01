@@ -24,7 +24,6 @@ class TemplateController(BaseController):
         Found)
         """
         # abort(404)
-        print 'Proxying: %s' % request.environ['PATH_INFO']
         return self._proxy()
 
     def _proxy(self):
