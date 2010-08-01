@@ -58,9 +58,9 @@
     <h3 class="hidden">Sections:</h3>
     <ul id="navigation">
       <li><a href="${h.url_for('home')}">Home</a></li>
-      <li><a href="${h.url_for(controller='work', action='index', id=None)}">Works</a></li>
-      <li><a href="${h.url_for(controller='search', action='index', id=None)}">Search</a></li>
-      <li><a href="${h.url_for(controller='stats', action='index', id=None)}">Stats</a></li>
+      <li><a href="${h.url_for(controller='work', action='index')}">Works</a></li>
+      <li><a href="${h.url_for(controller='search', action='index')}">Search</a></li>
+      <li><a href="${h.url_for(controller='stats', action='index')}">Stats</a></li>
       <li><a href="${h.url_for('about')}">About</a></li>
       <li><a href="${h.url_for('news')}">News</a></li>
       <li><a href="${h.url_for('get-involved')}">Get Involved</a></li>
@@ -68,7 +68,7 @@
     <h3 class="hidden">In this section:</h3>
     <ul id="subnav">
       <!--<minornavigation>-->
-      <li><a href="${h.url_for(controller='site', action='index')}">Home</a></li>
+      <li><a href="${h.url_for('home')}">Home</a></li>
       <!--</minornavigation>-->
     </ul>
        

@@ -1,4 +1,5 @@
 """The application's Globals object"""
+from pylons import config
 
 class Globals(object):
 
@@ -13,3 +14,5 @@ class Globals(object):
         'app_globals' variable
 
         """
+        self.deliverance_enabled = bool(config.get('deliverance.enabled', ''))
+

@@ -25,12 +25,13 @@ def make_map():
     maps.admin_map(map, controller='admin', url='/admin')
     # now main shakespeare routes
     map.connect('pdf', 'pdf/*url')
-    map.connect('home', '/', controller='site', action='index')
-    map.connect('about', '/about', controller='site', action='about')
-    map.connect('news', '/news', controller='site', action='news')
-    map.connect('get-involved', '/get-involved', controller='site', action='about')
-    map.connect('team', '/team', controller='site', action='about')
-    map.connect('guide', '/guide/', controller='site', action='guide')
+    if bool(config.get('deliverance.enabled', '')):
+        map.connect('home', '/', controller='template', action='view', url='/')
+        map.connect('about', '/about', controller='template', action='view',
+                url='/about')
+    else:
+        map.connect('home', '/', controller='site', action='index')
+        map.connect('about', '/about', controller='index', action='about')
     map.connect('/resource/{action}/{id}', controller='our_resource')
     map.connect('/material/{action}/{id}', controller='text')
     # Annotation store requires requests at /anno_store/annotation/
@@ -46,5 +47,5 @@ def make_map():
     map.redirect('/*(url)/', '/{url}',
                  _redirect_code='301 Moved Permanently')
     map.connect('/*url', controller='template', action='view')
-
     return map
+

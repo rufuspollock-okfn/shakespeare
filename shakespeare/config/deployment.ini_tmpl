@@ -76,7 +76,7 @@ search_index_dir = %(here)s/searchindex
 
 ## deliverance/proxying stuff
 # set to any value to enable
-deliverance.enable = 
+deliverance.enabled = 
 # destination to proxy from
 # deliverance.dest = http://blog.openshakespeare.org/
 

@@ -4,6 +4,8 @@ import os
 from genshi.template import TemplateLoader
 from pylons import config
 from sqlalchemy import engine_from_config
+from genshi.filters.i18n import Translator
+from pylons.i18n.translation import ugettext
 
 import shakespeare.lib.app_globals as app_globals
 import shakespeare.lib.helpers
