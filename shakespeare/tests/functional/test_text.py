@@ -13,7 +13,7 @@ class TestTextController(TestController):
         TestData.remove_fixtures()
 
     def test_index(self):
-        url = url_for(controller='text', action='index', id=None)
+        url = url_for(controller='text', action='index')
         res = self.app.get(url)
         print res
         assert 'Texts - Index' in res
@@ -32,7 +32,7 @@ class TestTextController(TestController):
         assert 'Shall I compare thee' in res, str(res)[:5000]
 
     def test_index_click(self):
-        url = url_for(controller='text')
+        url = url_for(controller='text', action='index')
         res = self.app.get(url)
         res = res.click('Sonnet 18', index=0)
         assert 'Text - Info -' in res

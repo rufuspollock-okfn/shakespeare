@@ -18,12 +18,12 @@ class TestSearchController(TestController):
         TestData.remove_fixtures()
 
     def test_index(self):
-        url = url_for(controller='search')
+        url = url_for(controller='search', action='index')
         res = self.app.get(url)
         assert "Search" in res
     
     def test_search(self):
-        url = url_for(controller='search')
+        url = url_for(controller='search', action='index')
         res = self.app.get(url)
         form = res.forms[0]
         form['query'] = 'summer'

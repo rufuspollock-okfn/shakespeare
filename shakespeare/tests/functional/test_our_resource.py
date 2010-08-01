@@ -10,7 +10,7 @@ class TestOurResourceController(TestController):
         TestData.remove_fixtures()
 
     def test_index(self):
-        res = self.app.get(url_for(controller='our_resource'))
+        res = self.app.get(url_for(controller='our_resource', action='index'))
         assert 'Resource' in res
 
     def test_view(self):

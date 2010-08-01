@@ -17,7 +17,7 @@ class TestStatsController(TestController):
         model.metadata.create_all()
 
     def test_index(self):
-        url = url_for(controller='stats')
+        url = url_for(controller='stats', action='index')
         res = self.app.get(url)
         assert 'Stats' in res
 

@@ -24,7 +24,7 @@ class TestUserController(TestController):
         assert 'User - Login' in res, res
 
     def test_2_user_not_logged_in(self):
-        offset = url_for(controller='user')
+        offset = url_for(controller='user', action='index')
         res = self.app.get(offset, '302')
         res = res.follow()
         assert 'User - Login' in res

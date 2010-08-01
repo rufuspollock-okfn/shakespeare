@@ -12,7 +12,7 @@ class TestAnthologyController(TestController):
         model.Session.remove()
 
     def test_index(self):
-        response = self.app.get(url_for(controller='anthology'))
+        response = self.app.get(url_for(controller='anthology', action='index'))
         assert 'Anthologies' in response, response
         form = response.forms[0]
         form['text'] = 'test_sonnet18'

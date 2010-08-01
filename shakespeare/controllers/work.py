@@ -25,7 +25,7 @@ class WorkController(BaseController):
         return render('work/info.html')
 
     def annotate(self, id=None):
-        self.server_api = h.url_for(controller='anno_store')
+        self.server_api = h.url_for(controller='anno_store', action='index')
         c.error = ''
         c.content = ''
         c.server_api = self.server_api
