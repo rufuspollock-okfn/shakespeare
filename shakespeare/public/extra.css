@@ -19,8 +19,32 @@ body {
 /* mess with standard ckan theme to remove second submenu for time being */
 #subnav { background: transparent; height: 1px; }
 #subnav * { display: none; }
-#main { margin-top: 0.5em; }
 #primary { margin-top: 1.2em; }
+
+/**
+  * Wordpress twentyten compatibility
+  */
+
+body {
+  font-family: Georgia, 'Bitstream Charter', serif;
+}
+
+.widget-area ul {
+  list-style: none;
+}
+
+h2, h3.widget-title h3, h2.entry-title {
+  font-family: 'Helvetica Neue', Arial, Helvetica, 'Nimbus Sans L', sans-serif;
+  font-weight: bold;
+}
+
+#content .entry-title, h2 {
+  font-size: 25px;
+}
+
+div#main {
+  padding: 0;
+}
 
 /**
   * Minor generic additions
@@ -82,9 +106,9 @@ div#word-of-the-day {
 }
 
 div#word-of-the-day p {
-  position:absolute;
-  left:5px;
-  top:114px;
+  float: right;
+  margin-top: 114px;
+  margin-right: 160px;
   font-size: 1.3em;
 }
 

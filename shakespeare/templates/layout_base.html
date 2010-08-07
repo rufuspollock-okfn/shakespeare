@@ -116,26 +116,26 @@
     
   </div><!-- /main -->
 
-  <div id="primary" class="sidebar">
-    <!-- <primarysidebar>
-    Primary Side Bar Goes Here 
-    </primarysidebar>-->
-    
+  <div id="primary" class="widget-area" role="complementary">
     <!--[if IE]>
     <hr class="primary" />
     <![endif]-->
+    <ul class="xoxo">
 
     <py:if test="defined('primary_sidebar_extras')">
       ${primary_sidebar_extras()}
     </py:if>
 
     <py:if test="c.word_of_the_day_enable">
-    <div class="box">
-      <div id="word-of-the-day">
-        <p><a href="${h.url_for(controller='word', action='read', id=c.word_of_the_day.name)}">${c.word_of_the_day.name.capitalize()}</a></p>
-      </div>
-    </div>
+      <li class="widget-container word-of-the-day">
+        <h3 class="widget-title">Word of the Day</h3>
+        <div id="word-of-the-day">
+          <p><a href="${h.url_for(controller='word', action='read', id=c.word_of_the_day.name)}">${c.word_of_the_day.name.capitalize()}</a></p>
+        </div>
+      </li>
     </py:if>
+
+    </ul>
   </div><!-- /primary -->
 
 </div><!-- /airlock -->
