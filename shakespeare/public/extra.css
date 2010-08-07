@@ -26,6 +26,18 @@ body {
   * Minor generic additions
   */
 
+#top-bar form.search {
+  display: inline;
+}
+  
+#top-bar form.search input.search {
+  background: white;
+}
+
+form.main-search-form input.search {
+  width: 50%;
+}
+
 p.error {
   color: red;
   font-weight: bold;

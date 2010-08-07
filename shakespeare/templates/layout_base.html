@@ -47,7 +47,9 @@
           </p>
         </py:otherwise>
         </py:choose>
-        <!--</topbar>-->
+        <form class="search" action="${h.url_for(controller='search', action='index')}" method="GET">
+          <input type="search" class="search" name="query" autocomplete="off" results="5" placeholder="Search..."/>
+        </form>
       </div><!-- /top-bar -->
     <h1>
       <a href="${h.url_for('home')}" title="${c.site_title} Home">${c.site_title}</a>
