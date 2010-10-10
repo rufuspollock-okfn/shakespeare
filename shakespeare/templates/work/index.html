@@ -21,11 +21,13 @@
     <div xmlns:dc="http://purl.org/dc/elements/1.1/">
       <tr py:for="item in c.works_index">
         <td property="dc:title">
-          <a href="${h.url_for(controller='work', action='info', id=item.name)}">
+					<a href="${h.url_for(controller='work', action='view',
+							id=item.name)}">
             ${item.title}</a>
           <p class="work-actions">
 						<py:if test="item.default_resource">
-            <a href="${h.url_for(controller='resource', action='view', id=item.default_resource.id)}">View&raquo;</a>
+            <a href="${h.url_for(controller='work', action='info',
+							id=item.name)}">Further information&raquo;</a>
 
             <a href=" ${h.url_for(controller='work', action='annotate', id=item.name)}">Annotate&raquo;</a>
 						</py:if>

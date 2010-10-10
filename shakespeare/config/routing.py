@@ -41,6 +41,11 @@ def make_map():
     map.connect('/word', controller='word', action='index')
     map.connect('/word/{id}', controller='word', action='read')
 
+    map.connect('/work', controller='work', action='in')
+    map.connect('/work/info/{id}', controller='work', action='info')
+    map.connect('/work/annotate/{id}', controller='work', action='annotate')
+    map.connect('/work/{id}', controller='work', action='view')
+
     map.connect('/{controller}', action='index')
     map.connect('/{controller}/{action}')
     map.connect('/{controller}/{action}/{id}')

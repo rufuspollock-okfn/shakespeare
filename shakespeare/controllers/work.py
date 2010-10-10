@@ -47,3 +47,12 @@ class WorkController(BaseController):
             c.content = genshi.HTML(render_resource(resource))
         return render('work/annotate.html')
 
+    def view(self, id=None):
+        from shakespeare.controllers.our_resource import OurResourceController
+        resource_controller = OurResourceController()
+        work = model.Work.by_name(id)
+        if work is None:
+            abort(404)
+        resource = work.default_resource
+        return resource_controller.view(resource.id)
+    

@@ -8,6 +8,10 @@
   <div py:match="content">
     <div xmlns:dc="http://purl.org/dc/elements/1.1/">
       <h2 property="dc:title">${c.title}</h2>
+			<h3>Introduction</h3>
+			<div class="work-introduction" style="margin-bottom: 50px;">
+				${h.markdown(c.work.notes or '')}
+			</div>
 			${c.texthtml}
     </div>
   </div>

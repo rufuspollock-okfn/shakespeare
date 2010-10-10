@@ -19,6 +19,7 @@ class OurResourceController(BaseController):
             c.title = res.material.title
         else:
             c.title = ''
+        c.work = res.material.work
         c.texthtml = genshi.HTML(render_resource(res))
         # strip_whitespace does not work with pylons 0.9.7
         return render('text/view.html')
