@@ -46,6 +46,20 @@ div#main {
   padding: 0;
 }
 
+#primary .widget-container {
+  background: #EEE;
+  border-bottom-left-radius: 0.7em 0.7em;
+  border-bottom-right-radius: 0.7em 0.7em;
+  border-top-left-radius: 0.7em 0.7em;
+  border-top-right-radius: 0.7em 0.7em;
+  padding: 0.5em 1em 1em;
+  padding-top: 0.5em;
+}
+
+.widget-container {
+  margin: 0px 0px 18px;
+}
+
 /**
   * Minor generic additions
   */
@@ -106,10 +120,10 @@ div#word-of-the-day {
 }
 
 div#word-of-the-day p {
-  float: right;
-  margin-top: 114px;
-  margin-right: 160px;
-  font-size: 1.3em;
+  float: left;
+  margin-top: 118px;
+  margin-right: 100px;
+  font-size: 110%;
 }
 
 
