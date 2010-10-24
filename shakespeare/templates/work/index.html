@@ -25,12 +25,10 @@
 							id=item.name)}">
             ${item.title}</a>
           <p class="work-actions">
-						<py:if test="item.default_resource">
             <a href="${h.url_for(controller='work', action='info',
 							id=item.name)}">Further information&raquo;</a>
 
             <a href=" ${h.url_for(controller='work', action='annotate', id=item.name)}">Annotate&raquo;</a>
-						</py:if>
           </p>
         </td>
         <td property="dc:creator">
