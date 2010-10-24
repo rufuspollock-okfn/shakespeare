@@ -29,9 +29,20 @@
 		</style>
   </py:def>
 
+  <py:def function="primary_sidebar_extras">
+      <li class="widget-container instructions">
+        <h3 class="widget-title">Annotation: Howto</h3>
+        <ol>
+          <li>Highlight a section of text, and a small notepad icon will appear</li>
+          <li>Click on the notepad, and a dialogue box will come up</li>
+          <li>Type your annotation, and then press enter to save it.</li>
+          <li>For more information, visit the <a href="h.url_for('/help')">help page</a></li>
+        </ol>
+      </li>
+  </py:def>
+
   <div py:match="content">
     <p py:if="c.error" class="error">${c.error}</p>
-
     <div id='text-to-annotate'>
     ${c.content}
     </div>
