@@ -14,7 +14,7 @@ class TestAnthologyController(TestController):
     def test_index(self):
         response = self.app.get(url_for(controller='anthology', action='index'))
         assert 'Anthologies' in response, response
-        form = response.forms[0]
+        form = response.forms[1]
         form['text'] = 'test_sonnet18'
         response = form.submit()
         assert 'Edit' in response, response

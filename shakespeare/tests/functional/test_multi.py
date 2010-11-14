@@ -20,7 +20,7 @@ class TestMultiController(TestController):
     def test_choose_texts(self):
         url = url_for(controller='multi', action='index')
         res = self.app.get(url)
-        form = res.forms[0]
+        form = res.forms[1]
         print self.text.name
         form['text_1'] = self.text.name
         form['text_2'] = self.text.name
