@@ -51,6 +51,13 @@ def make_map():
     map.connect('/{controller}/{action}/{id}')
     map.redirect('/*(url)/', '/{url}',
                  _redirect_code='301 Moved Permanently')
-    map.connect('/*url', controller='template', action='view')
+    # make sure we do not match repoze.who.openid urls
+    def exclude(environ, result):
+        if environ.get('PATH_INFO') in ['/login_openid', '/logout_openid']:
+            return False
+        else:
+            return True
+    map.connect('/*url', controller='template', action='view',
+            conditions=dict(function=exclude))
     return map
 
