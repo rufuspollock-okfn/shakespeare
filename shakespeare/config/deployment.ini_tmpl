@@ -90,6 +90,10 @@ word_of_the_day.enable =
 # feed from which to pull work introductions
 feed.work_introductions = http://blog.openshakespeare.org/category/introduction/?feed=atom
 
+# url to annotation store
+literature.annotation_store = 
+
+
 # Logging configuration
 [loggers]
 keys = root

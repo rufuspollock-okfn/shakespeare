@@ -12,11 +12,11 @@ class TestAnnoController(TestController):
         model.repo.rebuild_db()
 
     def test_annotate_no_text(self):
-        res = self.app.get(url_for(controller='work', action='annotate'),
-            extra_environ={'REMOTE_USER': str(self.username)}
+        res = self.app.get(
+            url_for(controller='work', action='annotate'),
+            extra_environ={'REMOTE_USER': str(self.username)},
+            status=[404]
             )
-        assert 'Annotate' in res
-        assert 'No text to annotate' in res
     
     def test_annotate(self):
         res = self.app.get(
@@ -26,10 +26,4 @@ class TestAnnoController(TestController):
         assert "'uri': '%s'" % self.text.name
         userid = model.User.query.filter_by(openid=self.username).first().id
         assert "'user': '%s'" % userid
-
-    # run this last
-    def test_z_annotation(self):
-        res = self.app.get(url_for(controller='anno_store', action='annotations'))
-        # no annotations so []
-        assert [] in res, res
 

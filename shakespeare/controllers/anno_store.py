@@ -1,12 +1,19 @@
 import logging
 
-from annotator.store import AnnotatorStore
+import wsgiproxy.app
 
+from pylons import config
 from shakespeare.lib.base import *
 
 log = logging.getLogger(__name__)
 
-store = AnnotatorStore('anno_store')
-def AnnoStoreController(environ, start_response):
-    return store(environ, start_response)
+class AnnoStoreController(BaseController):
+    def view(self, url):
+        '''Proxy to a remote annotation store (solves cross-domain scripting
+        issues).
+        '''
+        proxy_site = config['literature.annotation_store']
+        request.environ['PATH_INFO'] = url
+        proxy = wsgiproxy.app.WSGIProxyApp(proxy_site) 
+        return proxy(request.environ, self.start_response)
 
