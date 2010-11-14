@@ -20,8 +20,6 @@ class TestWorkController(TestController):
         assert 'Sonnet 18' in res, res
         # notes 
         assert '<h3>Some Notes' in res, res
-        res = res.click('Sonnet 18')
-        assert 'Info' in res, res
 
     def test_info(self):
         url = url_for(controller='work', action='info', id=TestData.name)
@@ -35,8 +33,8 @@ class TestWorkController(TestController):
     def test_view(self):
         url = url_for(controller='work', action='index', id=None)
         res = self.app.get(url)
-        res = res.click('View')
-        assert self.fixture.title in res
+        res = res.click('Sonnet 18')
+        assert 'Sonnet 18 (First Edition)' in res, res
     
     # annotate action tested in test_anno.py
 
