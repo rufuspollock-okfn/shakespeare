@@ -6,8 +6,10 @@
   <py:def function="page_title">Annotate</py:def>
 
   <py:def function="page_specific_css">
-    <script src="http://github.com/nickstenning/annotator/raw/0.7/pkg/annotator.min.js"></script>
-    <link href="http://github.com/nickstenning/annotator/raw/0.7/pkg/annotator.min.css" type="text/css" rel="stylesheet" />
+    <script src="http://github.com/nickstenning/annotator/raw/0.9/pkg/annotator.min.js"></script>
+    <link href="http://github.com/nickstenning/annotator/raw/0.9/pkg/annotator.min.css" type="text/css" rel="stylesheet" />
+    <script src="http://localhost:5984/_utils/script/jquery.couch.js"></script>
+    <script src="/storecouchdb.js"></script>
 
     <!--
     <script src="/jsannotate-lib/vendor/jquery.pluginfactory.js"></script>
@@ -47,22 +49,21 @@
     ${c.content}
     </div>
     <script>
-        jQuery(function($) {
-          var annotator_prefix = '/anno_store';
-          $('#text-to-annotate').annotationStore({
-            'prefix': annotator_prefix,
-            'loadFromSearch': {
-              'limit': -1,
-              'all_fields': 1,
-              'uri': '${c.uri}'
-            },
-            'annotationData': {
+      jQuery(function ($) {
+        var annotator_store = '/anno_store';
+        $('#text-to-annotate').annotator()
+          .annotator('addPlugin', Annotator.Plugins.User)
+          .annotator('addPlugin', Annotator.Plugins.StoreCouchdb, {
+            prefix: annotator_store,
+            annotationData: {
               'uri': '${c.uri}',
-              'user': '${c.userid}', 
+              'user': '${c.userid}'
+            },
+            loadFromSearch: {
+              'uri': '${c.uri}'
             }
           });
-          // 'uri': annotator_doc_uri});
-        });
+      });
     </script>
 	</div>
 
