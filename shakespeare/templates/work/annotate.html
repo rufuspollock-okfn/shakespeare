@@ -50,7 +50,7 @@
     </div>
     <script>
       jQuery(function ($) {
-        var annotator_store = '/anno_store';
+        var annotator_store = '${c.server_api}';
         $('#text-to-annotate').annotator()
           .annotator('addPlugin', Annotator.Plugins.User)
           .annotator('addPlugin', Annotator.Plugins.StoreCouchdb, {

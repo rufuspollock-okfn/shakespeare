@@ -34,8 +34,8 @@ def make_map():
         map.connect('about', '/about', controller='index', action='about')
     map.connect('/resource/{action}/{id}', controller='our_resource')
     map.connect('/material/{action}/{id}', controller='text')
-    # Annotation store requires requests at /anno_store/annotation/
-    map.connect('/anno_store{url:.*}', controller='anno_store', action='view')
+    # Annotation store requires requests at /annostore/annotation/
+    map.connect('/annostore{url:.*}', controller='annostore', action='view')
 
     map.redirect("/word/read/{id}", "/word/{id}")
     map.connect('/word', controller='word', action='index')
