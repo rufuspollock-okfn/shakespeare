@@ -7,7 +7,7 @@ from shakespeare.lib.base import *
 
 log = logging.getLogger(__name__)
 
-class AnnoStoreController(BaseController):
+class AnnostoreController(BaseController):
     def view(self, url):
         '''Proxy to a remote annotation store (solves cross-domain scripting
         issues).
