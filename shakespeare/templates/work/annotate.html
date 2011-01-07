@@ -6,10 +6,13 @@
   <py:def function="page_title">Annotate</py:def>
 
   <py:def function="page_specific_css">
-    <script src="http://github.com/nickstenning/annotator/raw/0.9/pkg/annotator.min.js"></script>
-    <link href="http://github.com/nickstenning/annotator/raw/0.9/pkg/annotator.min.css" type="text/css" rel="stylesheet" />
-    <script src="http://localhost:5984/_utils/script/jquery.couch.js"></script>
-    <script src="/storecouchdb.js"></script>
+    <script src="https://github.com/okfn/annotator/raw/v1.0.0beta2/pkg/annotator.min.js"></script>
+    <script src="https://github.com/okfn/annotator/raw/v1.0.0beta2/pkg/annotator.auth.min.js"></script>
+    <script src="https://github.com/okfn/annotator/raw/v1.0.0beta2/pkg/annotator.markdown.min.js"></script>
+    <script src="https://github.com/okfn/annotator/raw/v1.0.0beta2/pkg/annotator.store.min.js"></script>
+    <script src="https://github.com/okfn/annotator/raw/v1.0.0beta2/pkg/annotator.tags.min.js"></script>
+    <script src="https://github.com/okfn/annotator/raw/v1.0.0beta2/pkg/annotator.user.min.js"></script>
+    <link href="https://github.com/okfn/annotator/raw/v1.0.0beta2/pkg/annotator.min.css" type="text/css" rel="stylesheet" />
 
     <!--
     <script src="/jsannotate-lib/vendor/jquery.pluginfactory.js"></script>
@@ -50,19 +53,25 @@
     </div>
     <script>
       jQuery(function ($) {
-        var annotator_store = '${c.server_api}';
-        $('#text-to-annotate').annotator()
-          .annotator('addPlugin', Annotator.Plugins.User)
-          .annotator('addPlugin', Annotator.Plugins.StoreCouchdb, {
+        var annotator_store = '${c.server_api}' + '/store/annotations';
+        var user = '${c.userid}';
+        // var annotator_store = 'http://annotateit.org/store/annotations';
+        var annotator = $('#text-to-annotate').annotator().data('annotator');
+        annotator.addPlugin('User');
+        annotator.addPlugin('Store', {
             prefix: annotator_store,
             annotationData: {
               'uri': '${c.uri}',
-              'user': '${c.userid}'
+              'user': user
             },
             loadFromSearch: {
-              'uri': '${c.uri}'
+              'uri': '${c.uri}',
+              'all_fields': 1
             }
           });
+        // don't seem to be working properly yet
+        // annotator.addPlugin('Tags');
+        annotator.plugins["User"].setUser(user)
       });
     </script>
 	</div>
