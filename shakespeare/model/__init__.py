@@ -9,8 +9,6 @@ from user import user_table, User
 from keyvalue import key_value_table, KeyValue
 from word import Word
 
-from annotation import *
-
 log = logging.getLogger(__name__)
 
 def init_model(engine):

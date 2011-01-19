@@ -24,7 +24,6 @@ setup(
         'FormAlchemy>=1.0',
         # last version to work with SQLA < 0.5
         'SQLAlchemy-migrate==0.4.5',
-        'annotator>=0.3a',
         'repoze.who>=1.0.0,<1.0.99',
         'repoze.who.plugins.openid>=0.5,<0.5.99',
         ## Needed if you are doing deliverance/proxying stuff
