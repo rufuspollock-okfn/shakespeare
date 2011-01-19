@@ -55,7 +55,7 @@ class TemplateController(BaseController):
     
     @property
     def deliverance(self):
-        from swiss.deliveranceproxy import create_deliverance_proxy
+        from datautil.deliveranceproxy import create_deliverance_proxy
         # where we are proxying from
         proxy_base_url = config['deliverance.dest']
         theme_html = render('index.html')
