@@ -40,7 +40,8 @@ class WorkController(BaseController):
             c.error = 'No text to annotate!' 
         else:
             c.uri = work_name
-            c.userid = c.user.id if c.user else c.author
+            c.userid = c.user.openid if c.user else ''
+            c.username = c.author
             work = model.Work.by_name(work_name)
             # should be guaranteed not to be a pdf ...
             resource = work.default_resource

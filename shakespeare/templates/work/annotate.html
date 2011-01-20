@@ -14,15 +14,6 @@
     <script src="https://github.com/okfn/annotator/raw/v1.0.0beta2/pkg/annotator.user.min.js"></script>
     <link href="https://github.com/okfn/annotator/raw/v1.0.0beta2/pkg/annotator.min.css" type="text/css" rel="stylesheet" />
 
-    <!--
-    <script src="/jsannotate-lib/vendor/jquery.pluginfactory.js"></script>
-    <script src="/jsannotate-lib/vendor/jquery.sji.js"></script>
-    <script src="/jsannotate-lib/vendor/jquery.json.js"></script>
-    <script src="/jsannotate-lib/extensions.js"></script>
-    <script src="/jsannotate-lib/annotator.js"></script>
-    <script src="/jsannotate-lib/annotation_store.js"></script>
-    <link rel="stylesheet" type="text/css" href="/jsannotate-lib/annotator.css" />
-    -->
 		<style type="text/css">
 			.annot-highlighter {
 				background: rgba(48, 184, 103, 0.296875)
@@ -62,7 +53,8 @@
             prefix: annotator_store,
             annotationData: {
               'uri': '${c.uri}',
-              'user': user
+              'user': user,
+              'username': '${c.username}'
             },
             loadFromSearch: {
               'uri': '${c.uri}',

@@ -27,7 +27,7 @@ class User(DomainObject):
 
     @property
     def name(self):
-        if self.username:
+        if self.username and self.username != self.openid:
             return self.username
         elif self.fullname:
             return self.fullname
