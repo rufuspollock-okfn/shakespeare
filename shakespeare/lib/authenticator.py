@@ -25,7 +25,7 @@ class OpenIDAuthenticator(object):
                 Session.add(user)
                 Session.commit()
                 Session.remove()
-            return user.name
+            return user.openid
         return None
     
 
