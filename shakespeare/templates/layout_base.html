@@ -13,11 +13,11 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link rel="shortcut icon" href="/img/shkspr.ico" type="image/x-icon" />
 
-  <link rel="stylesheet" href="http://m.okfn.org/kforge/css/master.css" type="text/css" media="screen, print" title="Master stylesheet" charset="utf-8" />
+  <link rel="stylesheet" href="http://assets.okfn.org/kforge/css/master.css" type="text/css" media="screen, print" title="Master stylesheet" charset="utf-8" />
   <link rel="stylesheet" href="/extra.css" type="text/css" media="screen, print" title="Master stylesheet" charset="utf-8" />
 
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
-  <script type="text/javascript" src="http://m.okfn.org/kforge/scripts/kforge.js"></script>
+  <script type="text/javascript" src="http://assets.okfn.org/kforge/scripts/kforge.js"></script>
 
   <py:if test="defined('page_specific_css')">
     ${page_specific_css()}
@@ -43,7 +43,7 @@
         </py:when>
         <py:otherwise>
           <p>
-					<a href="${h.url_for(controller='user',action='login', id=None)}">Login with <img width="16" height="16" alt="None" src="http://m.okfn.org/images/icons/openid.png"/> OpenID</a>
+					<a href="${h.url_for(controller='user',action='login', id=None)}">Login with <img width="16" height="16" alt="None" src="http://assets.okfn.org/images/icons/openid.png"/> OpenID</a>
           </p>
         </py:otherwise>
         </py:choose>
@@ -98,14 +98,14 @@
         | <a rel="foaf:mbox" href="mailto:open-shakespeare@okfn.org">Contact Us</a>
       </p>
       <p>
-        <img style="margin-bottom: -5px;" src="http://m.okfn.org/images/logo/okf_logo_white_and_green_tiny.png" /> An <a href="http://www.okfn.org/">Open Knowledge Foundation</a> Project
+        <img style="margin-bottom: -5px;" src="http://assets.okfn.org/images/logo/okf_logo_white_and_green_tiny.png" /> An <a href="http://www.okfn.org/">Open Knowledge Foundation</a> Project
       </p>
       <p>
         (c) Open Knowledge Foundation
         | All material available under an <a rel="license" href="${h.url_for(controller='site', action='about', id=None, anchor='license')}">open license</a>
         | <a href="http://www.opendefinition.org/1.0/"><img
             style="border: none; margin-bottom: -4px;"
-            src="http://m.okfn.org/images/ok_buttons/ok_90x15_blue.png"
+            src="http://assets.okfn.org/images/ok_buttons/ok_90x15_blue.png"
             alt="This Content and Data is Open" /></a>
       </p>
     </div><!-- /footer -->
