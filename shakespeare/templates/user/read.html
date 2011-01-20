@@ -4,13 +4,19 @@
   <py:def function="page_title">User Account - ${c.read_user.name}</py:def>
 
   <div py:match="content">
+    <py:if test="not c.is_myself">
     <h2>User - ${c.read_user.name}</h2>
-    <py:if test="c.is_myself">
-      <h3>Your Account</h3>
-      <p>You are logged in. <a href="${h.url_for('/logout_openid')}">Log out</a></p>
-
-      <p>Your API Key is: ${c.read_user.api_key}</p>
     </py:if>
+    <py:if test="c.is_myself">
+      <h2>Welcome ${c.user.name}</h2>
+
+      <p>Your API Key is (private): ${c.user.api_key}</p>
+      <p>Email (private): ${c.user.email}</p>
+    </py:if>
+
+    <p>Username: ${c.user.username}</p>
+    <p>Open ID: ${c.user.openid}</p>
+    <p>Full Name: ${c.user.fullname}</p>
 
     <div class="user-about">
       ${h.markdown(c.user.about)}
