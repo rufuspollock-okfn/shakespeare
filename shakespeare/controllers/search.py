@@ -41,7 +41,7 @@ class SearchResult(object):
 
     @classmethod
     def from_match(cls, m):
-        snippet = m.document.get_data()
+        snippet = unicode(m.document.get_data(), 'utf8', 'ignore')
         item_id = m.document.get_value(shakespeare.search.ITEM_ID)
         text = model.Material.by_name(item_id)
         lineno = m.document.get_value(shakespeare.search.LINE_NO)
