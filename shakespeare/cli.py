@@ -209,7 +209,7 @@ For more information about the package run `info`.
             self._init_index()
             for text in self._index:
                 # exclude folios as many odd spellings
-                if text.name.endswith('_f'):
+                if text.name.endswith('_f') or text.name.endswith('_moby'):
                     continue
                 self._print('Adding: %s' % text.name)
                 fileobj = text.get_text()
