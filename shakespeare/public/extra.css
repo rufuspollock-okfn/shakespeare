@@ -72,6 +72,10 @@ div#main {
   background: white;
 }
 
+form.main-search-form {
+  margin-bottom: 2em;
+}
+
 form.main-search-form input.search {
   width: 50%;
 }

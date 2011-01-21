@@ -6,15 +6,15 @@
   <py:def function="page_title">Search Material</py:def>
 
   <div py:match="content">
-    <h2>Search Available Material</h2>
+    <h2>
+      Search Texts<py:if test="c.query">: ${c.total} matches</py:if>
+    </h2>
     <form class="main-search-form" method="GET" action="">
       <input class="search" type="search" name="query" value="${c.query}" placeholder="Search..." results="5" autocomplete="false" />
       <input type="submit" name="submit" value="Search" />
     </form>
 
     <div class="search-results" py:if="c.query">
-      <h3>Search Results: ${c.total} matches found</h3>
-
       ${c.page.pager(query=c.query)}  
 
       <ul>

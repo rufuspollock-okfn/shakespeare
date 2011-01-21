@@ -23,6 +23,6 @@ class Page(paginate.Page):
     def pager(self, *args, **kwargs):
         kwargs.update(
             format="<div class='pager'>$link_previous ~2~ $link_next</div>",
-            symbol_previous='« Prev', symbol_next='Next »'
+            symbol_previous=u'« Prev', symbol_next=u'Next »'
         )
         return super(Page, self).pager(*args, **kwargs)
