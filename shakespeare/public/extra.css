@@ -189,3 +189,20 @@ p.shkspr-speech-body {
   font-style: italic;  
 }
 
+/*************************
+  * Latest Annotations Widget
+  ************************/
+
+#latest-annotations ul {
+  list-style-type: none;
+  margin-left: 0;
+  padding: 0;
+}
+
+#latest-annotations ul li {
+  margin-top: 5px;
+}
+
+#latest-annotations .total {
+  font-weight: bold;
+}

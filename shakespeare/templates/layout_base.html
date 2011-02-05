@@ -134,6 +134,20 @@
       ${primary_sidebar_extras()}
     </py:if>
 
+    <py:if test="True">
+      <li class="widget-container latest-annotations">
+        <h3 class="widget-title">Recent Annotations</h3>
+        <div id="latest-annotations">
+          Annotations so far: <span class="total"></span>
+          <ul>
+          </ul>
+          <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+          <script src="/js/annotations.js"></script>
+        </div>
+      </li>
+    </py:if>
+
+
     <py:if test="c.word_of_the_day_enable">
       <li class="widget-container word-of-the-day">
         <h3 class="widget-title">Word of the Day</h3>
