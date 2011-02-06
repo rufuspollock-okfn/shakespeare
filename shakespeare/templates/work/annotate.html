@@ -44,10 +44,15 @@
     </div>
     <script>
       jQuery(function ($) {
+        var elem = $('#text-to-annotate');
         var annotator_store = '${c.server_api}' + '/store/annotations';
         var user = '${c.userid}';
+        // hack as auth plugin not yet operational
+        if(user != '') {
+          elem.data('annotator:headers', {'x-annotator-user-id': user});
+        }
         // var annotator_store = 'http://annotateit.org/store/annotations';
-        var annotator = $('#text-to-annotate').annotator().data('annotator');
+        var annotator = elem.annotator().data('annotator');
         annotator.addPlugin('User');
         annotator.addPlugin('Store', {
             prefix: annotator_store,
