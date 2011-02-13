@@ -55,6 +55,7 @@ class BaseController(WSGIController):
             False))
         if c.word_of_the_day_enable:
             c.word_of_the_day = model.Word.word_of_the_day()
+        c.notification = config.get('literature.notification', '')
         self._set_user()
 
 
