@@ -29,9 +29,10 @@
 <div id="inline-notification" class="notification" style="">
   <div class="message">
     <a href="http://www.openshakespeare.org/2011/02/01/announcing-annotation-sprint/">
-      Take part in Annotation 'Sprint' 5th-6th Feb 2011</a>
+      Take part in the Annotation 'Sprint' 5th-6th Feb 2011</a>
     -
-    <a href="http://www.openshakespeare.org/2011/02/05/how-to-participate-in-the-annotation-sprint/">Sprint Instructions and Feedback</a></div>
+    <a href="http://www.openshakespeare.org/2011/02/05/how-to-participate-in-the-annotation-sprint/">Sprint Instructions and Feedback</a>
+  </div>
 </div>
 <div id="airlock">
   <!--[if IE]>
@@ -150,10 +151,13 @@
 
     <py:if test="c.word_of_the_day_enable">
       <li class="widget-container word-of-the-day">
-        <h3 class="widget-title">Word of the Day</h3>
-        <div id="word-of-the-day">
-          <p><a href="${h.url_for(controller='word', action='read', id=c.word_of_the_day.name)}">${c.word_of_the_day.name.capitalize()}</a></p>
-        </div>
+        <h3 class="widget-title">
+          Word of the Day:
+            <a href="${h.url_for(controller='word', action='read', id=c.word_of_the_day.name)}">${c.word_of_the_day.name.capitalize()}</a>
+        </h3>
+        <a href="${h.url_for(controller='word', action='index')}">
+          <img src="/img/shkspr/word_of_the_day.png" alt="Word of the Day List" />
+        </a>
       </li>
     </py:if>
 

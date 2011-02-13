@@ -145,23 +145,6 @@ div#inline-notification button {
 }
 
 /**
-  * Word of the day
-  */
-
-div#word-of-the-day {
-  background: transparent url(/img/shkspr/word_of_the_day.png) no-repeat top center;
-  height: 150px;
-}
-
-div#word-of-the-day p {
-  float: left;
-  margin-top: 118px;
-  margin-right: 100px;
-  font-size: 110%;
-}
-
-
-/**
   * HTML transformed from Moby texts
   * these classes get applied in shksprdata/moby_html.xsl
   */
