@@ -60,10 +60,14 @@
             }
           });
         options.permissions.userId = function(user) {
-          return user.id;
+          if (user) {
+            return user.id;
+          }
         };
         options.permissions.userString = function(user) {
-          return user.name;
+          if (user) {
+            return user.name;
+          }
         };
         annotator.addPlugin('Permissions', options.permissions);
         annotator.addPlugin('Tags');
