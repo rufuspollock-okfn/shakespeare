@@ -25,37 +25,28 @@ class WorkController(BaseController):
         return render('work/info.html')
 
     def annotate(self, id=None):
-        self.server_api = h.url_for(controller='annostore', action='index')
-        c.error = ''
-        c.content = ''
-        c.server_api = self.server_api
-        work_name = id
+        h.redirect_to(controller='work', action='view', id=id)
+
+    def view(self, id=None):
+        c.work = model.Work.by_name(id)
+        if c.work is None:
+            abort(404)
+
+        c.annotator_enabled = True
+    
+        c.server_api = h.url_for(controller='annostore', action='index')
 
         # TODO: warning in page (via javascript?) if not logged in
         # if not c.user:
         #    h.redirect_to(controller='user', action='login',
         #            came_from=request.url)
 
-        if not work_name:
-            c.error = 'No text to annotate!' 
-        else:
-            c.uri = config.get('literature.site_url', '').rstrip('/') + h.url_for(controller='work', action='view', id=id)
-            c.annotator_account = config.get('literature.annotator.account',
-                    '')
-            c.userid = c.user.openid if c.user else ''
-            c.username = c.author
-            work = model.Work.by_name(work_name)
-            # should be guaranteed not to be a pdf ...
-            resource = work.default_resource
-            c.content = genshi.HTML(render_resource(resource))
-        return render('work/annotate.html')
-
-    def view(self, id=None):
-        from shakespeare.controllers.our_resource import OurResourceController
-        resource_controller = OurResourceController()
-        work = model.Work.by_name(id)
-        if work is None:
-            abort(404)
-        resource = work.default_resource
-        return resource_controller.view(resource.id)
-    
+        c.uri = config.get('literature.site_url', '').rstrip('/') + h.url_for(controller='work', action='view', id=id)
+        c.annotator_account = config.get('literature.annotator.account',
+                '')
+        c.userid = c.user.openid if c.user else ''
+        c.username = c.author
+        # should be guaranteed not to be a pdf ...
+        resource = c.work.default_resource
+        c.content = genshi.HTML(render_resource(resource))
+        return render('work/view.html')

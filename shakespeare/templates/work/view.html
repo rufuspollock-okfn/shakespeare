@@ -5,6 +5,8 @@
   
   <py:def function="page_title">Annotate</py:def>
 
+
+<py:if test="c.annotator_enabled">
   <py:def function="page_specific_css">
     <script src="http://assets.annotateit.org/annotator/v1.0.0rc3/annotator-full.min.js"></script>
     <link href="http://assets.annotateit.org/annotator/v1.0.0rc3/annotator.min.css" type="text/css" rel="stylesheet" />
@@ -21,12 +23,21 @@
         </ol>
       </li>
   </py:def>
+</py:if>
 
   <div py:match="content">
-    <p py:if="c.error" class="error">${c.error}</p>
-    <div id='text-to-annotate'>
-    ${c.content}
+    <div xmlns:dc="http://purl.org/dc/elements/1.1/">
+      <h2 property="dc:title">${c.title}</h2>
+			<h3>Introduction</h3>
+			<div class="work-introduction" style="margin-bottom: 50px;">
+				${h.markdown(c.work.notes or '')}
+			</div>
+      <div id='text-to-annotate'>
+      ${c.content}
+      </div>
     </div>
+
+    <py:if test="c.annotator_enabled">
     <script>
       jQuery(function ($) {
         var elem = $('#text-to-annotate');
@@ -56,7 +67,8 @@
               'account_id': account_id
             },
             loadFromSearch: {
-              'uri': '${c.uri}'
+              'uri': '${c.uri}',
+              limit: -1
             }
           });
         options.permissions.userId = function(user) {
@@ -74,6 +86,7 @@
         // annotator.addPlugin('Markdown');
       });
     </script>
+    </py:if>
 	</div>
 
   <xi:include href="../layout.html" />
