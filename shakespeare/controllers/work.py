@@ -39,7 +39,9 @@ class WorkController(BaseController):
         if not work_name:
             c.error = 'No text to annotate!' 
         else:
-            c.uri = work_name
+            c.uri = config.get('literature.site_url', '').rstrip('/') + h.url_for(controller='work', action='view', id=id)
+            c.annotator_account = config.get('literature.annotator.account',
+                    '')
             c.userid = c.user.openid if c.user else ''
             c.username = c.author
             work = model.Work.by_name(work_name)

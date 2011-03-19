@@ -6,23 +6,8 @@
   <py:def function="page_title">Annotate</py:def>
 
   <py:def function="page_specific_css">
-    <script src="https://github.com/okfn/annotator/raw/v1.0.0beta2/pkg/annotator.min.js"></script>
-    <script src="https://github.com/okfn/annotator/raw/v1.0.0beta2/pkg/annotator.auth.min.js"></script>
-    <script src="https://github.com/okfn/annotator/raw/v1.0.0beta2/pkg/annotator.markdown.min.js"></script>
-    <script src="https://github.com/okfn/annotator/raw/v1.0.0beta2/pkg/annotator.store.min.js"></script>
-    <script src="https://github.com/okfn/annotator/raw/v1.0.0beta2/pkg/annotator.tags.min.js"></script>
-    <script src="https://github.com/okfn/annotator/raw/v1.0.0beta2/pkg/annotator.user.min.js"></script>
-    <link href="https://github.com/okfn/annotator/raw/v1.0.0beta2/pkg/annotator.min.css" type="text/css" rel="stylesheet" />
-
-		<style type="text/css">
-			.annot-highlighter {
-				background: rgba(48, 184, 103, 0.296875)
-			}
-			
-			.annot-controls a.del {
-				display: none;
-			}
-		</style>
+    <script src="http://assets.annotateit.org/annotator/v1.0.0rc3/annotator-full.min.js"></script>
+    <link href="http://assets.annotateit.org/annotator/v1.0.0rc3/annotator.min.css" type="text/css" rel="stylesheet" />
   </py:def>
 
   <py:def function="primary_sidebar_extras">
@@ -45,30 +30,44 @@
     <script>
       jQuery(function ($) {
         var elem = $('#text-to-annotate');
-        var annotator_store = '${c.server_api}' + '/store/annotations';
-        var user = '${c.userid}';
-        // hack as auth plugin not yet operational
-        if(user != '') {
-          elem.data('annotator:headers', {'x-annotator-user-id': user});
+        var account_id = '${c.annotator_account}';
+        var annotator_store = '${c.server_api}' + '/api';
+        var userid = '${c.userid}';
+        var options = {};
+        options.permissions = {};
+        options.permissions.user = {
+          'name': '${c.username}'
+        };
+        if(userid != '') {
+          elem.data('annotator:headers', {'x-annotator-user-id': userid});
+          options.permissions.user.id = userid;
+          options.permissions.permissions = {
+            'read': [],
+            'update': [userid],
+            'delete': [userid],
+            'admin': [userid]
+          }
         }
-        // var annotator_store = 'http://annotateit.org/store/annotations';
         var annotator = elem.annotator().data('annotator');
-        annotator.addPlugin('User');
         annotator.addPlugin('Store', {
             prefix: annotator_store,
             annotationData: {
               'uri': '${c.uri}',
-              'user': user,
-              'username': '${c.username}'
+              'account_id': account_id
             },
             loadFromSearch: {
-              'uri': '${c.uri}',
-              'all_fields': 1
+              'uri': '${c.uri}'
             }
           });
-        // don't seem to be working properly yet
-        // annotator.addPlugin('Tags');
-        annotator.plugins["User"].setUser(user)
+        options.permissions.userId = function(user) {
+          return user.id;
+        };
+        options.permissions.userString = function(user) {
+          return user.name;
+        };
+        annotator.addPlugin('Permissions', options.permissions);
+        annotator.addPlugin('Tags');
+        // annotator.addPlugin('Markdown');
       });
     </script>
 	</div>
