@@ -37,11 +37,11 @@ class BaseController(WSGIController):
         if not c.user and c.username:
             c.user = model.User(openid=c.username)
             model.Session.commit()
-        c.remote_addr = request.environ.get('REMOTE_ADDR', 'Unknown IP Address')
-        if c.remote_addr == 'localhost' or c.remote_addr == '127.0.0.1':
-            # see if it was proxied
-            c.remote_addr = request.environ.get('HTTP_X_FORWARDED_FOR',
-                    '127.0.0.1')
+
+        c.remote_addr = request.environ.get('HTTP_X_FORWARDED_FOR', '') 
+        if not c.remote_addr: 
+            c.remote_addr = request.environ.get('REMOTE_ADDR', 'Unknown IP Address')
+
         if c.user:
             c.author = c.user.name
         else:
