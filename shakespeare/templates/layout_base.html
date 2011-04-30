@@ -19,6 +19,11 @@
 
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
   <script type="text/javascript" src="http://assets.okfn.org/kforge/scripts/kforge.js"></script>
+  <script type="text/javascript">
+    var OpenText = OpenText || {};
+    OpenText.Annotator = {};
+    OpenText.Annotator.Account = '${g.annotator_account}';
+  </script>
 
   <py:if test="defined('page_specific_css')">
     ${page_specific_css()}
