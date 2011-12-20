@@ -8,7 +8,11 @@ except ImportError:
 import sys
 sys.path.insert(0, '.')
 from shakespeare import __version__, __application_name__
-from shakespeare import __doc__ as __long_description__
+try:
+    fo = open('README.rst')
+    __long_description__ = fo.read()
+except:
+    pass
 
 setup(
     name = __application_name__,
