@@ -17,13 +17,30 @@ Foundation (http://www.okfn.org/).
 Contact the Project
 *******************
 
-Please mail open-shakespeare@okfn.org or join the open-literature mailing list:
+Please mail open-shakespeare@okfn.org or join the open-humanities mailing list:
 
-  http://lists.okfn.org/listinfo/open-literature
+  http://lists.okfn.org/listinfo/open-humanities
+
+Copyright and License
+*********************
+
+Copyright 2005-2011 Open Knowledge Foundation. All material licensed under the
+MIT license:
+
+http://www.opensource.org/licenses/mit-license.php
 
 
 Installation and Setup
 **********************
+
+The main part of Shakespeare is a python web application written using the
+Pylons framework. In addition there are various scripts that can be used
+independently (most of these still require python).
+
+0. Prerequisites
+================
+
+  * Python (>= 2.5)
 
 1. Install the code
 ===================
@@ -47,7 +64,7 @@ NB: If you don't have easy_install you can get from here:
 
 1. Check out the mercurial repo::
 
-    hg clone https://knowledgeforge.net/shakespeare/hg
+    git clone https://github.com/okfn/shakespeare
 
 2. Do::
 
