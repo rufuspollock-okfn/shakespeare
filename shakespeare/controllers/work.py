@@ -33,19 +33,6 @@ class WorkController(BaseController):
             abort(404)
 
         c.annotator_enabled = True
-    
-        c.server_api = h.url_for(controller='annostore', action='index')
-
-        # TODO: warning in page (via javascript?) if not logged in
-        # if not c.user:
-        #    h.redirect_to(controller='user', action='login',
-        #            came_from=request.url)
-
-        c.uri = config.get('literature.site_url', '').rstrip('/') + h.url_for(controller='work', action='view', id=id)
-        c.annotator_account = config.get('literature.annotator.account',
-                '')
-        c.userid = c.user.openid if c.user else ''
-        c.username = c.author
         # should be guaranteed not to be a pdf ...
         resource = c.work.default_resource
         c.content = genshi.HTML(render_resource(resource))

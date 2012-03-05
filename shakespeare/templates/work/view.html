@@ -8,8 +8,8 @@
 
 <py:if test="c.annotator_enabled">
   <py:def function="page_specific_css">
-    <script src="http://assets.annotateit.org/annotator/v1.0.0rc3/annotator-full.min.js"></script>
-    <link href="http://assets.annotateit.org/annotator/v1.0.0rc3/annotator.min.css" type="text/css" rel="stylesheet" />
+    <script src="http://assets.annotateit.org/annotator/v1.1.0/annotator-full.min.js"></script>
+    <link href="http://assets.annotateit.org/annotator/v1.1.0/annotator.min.css" type="text/css" rel="stylesheet" />
   </py:def>
 
   <py:def function="primary_sidebar_extras">
@@ -40,50 +40,7 @@
     <py:if test="c.annotator_enabled">
     <script>
       jQuery(function ($) {
-        var elem = $('#text-to-annotate');
-        var account_id = '${c.annotator_account}';
-        var annotator_store = '${c.server_api}' + '/api';
-        var userid = '${c.userid}';
-        var options = {};
-        options.permissions = {};
-        options.permissions.user = {
-          'name': '${c.username}'
-        };
-        if(userid != '') {
-          elem.data('annotator:headers', {'x-annotator-user-id': userid});
-          options.permissions.user.id = userid;
-          options.permissions.permissions = {
-            'read': [],
-            'update': [userid],
-            'delete': [userid],
-            'admin': [userid]
-          }
-        }
-        var annotator = elem.annotator().data('annotator');
-        annotator.addPlugin('Store', {
-            prefix: annotator_store,
-            annotationData: {
-              'uri': '${c.uri}',
-              'account_id': account_id
-            },
-            loadFromSearch: {
-              'uri': '${c.uri}',
-              limit: -1
-            }
-          });
-        options.permissions.userId = function(user) {
-          if (user) {
-            return user.id;
-          }
-        };
-        options.permissions.userString = function(user) {
-          if (user) {
-            return user.name;
-          }
-        };
-        annotator.addPlugin('Permissions', options.permissions);
-        annotator.addPlugin('Tags');
-        // annotator.addPlugin('Markdown');
+        $('#text-to-annotate').annotator().annotator('setupPlugins');
       });
     </script>
     </py:if>
