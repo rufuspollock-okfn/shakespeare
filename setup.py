@@ -21,6 +21,8 @@ setup(
     include_package_data=True,
 
     install_requires=[
+        # needed for this version fo Pylons
+        'WebOb==1.0.8',
         'Pylons>=0.9.7,<0.9.7.99',
         'SQLAlchemy>=0.4,<0.4.99',
         'Genshi>=0.4',
