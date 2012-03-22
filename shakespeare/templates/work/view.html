@@ -50,18 +50,6 @@
           Permissions: false,
           AnnotateItPermissions: {}
         });
-
-        annotator.plugins.Auth.withToken(function (token) {
-          // If the user is not properly logged in, put the Annotator into read-only mode.
-          if (token.userIsAnonymous) {
-            annotator.options.readOnly = true;
-            annotator.viewer.options.readOnly = true;
-            $(document).unbind({
-              "mouseup":   annotator.checkForEndSelection,
-              "mousedown": annotator.checkForStartSelection
-            });
-          }
-        });
       });
     </script>
     </py:if>
