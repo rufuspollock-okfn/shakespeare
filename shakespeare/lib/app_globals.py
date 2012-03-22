@@ -14,6 +14,8 @@ class Globals(object):
         'app_globals' variable
 
         """
-        self.annotator_account = config.get('literature.annotator.account', '')
+        self.annotator_store = config.get('literature.annotator.store', '')
+        self.annotator_consumer_key = config.get('literature.annotator.consumer_key', '')
+        self.annotator_consumer_secret = config.get('literature.annotator.consumer_secret', '')
         self.deliverance_enabled = bool(config.get('deliverance.enabled', ''))
 

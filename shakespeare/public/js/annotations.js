@@ -1,8 +1,8 @@
 jQuery(document).ready(function($) {
   var $mydiv = $('#latest-annotations');
   var mytmpl = '<li><a href="${uri}">${work}</a>: ${snippet}</li>';
-  var url = 'http://annotateit.org/api/search?limit=5&';
-  url += 'account_id=' + OpenText.Annotator.Account;
+  var url = OpenText.Annotator.store + '/search?limit=5&';
+  url += 'consumer=' + OpenText.Annotator.consumerKey;
   $.getJSON(url, function(data) {
     $.each(data.rows, function(idx, row) {
       var _t = row['text'];

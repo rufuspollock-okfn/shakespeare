@@ -32,6 +32,7 @@ setup(
         'SQLAlchemy-migrate==0.4.5',
         'repoze.who>=1.0.0,<1.0.99',
         'repoze.who.plugins.openid>=0.5,<0.5.99',
+        'annotator==0.7.4',
         ## Needed if you are doing deliverance/proxying stuff
         # you should install python-lxml first directly
         # (has lots of c extensions ...)

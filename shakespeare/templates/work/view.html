@@ -8,8 +8,8 @@
 
 <py:if test="c.annotator_enabled">
   <py:def function="page_specific_css">
-    <script src="http://assets.annotateit.org/annotator/v1.1.0/annotator-full.min.js"></script>
-    <link href="http://assets.annotateit.org/annotator/v1.1.0/annotator.min.css" type="text/css" rel="stylesheet" />
+    <script src="http://assets.annotateit.org/annotator/v1.2.2/annotator-full.min.js"></script>
+    <link href="http://assets.annotateit.org/annotator/v1.2.2/annotator.min.css" type="text/css" rel="stylesheet" />
   </py:def>
 
   <py:def function="primary_sidebar_extras">
@@ -40,7 +40,28 @@
     <py:if test="c.annotator_enabled">
     <script>
       jQuery(function ($) {
-        $('#text-to-annotate').annotator().annotator('setupPlugins');
+        var elem = document.getElementById('text-to-annotate'),
+            annotator = new Annotator(elem);
+
+        annotator.setupPlugins({
+          storeUrl: "${c.annotator_store}",
+          tokenUrl: "/__authtoken__"
+        }, {
+          Permissions: false,
+          AnnotateItPermissions: {}
+        });
+
+        annotator.plugins.Auth.withToken(function (token) {
+          // If the user is not properly logged in, put the Annotator into read-only mode.
+          if (token.userIsAnonymous) {
+            annotator.options.readOnly = true;
+            annotator.viewer.options.readOnly = true;
+            $(document).unbind({
+              "mouseup":   annotator.checkForEndSelection,
+              "mousedown": annotator.checkForStartSelection
+            });
+          }
+        });
       });
     </script>
     </py:if>
