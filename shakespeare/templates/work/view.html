@@ -8,7 +8,6 @@
 
 <py:if test="c.annotator_enabled">
   <py:def function="page_specific_css">
-    <script src="http://assets.annotateit.org/annotator/v1.2.2/annotator-full.min.js"></script>
     <link href="http://assets.annotateit.org/annotator/v1.2.2/annotator.min.css" type="text/css" rel="stylesheet" />
   </py:def>
 
@@ -38,43 +37,8 @@
     </div>
 
     <py:if test="c.annotator_enabled">
-    <script>
-      jQuery(function ($) {
-        var elem = document.getElementById('text-to-annotate'),
-            annotator = new Annotator(elem);
-
-        var oldAuth = new Annotator.Plugin.AnnotateItPermissions().options.userAuthorize;
-
-        annotator.setupPlugins({
-          storeUrl: "${c.annotator_store}",
-          tokenUrl: "/__authtoken__"
-        }, {
-          Store: {
-            loadFromSearch: { limit: 1000 }
-          },
-          Permissions: false,
-          AnnotateItPermissions: {
-            userString: function (user) {
-              if (typeof user === 'string') {
-                return user;
-              } else if (user.hasOwnProperty('name') && typeof user.name === 'string') {
-                return user.name;
-              } else if (user.hasOwnProperty('id') && typeof user.id === 'string') {
-                return user.id;
-              }
-            },
-            userAuthorize: function (action, annotation, user, consumer) {
-              if (typeof user === 'string') {
-                return oldAuth.call(this, action, annotation, user, consumer);
-              } else if (user.hasOwnProperty('id') && typeof user.id === 'string') {
-                return oldAuth.call(this, action, annotation, user.id, consumer);
-              }
-            }
-          }
-        });
-
-      });
-    </script>
+    <script src="http://assets.annotateit.org/annotator/v1.2.2/annotator-full.min.js"></script>
+    <script src="/js/annotator.js"></script>
     </py:if>
 	</div>
 
