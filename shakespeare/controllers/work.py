@@ -34,6 +34,9 @@ class WorkController(BaseController):
 
         c.annotator_enabled = True
         # should be guaranteed not to be a pdf ...
+        material = c.work.default_material
         resource = c.work.default_resource
+
+        c.title = material.title
         c.content = genshi.HTML(render_resource(resource))
         return render('work/view.html')

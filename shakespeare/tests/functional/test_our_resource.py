@@ -1,13 +1,17 @@
 from shakespeare.tests import *
+from shakespeare import model
 
 class TestOurResourceController(TestController):
     @classmethod
     def setup_class(self):
-        self.text = TestData.make_fixture()
+        TestData.make_fixture()
 
     @classmethod
     def teardown_class(self):
         TestData.remove_fixtures()
+
+    def setup(self):
+        self.text = model.Material.by_name(TestData.name)
 
     def test_index(self):
         res = self.app.get(url_for(controller='our_resource', action='index'))

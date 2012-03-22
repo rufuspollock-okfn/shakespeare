@@ -16,14 +16,5 @@ class TestAnnoController(TestController):
             url_for(controller='work', action='annotate'),
             extra_environ={'REMOTE_USER': str(self.username)},
             status=[404]
-            )
-    
-    def test_annotate(self):
-        res = self.app.get(
-            url_for(controller='work', action='annotate', id=self.text.name),
-            extra_environ={'REMOTE_USER': str(self.username)}
-            )
-        assert "'uri': '%s'" % self.text.name
-        userid = model.User.query.filter_by(openid=self.username).first().id
-        assert "'user': '%s'" % userid
+        )
 

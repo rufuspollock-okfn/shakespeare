@@ -79,11 +79,11 @@ class TestStatistic:
     def setup_class(self):
         self.name = u'test-123'
         self.title = u'Hamlet'
-        self.text = model.Material(name=self.name, title=self.title)
+        text = model.Material(name=self.name, title=self.title)
         self.word = u'jones'
         self.freq = 5
         self.cc1 = model.Statistic(
-                text=self.text,
+                text=text,
                 word=self.word,
                 freq=self.freq
                 )
@@ -98,6 +98,9 @@ class TestStatistic:
         model.Session.delete(stat.text)
         model.Session.commit()
         model.Session.remove()
+
+    def setup(self):
+        self.text = model.Material.by_name(self.name)
 
     def test1(self):
         out1 = model.Statistic.query.get(self.statid)

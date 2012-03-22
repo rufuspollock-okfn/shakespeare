@@ -24,7 +24,7 @@ setup(
         # needed for this version fo Pylons
         'WebOb==1.0.8',
         'Pylons>=0.9.7,<0.9.7.99',
-        'SQLAlchemy>=0.4,<0.4.99',
+        'SQLAlchemy==0.5.8',
         'Genshi>=0.4',
         'pygooglechart>=0.2,<0.3',
         'FormAlchemy>=1.0',
@@ -38,7 +38,7 @@ setup(
         # 'swiss>=0.3',
         # 'deliverance>=0.3a'
         ## Needed for word_of_the_day syncing ...
-        # feedparser 
+        'feedparser==5.1.1'
         ],
     test_suite='nose.collector',
     package_data={'shakespeare': ['i18n/*/LC_MESSAGES/*.mo']},

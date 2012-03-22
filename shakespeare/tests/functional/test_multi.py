@@ -14,9 +14,8 @@ class TestMultiController(TestController):
     def test_index(self):
         url = url_for(controller='multi', action='index')
         res = self.app.get(url)
-        print res
         assert 'Multiview' in res
-    
+
     def test_choose_texts(self):
         url = url_for(controller='multi', action='index')
         res = self.app.get(url)

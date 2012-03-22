@@ -54,18 +54,33 @@ class Work(DomainObject):
 
     @property
     def default_resource(self):
-        if self.materials and self.materials[0].resources:
+        m = self.default_material
+        if m and m.resources:
+            if 'Moby' in m.title:
+                for res in m.resources:
+                    if res.format == 'html':
+                        return res
+
+            return m.resources[0]
+
+        return None
+
+    @property
+    def default_material(self):
+        if self.materials:
             # HACK: (shkspr-specific) make sure Moby texts show up first if
             # there ...
             moby = [ m for m in self.materials if 'Moby' in m.title ]
+
             if moby and moby[0].resources:
                 for res in moby[0].resources:
                     if res.format == 'html':
-                        return res
-            else:
-                return self.materials[0].resources[0]
-        else:
-            return None
+                        return moby[0]
+
+            elif self.materials[0].resources:
+                return self.materials[0]
+
+        return None
 
     @property
     def notes_snippet(self):
