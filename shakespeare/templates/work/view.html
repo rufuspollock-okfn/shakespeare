@@ -47,6 +47,9 @@
           storeUrl: "${c.annotator_store}",
           tokenUrl: "/__authtoken__"
         }, {
+          Store: {
+            loadFromSearch: { limit: 1000 }
+          },
           Permissions: false,
           AnnotateItPermissions: {}
         });
