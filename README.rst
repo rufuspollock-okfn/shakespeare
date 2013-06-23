@@ -161,8 +161,13 @@ NB: you'll probably want to change log levels to debug.
 
     $ bin/shakespeare-admin help.
 
-2. Run the tests using either py.test of nosetests::
-----------------------------------------------------
+2. Run the tests using either py.test of nosetests
+--------------------------------------------------
+
+If you haven't installed and configured Xapian, do::
+
+    $ nosetests shakespeare --exclude stats --exclude search
+
+Otherwise you can run the full test suite::
 
     $ nosetests shakespeare
-'''

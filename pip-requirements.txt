@@ -8,5 +8,5 @@
 # Can also check these out locally
 # You would then replace with local checkout path e.g.
 # -e local-install-path
--e hg+https://knowledgeforge.net/shakespeare/hg#egg=shakespeare
--e hg+https://knowledgeforge.net/okfn/annotator#egg=annotator
+-e .
+-e hg+https://bitbucket.org/okfn/shksprdata#egg=shksprdata

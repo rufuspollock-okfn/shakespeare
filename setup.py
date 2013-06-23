@@ -21,13 +21,15 @@ setup(
     include_package_data=True,
 
     install_requires=[
-        # needed for this version fo Pylons
+        # needed for this version of Pylons
         'WebOb==1.0.8',
+        'WebTest==1.4.3',
+        'FormAlchemy==1.4.2',
+
         'Pylons>=0.9.7,<0.9.7.99',
         'SQLAlchemy==0.5.8',
         'Genshi>=0.4',
         'pygooglechart>=0.2,<0.3',
-        'FormAlchemy>=1.0',
         # last version to work with SQLA < 0.5
         'SQLAlchemy-migrate==0.4.5',
         'repoze.who>=1.0.0,<1.0.99',
@@ -39,7 +41,9 @@ setup(
         # 'swiss>=0.3',
         # 'deliverance>=0.3a'
         ## Needed for word_of_the_day syncing ...
-        'feedparser==5.1.1'
+        'feedparser==5.1.1',
+        ## Needed for conversion scripts
+        'lxml==3.2.1'
         ],
     test_suite='nose.collector',
     package_data={'shakespeare': ['i18n/*/LC_MESSAGES/*.mo']},
@@ -65,7 +69,7 @@ setup(
     long_description = __long_description__,
     license = "MIT",
     keywords = "open shakespeare search view",
-    url = "http://www.openshakespeare.org/", 
+    url = "http://www.openshakespeare.org/",
     download_url = "http://www.openshakespeare.org/code/",
     classifiers = [
         'Development Status :: 4 - Beta',
